@@ -1,0 +1,27 @@
+# ============================================================
+# SECRETS — never commit. A secret pushed to GitHub is in the
+# history forever, even if deleted in a later commit.
+# ============================================================
+.env
+.env.*
+*.env
+backend/.env
+backend/.env.*
+!backend/.env.example
+!.env.example
+
+# --- dependencies / build ---
+node_modules/
+backend/node_modules/
+
+# --- Vercel / hosting ---
+.vercel
+
+# --- OS / editor cruft ---
+.DS_Store
+*.log
+npm-debug.log*
+
+# --- local runtime / scratch ---
+/tmp/
+scratchpad/
