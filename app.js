@@ -9,13 +9,11 @@ const CONFIG = {
   instagram:      "https://www.instagram.com/kishorekumar.coach/",
 
   // --- Supabase (leads backend for the static Hostinger site) ---
-  // Paste these two PUBLIC values from your Supabase project:
-  //   Settings → API → "Project URL"  and  "anon public" key.
-  // The anon key is DESIGNED to be public and shipped in the frontend —
-  // a Row Level Security "insert-only" policy stops anyone reading leads.
-  // Leave both blank to fall back to WhatsApp + localStorage only.
-  supabaseUrl:     "",   // e.g. https://abcdxyz.supabase.co
-  supabaseAnonKey: "",   // the long eyJ… "anon public" key
+  // These are the PUBLIC "publishable" values — designed to be shipped in
+  // the frontend. A Row Level Security "insert-only" policy (see
+  // supabase-setup.sql) stops this key from reading anyone's leads.
+  supabaseUrl:     "https://oqwbmtdrjxfbnitlzehe.supabase.co",
+  supabaseAnonKey: "sb_publishable_Tqkzvziw-5C6I7Hib92B-g_AZQIJTRA",
 
   backendUrl:     "",  // legacy Node/Express backend (not used on Hostinger; Supabase replaces it)
   waTemplate:     "Hi Coach Kishore, I am interested in {program} at Spartacus Martial Arts Academy. Please share fees, timings, and trial class details."
