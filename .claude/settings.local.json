@@ -51,7 +51,13 @@
       "Bash(npx --yes vercel@latest whoami)",
       "Bash(npx --yes vercel@latest deploy --yes --name spartacus-martial-arts)",
       "Bash(curl -sS -m 15 -D - -o /dev/null https://spartacus-martial-arts-15k79ypez-kishore-kumar-s-projects2.vercel.app/)",
-      "Bash(npx --yes vercel@latest inspect spartacus-martial-arts-15k79ypez-kishore-kumar-s-projects2.vercel.app)"
+      "Bash(npx --yes vercel@latest inspect spartacus-martial-arts-15k79ypez-kishore-kumar-s-projects2.vercel.app)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(npx --yes vercel@latest ls)",
+      "Bash(rm -f vercel.json .vercelignore)",
+      "Bash(git check-ignore *)",
+      "Bash(git add *)"
     ]
   }
 }

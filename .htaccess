@@ -1,0 +1,81 @@
+# ============================================================
+# SPARTACUS — Hostinger / Apache / LiteSpeed config
+#
+# Hostinger serves files statically (server.js does NOT run there),
+# so this file replaces every protection server.js/vercel.json gave:
+#   - blocks secrets (.env), the backend/ folder, and dotfiles
+#   - sets security headers
+#   - sets caching + compression
+#   - serves index.html at /
+#
+# If you deploy the WHOLE project folder to public_html, this is the
+# only thing stopping backend/.env from being downloadable. Keep it.
+# ============================================================
+
+# ---- Default document ----
+DirectoryIndex index.html
+
+# ---- 1. BLOCK SECRETS & SERVER-SIDE FILES -------------------
+# Any .env file (env, .env.example is a placeholder but blocked too to be safe)
+<FilesMatch "(^\.env|\.env$|\.env\.)">
+  Require all denied
+</FilesMatch>
+
+# All dotfiles (.git, .htaccess itself, etc.)
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# The entire backend/ folder (Node source — never meant to be served)
+RewriteEngine On
+RewriteRule ^backend/ - [F,L]
+RewriteRule ^server\.js$ - [F,L]
+RewriteRule (^|/)node_modules/ - [F,L]
+
+# ---- 2. SECURITY HEADERS ------------------------------------
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  # HSTS — only takes effect once the site is served over HTTPS
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+</IfModule>
+
+# ---- 3. FORCE HTTPS (Hostinger provides a free SSL cert) -----
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ---- 4. COMPRESSION -----------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript
+  AddOutputFilterByType DEFLATE application/json image/svg+xml
+</IfModule>
+
+# ---- 5. CACHING ---------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Long cache for versioned assets (images, fonts)
+  ExpiresByType image/webp        "access plus 1 year"
+  ExpiresByType image/png         "access plus 1 year"
+  ExpiresByType image/jpeg        "access plus 1 year"
+  ExpiresByType image/svg+xml     "access plus 1 year"
+  ExpiresByType font/woff2        "access plus 1 year"
+  # Shorter cache for code + content (so edits show up quickly)
+  ExpiresByType text/css          "access plus 1 hour"
+  ExpiresByType application/javascript "access plus 1 hour"
+  ExpiresByType application/json  "access plus 5 minutes"
+  ExpiresByType text/html         "access plus 5 minutes"
+</IfModule>
+
+# ---- 6. CORRECT MIME TYPES ----------------------------------
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType application/json .json
+  AddType font/woff2 .woff2
+</IfModule>
+
+# ---- 7. PRETTY 404 ------------------------------------------
+ErrorDocument 404 /index.html
