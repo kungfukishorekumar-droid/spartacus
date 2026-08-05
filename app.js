@@ -7,7 +7,17 @@ const CONFIG = {
   whatsappNumber: "919884599939",
   academyName:    "Spartacus Martial Arts Academy",
   instagram:      "https://www.instagram.com/kishorekumar.coach/",
-  backendUrl:     "http://localhost:5001",  // shared backend — leads saved to MongoDB (blank = WhatsApp/local only)
+
+  // --- Supabase (leads backend for the static Hostinger site) ---
+  // Paste these two PUBLIC values from your Supabase project:
+  //   Settings → API → "Project URL"  and  "anon public" key.
+  // The anon key is DESIGNED to be public and shipped in the frontend —
+  // a Row Level Security "insert-only" policy stops anyone reading leads.
+  // Leave both blank to fall back to WhatsApp + localStorage only.
+  supabaseUrl:     "",   // e.g. https://abcdxyz.supabase.co
+  supabaseAnonKey: "",   // the long eyJ… "anon public" key
+
+  backendUrl:     "",  // legacy Node/Express backend (not used on Hostinger; Supabase replaces it)
   waTemplate:     "Hi Coach Kishore, I am interested in {program} at Spartacus Martial Arts Academy. Please share fees, timings, and trial class details."
 };
 
@@ -153,8 +163,11 @@ function boot(){
       const lead = Object.fromEntries(new FormData(form).entries());
       lead.source = "Spartacus Website"; lead.academy = CONFIG.academyName; lead.timestamp = new Date().toISOString();
       const btn = $("#submitBtn"); btn.disabled = true; btn.textContent = "Sending…";
+      // 1) always keep a local copy (offline safety net)
       try { const saved = JSON.parse(localStorage.getItem("spartacus_leads") || "[]"); saved.push(lead); localStorage.setItem("spartacus_leads", JSON.stringify(saved)); } catch(_){}
-      if (CONFIG.backendUrl){
+      // 2) save to Supabase (primary), else legacy backend if configured
+      const savedRemote = await saveLead(lead);
+      if (!savedRemote && CONFIG.backendUrl){
         try {
           await fetch(CONFIG.backendUrl.replace(/\/+$/,"") + "/api/leads", {
             method:"POST", headers:{ "Content-Type":"application/json" },
@@ -195,6 +208,43 @@ function boot(){
   /* ---- editable content engine ---- */
   bootContent();
 }
+
+/* ============================ SUPABASE LEADS ============================
+   Saves a contact-form lead straight to Supabase from the static site.
+   Uses the PUBLIC anon key + REST endpoint (PostgREST). Security is the
+   table's Row Level Security policy: anon may INSERT, never SELECT — so
+   this key cannot be used to read anyone's leads.
+   Returns true on success, false on any failure (caller falls back to WA). */
+async function saveLead(lead){
+  if (!CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey) return false;
+  try {
+    const res = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,"") + "/rest/v1/leads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": CONFIG.supabaseAnonKey,
+        "Authorization": "Bearer " + CONFIG.supabaseAnonKey,
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({
+        full_name:        lead.name || "",
+        phone:            lead.phone || "",
+        email:            lead.email || null,
+        age:              lead.age || null,
+        city:             lead.location || null,
+        program_interest: lead.program || null,
+        goal:             lead.goal || null,
+        role:             lead.role || null,
+        preferred_time:   lead.time || null,
+        message:          lead.message || null,
+        source:           "website",
+        website_source:   "spartacus"
+      })
+    });
+    return res.ok;   // 201 = inserted
+  } catch (err) { return false; }
+}
+window.saveLead = saveLead;
 
 /* ============================ RAZORPAY PAYMENT (optional) ============================
    Wire any button to it, e.g.:
