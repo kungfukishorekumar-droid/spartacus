@@ -62,7 +62,13 @@
       "Bash(git push *)",
       "Bash(supabase --version)",
       "Bash(node --check app.js)",
-      "Bash(sed 's/^/  ❌ /')"
+      "Bash(sed 's/^/  ❌ /')",
+      "Bash(curl -sS -m 20 -o /dev/null -w '  homepage -> HTTP %{http_code}\\\\n' https://moccasin-shrew-935066.hostingersite.com/)",
+      "Bash(curl -sS -m 6 -o /dev/null -w \"  localhost:4599 -> %{http_code}\\\\n\" \"http://localhost:4599/\")",
+      "Bash([ -f \"$ZIP\" ])",
+      "Bash(echo \"  ✅ zip still present\")",
+      "Bash(ls -la /private/tmp/claude-501/-Users-kishorekumar-spartacus-website/b3c439e0-d167-429d-9434-24393fe8afd5/scratchpad/spartacus-hostinger.zip)",
+      "Bash(echo \"  now: $\\(gh repo view kungfukishorekumar-droid/spartacus-martial-arts --json visibility -q .visibility\\)\")"
     ]
   }
 }
