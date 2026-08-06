@@ -44,7 +44,7 @@ function injectChrome(){
   const header =
     '<header id="top"><div class="wrap nav">' +
       '<a href="index.html" class="brand" aria-label="Spartacus Martial Arts Academy home">' +
-        '<img class="logo-img" src="assets/logo.png?v=5" alt="Spartacus Martial Arts Academy logo" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" />' +
+        '<img class="logo-img" src="assets/logo.webp?v=5" width="512" height="512" alt="Spartacus Martial Arts Academy logo" fetchpriority="high" decoding="async" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'" />' +
         '<span class="brand-fallback"><span class="name">SPARTACUS<small>Martial Arts · We Born to Win</small></span></span>' +
       '</a>' +
       '<nav class="nav-links" aria-label="Primary">' + navLinks + '</nav>' +
@@ -64,7 +64,7 @@ function injectChrome(){
   const footer =
     '<footer><div class="wrap"><div class="foot-grid">' +
       '<div class="foot-brand">' +
-        '<img class="logo-img" src="assets/logo.png?v=5" alt="Spartacus Martial Arts Academy logo" loading="lazy" decoding="async" onerror="this.style.display=\'none\'" />' +
+        '<img class="logo-img" src="assets/logo.webp?v=5" width="512" height="512" alt="Spartacus Martial Arts Academy logo" loading="lazy" decoding="async" onerror="this.style.display=\'none\'" />' +
         '<div class="foot-tag">WE BORN TO WIN</div>' +
         '<p>By Kishore Kumar — National Wushu Medalist, Kungfu Black Belt, Wushu Coach &amp; Judge. Building discipline, confidence and real martial arts skill in Chennai.</p>' +
         '<div class="foot-social">' +
