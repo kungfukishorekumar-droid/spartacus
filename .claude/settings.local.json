@@ -69,7 +69,9 @@
       "Bash(echo \"  ✅ zip still present\")",
       "Bash(ls -la /private/tmp/claude-501/-Users-kishorekumar-spartacus-website/b3c439e0-d167-429d-9434-24393fe8afd5/scratchpad/spartacus-hostinger.zip)",
       "Bash(echo \"  now: $\\(gh repo view kungfukishorekumar-droid/spartacus-martial-arts --json visibility -q .visibility\\)\")",
-      "Bash(echo \" index.html at root: $\\(gh api repos/kungfukishorekumar-droid/spartacus-martial-arts/contents/index.html --jq .name && echo ✅\\)\")"
+      "Bash(echo \" index.html at root: $\\(gh api repos/kungfukishorekumar-droid/spartacus-martial-arts/contents/index.html --jq .name && echo ✅\\)\")",
+      "Bash(python3 -c \"s=open\\('styles.css'\\).read\\(\\); print\\('  braces balanced:', s.count\\('{'\\)==s.count\\('}'\\)\\)\")",
+      "Bash(curl -sS -m 4 -o /dev/null -w \"  server: %{http_code}\\\\n\" http://localhost:4599/)"
     ]
   }
 }
