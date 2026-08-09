@@ -7,7 +7,7 @@
   --white:#fff;--mist:#cfcfd4;--muted:#9a9aa3;
   --blue:#2da6e0;
   --radius:18px;--radius-sm:12px;--shadow:0 30px 60px -25px rgba(0,0,0,.8);--maxw:1180px;
-  --font-display:'Anton',Impact,sans-serif;--font-serif:'Cinzel',Georgia,serif;--font-head:'Oswald',sans-serif;
+  --font-display:'Anton',Impact,sans-serif;--font-serif:'Oswald',Georgia,serif;--font-head:'Oswald',sans-serif;
   --font-body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
