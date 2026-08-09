@@ -6,7 +6,7 @@
   var POSTS = (window.BLOG_POSTS || []).slice().sort(function (a, b) { return new Date(b.publishedDate) - new Date(a.publishedDate); });
   var CATS = window.BLOG_CATEGORIES || [];
   var WA = window.BLOG_WHATSAPP || "https://wa.me/919884599939";
-  var SITE = "https://spartacusmartialarts.in";
+  var SITE = "https://spartacusmartialarts.com";
 
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function stripTags(h) { var d = document.createElement("div"); d.innerHTML = h || ""; return (d.textContent || "").trim(); }
