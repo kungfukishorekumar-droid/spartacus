@@ -1,3 +1,8 @@
+/* ============================ SELF-HOSTED FONTS ============================ */
+@font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/anton-400.woff2) format('woff2')}
+@font-face{font-family:'Oswald';font-style:normal;font-weight:200 700;font-display:swap;src:url(fonts/oswald.woff2) format('woff2')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/inter.woff2) format('woff2')}
+
 /* ============================ DESIGN TOKENS ============================ */
 :root{
   --black:#0a0a0b;--ink:#121214;--ink-2:#1a1a1e;--panel:#161619;--panel-2:#1d1d22;
