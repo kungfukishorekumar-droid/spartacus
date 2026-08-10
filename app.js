@@ -3,6 +3,27 @@
    Loaded on every page (defer). Injects header/menu/footer/floats,
    wires interactions, and runs the editable content engine.
    ============================================================ */
+
+/* ---- Reveal failsafe (progressive enhancement) --------------------------
+   Content defaults to VISIBLE; the hidden .reveal state only applies under
+   html.js (set by an inline <head> script). This block additionally
+   force-reveals anything already in the viewport shortly after load, so a
+   slow or flaky IntersectionObserver can never leave above-the-fold content
+   — especially the contact form — invisible. Below-fold keeps scroll-reveal. */
+(function(){
+  function revealInView(){
+    var vh = window.innerHeight || 800;
+    document.querySelectorAll('.reveal:not(.in),[data-anim]:not(.in),.fx-words:not(.in),.fx-shine:not(.in)').forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.95 && r.bottom > 0) el.classList.add('in');
+    });
+  }
+  function run(){ revealInView(); setTimeout(revealInView, 400); setTimeout(revealInView, 1400); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+  window.addEventListener('load', function(){ setTimeout(revealInView, 200); });
+})();
+
 const CONFIG = {
   whatsappNumber: "919884599939",
   academyName:    "Spartacus Martial Arts Academy",

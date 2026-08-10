@@ -230,15 +230,16 @@ header.sp-hide{transform:translateY(-102%)}          /* hides scrolling down, re
 .quick-answer{animation:riseIn var(--t-fluid) var(--e-out) both}
 
 /* ---------- 07 · SCROLL REVEAL + STAGGER ---------- */
-.reveal{opacity:0;transform:translateY(26px);transition:opacity var(--t-fluid) var(--e-out),transform var(--t-fluid) var(--e-out)}
+.reveal{transition:opacity var(--t-fluid) var(--e-out),transform var(--t-fluid) var(--e-out)}
+:where(html.js) .reveal{opacity:0;transform:translateY(26px)}
 .reveal.in{opacity:1;transform:none}
 .reveal.d0{transition-delay:0s}.reveal.d1{transition-delay:.07s}
 .reveal.d2{transition-delay:.14s}.reveal.d3{transition-delay:.21s}
 /* directional variants — add data-anim to any element */
-[data-anim="left"]  {opacity:0;transform:translateX(-34px)}
-[data-anim="right"] {opacity:0;transform:translateX(34px)}
-[data-anim="scale"] {opacity:0;transform:scale(.93)}
-[data-anim="up"]    {opacity:0;transform:translateY(34px)}
+:where(html.js) [data-anim="left"]  {opacity:0;transform:translateX(-34px)}
+:where(html.js) [data-anim="right"] {opacity:0;transform:translateX(34px)}
+:where(html.js) [data-anim="scale"] {opacity:0;transform:scale(.93)}
+:where(html.js) [data-anim="up"]    {opacity:0;transform:translateY(34px)}
 [data-anim]{transition:opacity var(--t-fluid) var(--e-out),transform var(--t-fluid) var(--e-out)}
 [data-anim].in{opacity:1;transform:none}
 /* grid children cascade (blog cards, programs, gallery) */
