@@ -1,4 +1,47 @@
+# Spartacus Martial Arts Academy — https://spartacusmartialarts.com
+# All public pages are open to search and answer engines.
+
 User-agent: *
+Allow: /
+
+# ---- Answer / AI engines (GEO) -------------------------------------------
+# Explicitly allowed so Spartacus can be cited in AI answers about martial arts
+# and sports psychology in Chennai. See /llms.txt for a structured summary.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://spartacusmartialarts.com/sitemap.xml
