@@ -92,6 +92,10 @@
           </div>
         </div>
         <div class="field full"><label for="message">Message</label><textarea id="message" name="message" placeholder="Anything you'd like Coach Kishore to know..."></textarea></div>
+        <!-- Honeypot: hidden from humans, irresistible to bots. Never remove. -->
+        <div class="hp-field" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
+        <!-- Cloudflare Turnstile mounts here once CONFIG.turnstileSiteKey is set -->
+        <div id="turnstile" class="turnstile-box"></div>
         <button type="submit" class="btn btn-primary btn-block" id="submitBtn" data-track="lead_submit">Book Free Trial Class →</button>
         <p class="form-note">By submitting, you'll also get the option to message us instantly on WhatsApp.</p>
       </form>

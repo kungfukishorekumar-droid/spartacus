@@ -36,6 +36,18 @@ const CONFIG = {
   supabaseUrl:     "https://oqwbmtdrjxfbnitlzehe.supabase.co",
   supabaseAnonKey: "sb_publishable_Tqkzvziw-5C6I7Hib92B-g_AZQIJTRA",
 
+  // --- Anti-spam gateway ---
+  // leadEndpoint: the submit-lead Edge Function URL. While this is empty the
+  // form still works (it inserts straight to Supabase as before). Once you set
+  // it, submissions are validated + rate-limited server-side instead, and you
+  // can then revoke the public INSERT policy (see supabase-antispam.sql STEP 2).
+  //   e.g. "https://oqwbmtdrjxfbnitlzehe.supabase.co/functions/v1/submit-lead"
+  leadEndpoint:     "",
+  // Cloudflare Turnstile PUBLIC site key. Empty = widget not shown.
+  // Get one free at dash.cloudflare.com → Turnstile. The matching SECRET key
+  // goes in Supabase (`supabase secrets set TURNSTILE_SECRET=…`), never here.
+  turnstileSiteKey: "",
+
   backendUrl:     "",  // legacy Node/Express backend (not used on Hostinger; Supabase replaces it)
   waTemplate:     "Hi Coach Kishore, I am interested in {program} at Spartacus Martial Arts Academy. Please share fees, timings, and trial class details."
 };
@@ -171,6 +183,26 @@ function boot(){
   /* Lead form (contact page only) */
   const form = $("#leadForm");
   if (form){
+    // Cloudflare Turnstile — only loaded when a site key is configured, so
+    // there is zero third-party cost until you switch it on.
+    if (CONFIG.turnstileSiteKey && $("#turnstile")){
+      window.__tsToken = "";
+      window.__tsRender = function(){
+        if (!window.turnstile) return;
+        window.turnstile.render("#turnstile", {
+          sitekey: CONFIG.turnstileSiteKey,
+          theme: "dark",
+          callback: function(t){ window.__tsToken = t; },
+          "expired-callback": function(){ window.__tsToken = ""; },
+          "error-callback": function(){ window.__tsToken = ""; }
+        });
+      };
+      const ts = document.createElement("script");
+      ts.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=__tsRender&render=explicit";
+      ts.async = true; ts.defer = true;
+      document.head.appendChild(ts);
+    }
+
     // preselect program from ?program=
     const pre = new URLSearchParams(location.search).get("program");
     const psel = $("#program");
@@ -235,6 +267,37 @@ function boot(){
    this key cannot be used to read anyone's leads.
    Returns true on success, false on any failure (caller falls back to WA). */
 async function saveLead(lead){
+  // Honeypot: a human never sees or fills #company. If it has a value this is a
+  // bot — drop it silently and report "success" so the bot learns nothing.
+  // Works with zero configuration, so it protects the form from day one.
+  if (lead && typeof lead.company === "string" && lead.company.trim() !== ""){
+    return true;
+  }
+
+  // Preferred path: the submit-lead Edge Function (validates input, checks the
+  // honeypot + Turnstile token, rate-limits per IP, inserts with service_role).
+  if (CONFIG.leadEndpoint){
+    try {
+      const res = await fetch(CONFIG.leadEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: lead.name, phone: lead.phone, email: lead.email, age: lead.age,
+          location: lead.location, program: lead.program, goal: lead.goal,
+          role: lead.role, time: lead.time, message: lead.message,
+          company: lead.company || "",              // honeypot (bots fill this)
+          turnstile_token: (window.turnstile && window.__tsToken) || lead["cf-turnstile-response"] || ""
+        })
+      });
+      if (res.ok) return true;
+      // 429 = rate limited, 403 = captcha failed. Reset the widget so a real
+      // user can retry; the WhatsApp path still runs either way.
+      if (window.turnstile && typeof window.turnstile.reset === "function") window.turnstile.reset();
+      return false;
+    } catch (err) { return false; }
+  }
+
+  // Legacy path (used until leadEndpoint is configured): direct insert.
   if (!CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey) return false;
   try {
     const res = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,"") + "/rest/v1/leads", {
