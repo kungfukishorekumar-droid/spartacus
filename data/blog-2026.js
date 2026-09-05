@@ -117,6 +117,7 @@
         "We Born to Win — technique and character, trained together.",
         "middle-section")
     ],
+    imagePrompt: "A dignified Indian martial arts coach in his thirties standing with arms folded in an empty training hall at golden hour, calm authority, quiet confidence, a coach's presence rather than a fighter's pose",
     content: `
 <p>People usually meet me in one of three ways. Some meet the <strong>competitor</strong> — the boy from Chennai who kept showing up until he stood on a national Wushu podium. Some meet the <strong>coach</strong> — the person shouting "reset your stance" across a training floor in Perambur. And some meet the <strong>sports psychologist</strong> — the one asking an athlete why their hands go cold the night before a final.</p>
 <p>They are the same person. This page is the honest version of that story, and of why <strong>Spartacus Martial Arts Academy</strong> exists in Chennai.</p>
@@ -232,6 +233,7 @@
         "The best academy is usually the one you can actually reach on a Tuesday evening.",
         "middle-section")
     ],
+    imagePrompt: "The warm lit entrance of a neighbourhood martial arts academy on a Chennai street in the evening, students arriving with training bags",
     content: `
 <p>Search <strong>"martial arts classes near me"</strong> from anywhere in North Chennai and you will get a map full of pins. Some are excellent. Some are a rented hall with a stereo. This guide is about telling the difference — and about the boring logistics that quietly decide whether your child is still training six months from now.</p>
 
@@ -318,6 +320,7 @@
         "Cheap classes get expensive when a child quits in two months.",
         "middle-section")
     ],
+    imagePrompt: "A neatly arranged flat lay of martial arts training essentials on dark wood: folded uniform, coloured belt, hand wraps, gloves and a mouthguard",
     content: `
 <p>Almost every parent asks the fee question within the first two minutes, and there is nothing wrong with that. What I wish more people asked is the second question: <em>what am I actually buying?</em> Two academies can quote the same number and deliver completely different value.</p>
 <p>This guide breaks down the real cost structure of martial arts in Chennai — honestly, including the parts that are usually left out until you have already paid.</p>
@@ -406,6 +409,7 @@
         "Focus starts it. Fire fuels it. Flow performs it. Forge repairs it. Fight proves it.",
         "middle-section")
     ],
+    imagePrompt: "A lone Indian martial artist standing in a deep stance in an empty dark hall, a single shaft of light across the floor, meditative strength",
     content: `
 <p>Every athlete I have ever coached has had a mental training programme. Most of them just did not know it, because it was accidental, invisible and built out of whatever happened to work last season.</p>
 <p>The <strong>Warrior Mind Method</strong> makes it deliberate. Five pillars — <strong>Focus, Fire, Flow, Forge, Fight</strong> — each one a trainable skill with its own drills, its own failure symptoms and its own fix. This is the framework I use at Spartacus Martial Arts Academy with martial artists, school athletes and competitors from other sports.</p>
@@ -477,6 +481,7 @@
       "imagery training athletes", "mental training martial arts", "how to visualise before competition"
     ],
     geoKeywords: ["Chennai", "Perambur", "Tamil Nadu", "India"],
+    imagePrompt: "An Indian athlete sitting cross legged on a training mat with eyes closed and fists relaxed, visualising a technique, quiet and still, empty hall around",
     content: `
 <p>Ask ten athletes whether they visualise and nine will say yes. Watch what they actually do and most are running a highlight reel of themselves winning, from the crowd's point of view, for about forty seconds, twice a year.</p>
 <p>That is not mental rehearsal. That is a nice feeling. Real visualisation is a training method with a structure, and it is one of the most dependable tools I use as a sports psychologist.</p>
@@ -554,6 +559,7 @@
       "concentration for studies", "martial arts and academics", "board exam stress Chennai"
     ],
     geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Kolathur", "Anna Nagar", "Tamil Nadu"],
+    imagePrompt: "An Indian school student in uniform with a school bag pausing at the edge of a training mat, tired but calm, changing gears from study to training",
     content: `
 <p>Every year, somewhere around January, the same message arrives from a dozen parents: <em>"Coach, exams are coming. We will stop for a few months and rejoin after."</em></p>
 <p>I understand the instinct completely. I also disagree with it, and I want to explain why using the actual mechanics of stress rather than a motivational speech.</p>
@@ -627,6 +633,7 @@
       "online mindset coaching India", "learn martial arts at home"
     ],
     geoKeywords: ["Chennai", "Tamil Nadu", "India"],
+    imagePrompt: "An Indian student practising a stance at home in front of a laptop on a low table, coach visible on screen, small clean living space",
     content: `
 <p>I get asked this by two very different people. A parent in Chennai wondering whether an online class is a shortcut, and an athlete in another state who wants mindset coaching from a sports psychologist but cannot travel.</p>
 <p>The honest answer is not "yes" or "no". It is <strong>"yes for some things, absolutely not for others"</strong> — and knowing which is which saves you a lot of money.</p>
@@ -705,6 +712,7 @@
       "wushu Tamil Nadu", "state wushu championship", "national wushu championship"
     ],
     geoKeywords: ["Tamil Nadu", "Chennai", "Perambur", "India"],
+    imagePrompt: "An Indian Wushu athlete performing a Taolu form on a competition carpet under bright arena lights, judges' table blurred in the background",
     content: `
 <p>I have stood on both sides of this. I have competed and medalled at national level, and I now sit as a <strong>State-level Wushu judge</strong> scoring other people's athletes. That double view is useful, because most students lose points for reasons nobody ever explained to them.</p>
 <p>This is the plain-language map of Wushu competition — what the branches are, how the ladder works in Tamil Nadu, and what actually earns points.</p>
@@ -787,6 +795,7 @@
       "martial arts classes for adults Chennai", "is it too late to learn martial arts"
     ],
     geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Anna Nagar", "Tamil Nadu"],
+    imagePrompt: "An Indian man in his late thirties in training clothes catching his breath with hands on knees after a drill, smiling slightly, proud and human",
     content: `
 <p>The sentence I hear most from adults at the door is a question disguised as an apology: <em>"Coach, I'm 38, is it too late?"</em></p>
 <p>No. But the follow-up question matters more, and almost nobody asks it: <em>how should a 38-year-old train differently from an 18-year-old?</em> Because the answer to that is what decides whether you are still training next year or nursing a shoulder.</p>
@@ -875,6 +884,7 @@
       "martial arts for focus in kids", "self control for children", "kids martial arts Chennai"
     ],
     geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Kolathur", "Villivakkam", "Tamil Nadu"],
+    imagePrompt: "An energetic Indian boy holding a still horse stance with total concentration while a coach counts beside him, restless energy channelled into focus",
     content: `
 <p>Some children arrive at the academy having been described, by school and relatives, in the same three words: <em>"He can't sit."</em> The parents are usually tired and slightly apologetic.</p>
 <p>Here is what I tell them. That energy is not a defect that needs suppressing. It is fuel with no steering wheel, and martial arts is unusually good at fitting a steering wheel.</p>
