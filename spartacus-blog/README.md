@@ -130,6 +130,11 @@ This account is on a **Business** shared-hosting plan that already runs Next.js 
 through Hostinger's native Node.js pipeline (Node 22, `app_type: next`), so the blog
 uses the same mechanism rather than a bespoke deploy.
 
+> **Steps 1 and 2 are already done** on this account: the website
+> `blog.spartacusmartialarts.com` exists and resolves, and the Node.js build settings
+> below are stored against it. Steps 3 and 4 still need doing, plus connecting Git
+> (section 6). They are written out here so the setup is reproducible.
+
 1. **hPanel → Domains → Subdomains** → create `blog` under `spartacusmartialarts.com`.
    Hostinger adds the DNS record and the vhost. Note the document root.
 2. **hPanel → Advanced → Node.js** → create an application on that subdomain with
@@ -163,8 +168,12 @@ uses the same mechanism rather than a bespoke deploy.
 ## 6. Deploying
 
 **Hostinger's Git auto-deployment does the deploy.** In hPanel → Node.js → Git,
-connect this repository and the `main` branch. Every push to `main` triggers a build
-using the settings above. This is the same pipeline that already builds
+connect this repository and the branch you want deployed. Every push to that branch
+triggers a build using the settings above.
+
+> The blog currently lives on a feature branch, not `main`. Either merge it to `main`
+> first, or point Hostinger at the feature branch — but do not leave it pointing at a
+> branch you later delete. This is the same pipeline that already builds
 `kishorekumarcoach.com` successfully on this account, which is why it is preferred
 over a hand-rolled SSH deploy.
 
