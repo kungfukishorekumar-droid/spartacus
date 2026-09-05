@@ -91,6 +91,9 @@ jobs:
             package.json
             package-lock.json
             spartacus website.code-workspace
+            image-jobs.json
+            .claude/**
+            **/.claude/**
 
       # ---------- 2. BLOG SUBDOMAIN ----------
       - name: Deploy blog → blog.spartacusmartialarts.com
