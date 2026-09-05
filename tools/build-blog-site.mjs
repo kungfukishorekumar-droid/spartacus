@@ -135,6 +135,13 @@ fs.writeFileSync(path.join(OUT, ".htaccess"), `# ===============================
 # The blog listing IS the front page of this host.
 DirectoryIndex blog.html
 
+# Hostinger drops a "coming soon" default.php into a new subdomain's document
+# root. DirectoryIndex already hides it, but deny it outright so it can never
+# be reached or indexed at /default.php.
+<FilesMatch "^default\\.php$">
+  Require all denied
+</FilesMatch>
+
 # ---- 1. BLOCK DOTFILES & SOURCE ----
 <FilesMatch "(^\\.env|\\.env$|\\.env\\.)">
   Require all denied
