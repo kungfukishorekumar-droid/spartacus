@@ -84,6 +84,7 @@
       seoDescription: "Looking for martial arts classes in Chennai for kids or beginners? A parent-friendly guide to choosing the right academy, martial art, and starting safely at Spartacus Martial Arts Academy.",
       seoKeywords: ["martial arts classes in Chennai","kids martial arts Chennai","beginner martial arts","martial arts academy in Chennai","best martial arts classes near me"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Anna Nagar","Kolathur","Tamil Nadu"],
+      imagePrompt: "A mixed group of Indian children and adult beginners in clean white martial arts uniforms standing in a disciplined line, bowing to their coach at the start of class in a premium academy hall",
       content: `
 <p>If you are a parent in <strong>Chennai</strong> looking for the right activity for your child — or a beginner who wants to start martial arts yourself — you have probably searched for <strong>"martial arts classes in Chennai"</strong> and found dozens of options. Wushu, Kungfu, Karate, Boxing, Kickboxing, Judo… it can feel overwhelming.</p>
 <p>This guide keeps it simple and honest. As a coach who has trained hundreds of kids, students and adults, I will explain why martial arts is so good for beginners, which art to start with, how to pick a genuinely good academy, and how to begin safely — all with a focus on <strong>discipline, confidence, self-defence and fitness</strong>.</p>
@@ -170,6 +171,7 @@
       seoDescription: "Discover how martial arts builds discipline, confidence, focus and respect in children. A parent's guide from Spartacus Martial Arts Academy, Chennai.",
       seoKeywords: ["martial arts for kids","martial arts for discipline","martial arts for confidence","kids martial arts Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Tamil Nadu"],
+      imagePrompt: "An Indian boy of about nine in a martial arts uniform standing tall in a confident ready stance, chin up and calm, other children blurred behind him",
       content: `
 <p>Every parent wants a confident, disciplined, focused child. <strong>Martial arts</strong> is one of the most reliable ways to build those traits — because they're trained, not just talked about.</p>
 <h2>Discipline becomes a daily habit</h2>
@@ -200,6 +202,7 @@
       seoDescription: "A complete beginner guide to Wushu classes in Chennai — what Wushu is, what training involves, and how to start under National Wushu Medalist Kishore Kumar.",
       seoKeywords: ["wushu classes in Chennai","wushu training for beginners","wushu academy in Chennai","martial arts classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Anna Nagar","Tamil Nadu"],
+      imagePrompt: "A young Indian Wushu athlete mid-air in a dynamic jumping kick, uniform sash flowing, captured at peak height with motion energy",
       content: `
 <p><strong>Wushu</strong> is a dynamic Chinese martial art known for agility, speed, flexibility and beautiful, powerful movement. If you want <strong>Wushu classes in Chennai</strong>, here's what to expect.</p>
 <h2>What is Wushu?</h2>
@@ -230,6 +233,7 @@
       seoDescription: "Kungfu vs Karate vs Wushu compared for beginners — origins, style, benefits and how to choose the right martial art in Chennai.",
       seoKeywords: ["kungfu vs karate vs wushu","which martial art is best","martial arts for beginners","karate classes in Chennai"],
       geoKeywords: ["Chennai","Tamil Nadu"],
+      imagePrompt: "Three Indian martial artists standing side by side in three distinct stances, one Kung Fu, one Karate, one Wushu, evenly lit and equally powerful",
       content: `
 <p>Three popular martial arts, three different feels. Here's a simple comparison to help you or your child choose.</p>
 <h2>Karate</h2>
@@ -265,6 +269,7 @@
       seoDescription: "What every student and parent should know about self defence classes in Chennai — practical skills, safety awareness, and building confidence at Spartacus Martial Arts Academy.",
       seoKeywords: ["self defence classes in Chennai","women self defence training","student self defence","self defence classes near me"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Villivakkam","Anna Nagar","Tamil Nadu"],
+      imagePrompt: "An Indian college student practising a wrist-release self-defence technique with a coach in protective pads, focused and controlled, safe training environment",
       content: `
 <p><strong>Self-defence</strong> isn't about fighting — it's about awareness, avoiding danger, and being able to protect yourself if needed. That confidence changes how students carry themselves.</p>
 <h2>What good self-defence training includes</h2>
@@ -297,6 +302,7 @@
       seoDescription: "See how martial arts training improves focus, fitness, strength and confidence for kids, students and adults — from Spartacus Martial Arts Academy, Chennai.",
       seoKeywords: ["martial arts fitness","martial arts for confidence","martial arts for discipline","martial arts for focus"],
       geoKeywords: ["Chennai","Tamil Nadu"],
+      imagePrompt: "A close portrait of an Indian teenager in martial arts uniform with intense focused eyes, sweat on the brow, breathing steadily between drills",
       content: `
 <p>Few activities train the <strong>body and mind together</strong> like martial arts. Here's what regular training does for you.</p>
 <h2>Fitness &amp; strength</h2>
@@ -327,6 +333,7 @@
       seoDescription: "What is the best age for kids to start martial arts? A simple parent guide by age group, from Spartacus Martial Arts Academy, Chennai.",
       seoKeywords: ["best age to start martial arts","martial arts for kids","kids martial arts Chennai"],
       geoKeywords: ["Chennai","Tamil Nadu"],
+      imagePrompt: "A very young Indian child, around six, in an oversized martial arts uniform learning a basic stance while a patient coach kneels to correct the foot position",
       content: `
 <p>One of the most common questions parents ask: <strong>"What's the best age for my child to start martial arts?"</strong> Here's a simple answer.</p>
 <h2>Ages 4–6: play &amp; basics</h2>
@@ -357,6 +364,7 @@
       seoDescription: "How does sports psychology help athletes? Learn focus, pressure control, confidence and mistake recovery with athlete-mindset coaching by Kishore Kumar, Chennai.",
       seoKeywords: ["sports psychology for athletes","athlete mindset coaching","competition mindset","mental toughness"],
       geoKeywords: ["Chennai","Tamil Nadu"],
+      imagePrompt: "An Indian athlete sitting alone on a bench beside the competition mat, eyes closed, hands relaxed, mentally preparing while the arena blurs behind",
       content: `
 <p>Two athletes with equal skill step onto the mat. One freezes under pressure; the other rises. The difference is usually <strong>mindset</strong> — and mindset can be trained.</p>
 <h2>Focus &amp; attention control</h2>
@@ -387,6 +395,7 @@
       seoDescription: "Why martial arts and self defence are ideal for girls and women — confidence, practical safety, fitness and strength. Train at Spartacus Martial Arts Academy, Chennai.",
       seoKeywords: ["martial arts for women","women self defence training","self defence for girls","martial arts for girls Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Anna Nagar","Tamil Nadu"],
+      imagePrompt: "A confident young Indian woman in training gear throwing a strong palm strike into a focus pad held by a coach, determined and empowered",
       content: `
 <p>Martial arts is one of the most empowering things a girl or woman can start — it builds <strong>confidence, safety skills, fitness and strength</strong> together.</p>
 <h2>Real confidence</h2>
@@ -417,6 +426,7 @@
       seoDescription: "A practical checklist to choose the best martial arts academy near you in Chennai — coach credentials, safety, structure, age groups and results. From Spartacus Academy.",
       seoKeywords: ["best martial arts academy near me","martial arts academy in Chennai","martial arts near Perambur","martial arts near Ayanavaram"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Oteri","Villivakkam","Anna Nagar","Kolathur","Kilpauk","Purasawalkam","Tamil Nadu"],
+      imagePrompt: "A parent and child standing at the doorway of a martial arts academy, watching a class in progress, warm light spilling from the training hall",
       content: `
 <p>Searching <strong>"martial arts academy near me"</strong>? Use this quick checklist so you pick the right one the first time.</p>
 <h2>1. Coach credentials</h2>
@@ -449,6 +459,7 @@
       seoDescription: "A beginner's guide to Karate training in Chennai — what Karate is, the belt system, benefits, and how to start at Spartacus Martial Arts Academy.",
       seoKeywords: ["karate classes in Chennai","karate training for kids","karate for beginners","martial arts classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Anna Nagar","Tamil Nadu"],
+      imagePrompt: "An Indian karate student in a crisp white gi with a coloured belt executing a sharp middle block, clean form, disciplined posture",
       content: `
 <p><strong>Karate</strong> is one of the most popular martial arts in the world — and for good reason. It is structured, disciplined and beginner-friendly, which makes it ideal for kids and adults starting out in Chennai.</p>
 <h2>What is Karate?</h2>
@@ -479,6 +490,7 @@
       seoDescription: "Boxing classes in Chennai for beginners — fitness, confidence, stamina and self-defence. Start boxing training at Spartacus Martial Arts Academy.",
       seoKeywords: ["boxing classes in Chennai","boxing training for beginners","boxing for fitness","martial arts classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Tamil Nadu"],
+      imagePrompt: "An Indian adult in boxing gloves and hand wraps working a heavy bag, sweat flying, powerful footwork, gym atmosphere",
       content: `
 <p><strong>Boxing</strong> is a fantastic way to get fit, build confidence and learn real striking skills. It is beginner-friendly and one of the best full-body workouts you can do.</p>
 <h2>What does boxing training involve?</h2>
@@ -507,6 +519,7 @@
       seoDescription: "Kickboxing classes in Chennai for beginners — fitness, stamina, fat loss and self-defence. Train kickboxing at Spartacus Martial Arts Academy.",
       seoKeywords: ["kickboxing classes in Chennai","kickboxing for fitness","kickboxing for beginners","self defence classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Villivakkam","Tamil Nadu"],
+      imagePrompt: "An Indian woman in kickboxing gear landing a roundhouse kick on a thai pad held by a coach, high energy, strong core rotation",
       content: `
 <p><strong>Kickboxing</strong> combines punches and kicks into a high-energy workout that builds fitness, stamina and self-defence — one of the most popular choices for beginners in Chennai.</p>
 <h2>Why kickboxing?</h2>
@@ -535,6 +548,7 @@
       seoDescription: "A beginner's guide to Muay Thai training in Chennai — techniques, benefits and how to start safely at Spartacus Martial Arts Academy.",
       seoKeywords: ["muay thai training in Chennai","muay thai for beginners","martial arts classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Tamil Nadu"],
+      imagePrompt: "An Indian Muay Thai practitioner in shorts and hand wraps throwing a knee strike into a pad, clinch position, intense conditioning session",
       content: `
 <p><strong>Muay Thai</strong>, the "art of eight limbs", uses punches, kicks, elbows and knees. It is a powerful striking art and one of the most effective conditioning workouts in the world.</p>
 <h2>What to expect in training</h2>
@@ -563,6 +577,7 @@
       seoDescription: "A beginner's guide to Judo training in Chennai — throws, balance, body control and safe falling. Start Judo at Spartacus Martial Arts Academy.",
       seoKeywords: ["judo classes in Chennai","judo training for beginners","judo for kids","martial arts classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Anna Nagar","Tamil Nadu"],
+      imagePrompt: "Two Indian judo students gripping each other's gi in a throw setup on a tatami mat, balanced and controlled, breakfall technique",
       content: `
 <p><strong>Judo</strong> is a grappling martial art built on throws, grips and control. It teaches balance, body control and safe falling — making it great for kids, students and beginners.</p>
 <h2>What is Judo?</h2>

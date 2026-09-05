@@ -1,0 +1,117 @@
+# ============================================================
+# Spartacus — deploy to Hostinger on every push
+# ------------------------------------------------------------
+# Deploys TWO targets from this one repository:
+#   1. the main site  → spartacusmartialarts.com
+#   2. the blog build → blog.spartacusmartialarts.com
+#
+# The blog's document root is public_html/blog, which sits INSIDE the main
+# site's document root. The main-site job therefore excludes blog/** so a
+# main-site deploy can never wipe the blog.
+#
+# One-time setup — GitHub → Settings → Secrets and variables → Actions:
+#   HOSTINGER_FTP_SERVER    145.79.25.192
+#   HOSTINGER_FTP_USERNAME  u824263812
+#   HOSTINGER_FTP_PASSWORD  (your hosting FTP password, from hPanel → Files → FTP Accounts)
+# ============================================================
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:      # lets you deploy manually from any branch
+
+concurrency:
+  group: hostinger-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Fail early if the FTP secrets are missing
+        env:
+          SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+        run: |
+          missing=""
+          [ -z "$SERVER" ]   && missing="$missing HOSTINGER_FTP_SERVER"
+          [ -z "$USERNAME" ] && missing="$missing HOSTINGER_FTP_USERNAME"
+          [ -z "$PASSWORD" ] && missing="$missing HOSTINGER_FTP_PASSWORD"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secret(s):$missing"
+            echo "Add them under Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "All FTP secrets present."
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build the blog bundle
+        run: |
+          node tools/build-blog-site.mjs
+          test -f dist-blog/blog.html
+          test -f dist-blog/.htaccess
+          test -f dist-blog/sitemap.xml
+          echo "Bundle contains $(find dist-blog -type f | wc -l) files."
+
+      # ---------- 1. MAIN SITE ----------
+      - name: Deploy main site → spartacusmartialarts.com
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: ./
+          server-dir: /domains/spartacusmartialarts.com/public_html/
+          # never let a main-site deploy touch the blog subdomain's document root
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            blog/**
+            dist-blog/**
+            tools/**
+            supabase/**
+            backend/**
+            .github/**
+            **/*.md
+            **/*.sql
+            dist-blog.zip
+            server.js
+            package.json
+            package-lock.json
+            spartacus website.code-workspace
+
+      # ---------- 2. BLOG SUBDOMAIN ----------
+      - name: Deploy blog → blog.spartacusmartialarts.com
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ftp
+          local-dir: ./dist-blog/
+          server-dir: /domains/spartacusmartialarts.com/public_html/blog/
+
+      - name: Summary
+        run: |
+          {
+            echo "### Deployed"
+            echo ""
+            echo "| Target | URL |"
+            echo "|---|---|"
+            echo "| Main site | https://spartacusmartialarts.com |"
+            echo "| Blog | https://blog.spartacusmartialarts.com |"
+            echo ""
+            echo "Blog articles published: $(grep -c '<url>' dist-blog/sitemap.xml)"
+          } >> "$GITHUB_STEP_SUMMARY"
