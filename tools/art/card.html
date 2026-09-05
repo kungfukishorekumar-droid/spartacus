@@ -1,0 +1,127 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:#111}canvas{display:block}</style>
+<canvas id="c" width="1200" height="675"></canvas>
+<script src="/tools/art/figure.js"></script>
+<script>
+const W=1200,H=675,GOLD="#f6d77a",RED="#e11d2a";
+let LOGO=null;
+
+async function boot(){
+  for(const f of [new FontFace("Anton","url(/fonts/anton-400.woff2)",{weight:"400"}),
+                  new FontFace("Oswald","url(/fonts/oswald.woff2)",{weight:"200 700"})])
+    document.fonts.add(await f.load());
+  await document.fonts.ready;
+  LOGO=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src="/assets/logo.webp";});
+  window.__ready=true;
+}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function glow(ctx,x,y,r,c){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+
+function fitLines(ctx,text,font,maxW,maxLines,from,to){
+  for(let s=from;s>=to;s-=2){
+    ctx.font=font(s);
+    const words=text.split(/\s+/),lines=[];let cur="";
+    for(const w of words){const t=cur?cur+" "+w:w;
+      if(ctx.measureText(t).width<=maxW||!cur)cur=t;else{lines.push(cur);cur=w;}}
+    if(cur)lines.push(cur);
+    if(lines.length<=maxLines&&lines.every(l=>ctx.measureText(l).width<=maxW))return{lines,size:s};
+  }
+  ctx.font=font(to);return{lines:[text],size:to};
+}
+
+/* deterministic per-slug variation so 125 cards are not identical */
+function hash(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h;}
+
+function background(ctx,warm){
+  ctx.fillStyle="#0a0a0b";ctx.fillRect(0,0,W,H);
+  if(warm){ glow(ctx,900,120,760,"rgba(233,196,90,.20)"); glow(ctx,180,660,660,"rgba(225,29,42,.20)"); }
+  else    { glow(ctx,900,80,780,"rgba(225,29,42,.26)");  glow(ctx,120,700,640,"rgba(233,196,90,.14)"); }
+  glow(ctx,-40,180,480,"rgba(45,166,224,.06)");
+  // floor line: grounds the figure instead of leaving it floating
+  const fl=ctx.createLinearGradient(560,0,1200,0);
+  fl.addColorStop(0,"rgba(233,196,90,0)");fl.addColorStop(.45,"rgba(233,196,90,.35)");fl.addColorStop(1,"rgba(233,196,90,0)");
+  ctx.fillStyle=fl;ctx.fillRect(560,606,640,1.6);
+  const v=ctx.createLinearGradient(0,0,0,H);
+  v.addColorStop(0,"rgba(0,0,0,.32)");v.addColorStop(.55,"rgba(0,0,0,0)");v.addColorStop(1,"rgba(0,0,0,.5)");
+  ctx.fillStyle=v;ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="rgba(233,196,90,.26)";ctx.lineWidth=1.5;rr(ctx,22.5,22.5,W-45,H-45,10);ctx.stroke();
+}
+
+/* sweeping motion arcs behind a striking figure */
+function motion(ctx,cx,cy,r,a0,a1){
+  for(let i=0;i<3;i++){
+    ctx.beginPath();
+    ctx.arc(cx,cy,r-i*22,a0,a1);
+    ctx.strokeStyle=`rgba(246,215,122,${.20-i*.05})`;
+    ctx.lineWidth=6-i*1.5;ctx.lineCap="round";ctx.stroke();
+  }
+}
+
+function pill(ctx,text,x,y){
+  ctx.font="700 19px Oswald, sans-serif";ctx.letterSpacing="3px";
+  const w=ctx.measureText(text.toUpperCase()).width+40,h=42;
+  ctx.fillStyle="rgba(233,196,90,.09)";ctx.strokeStyle="rgba(233,196,90,.42)";ctx.lineWidth=1.4;
+  rr(ctx,x,y,w,h,21);ctx.fill();ctx.stroke();
+  ctx.fillStyle=GOLD;ctx.textBaseline="middle";ctx.fillText(text.toUpperCase(),x+20,y+h/2+1);
+  ctx.letterSpacing="0px";ctx.textBaseline="alphabetic";
+}
+
+window.render=function(o){
+  const c=document.getElementById("c"),ctx=c.getContext("2d");
+  const h=hash(o.slug||o.title);
+  ctx.clearRect(0,0,W,H);
+  background(ctx,h%2===0);
+
+  // --- spotlight + figure on the right, standing ON the floor line ---
+  const FLOOR=606, fsize=430;
+  const sc=fsize/100;
+  const fy=FLOOR-poseMaxY(o.pose)*sc;                 // feet meet the floor
+  const [minX,maxX]=poseSpanX(o.pose);
+  const fx=895-((minX+maxX)/2)*sc;                    // centre the figure at x=895
+  const cx=fx+((minX+maxX)/2)*sc, cy=fy+fsize*0.45;
+  glow(ctx,cx,cy,320,"rgba(225,29,42,.30)");
+  // contact shadow so the figure sits in the scene rather than on top of it
+  ctx.save();ctx.translate(cx,FLOOR);ctx.scale(1,0.16);
+  const sh=ctx.createRadialGradient(0,0,0,0,0,150);
+  sh.addColorStop(0,"rgba(0,0,0,.75)");sh.addColorStop(1,"rgba(0,0,0,0)");
+  ctx.fillStyle=sh;ctx.beginPath();ctx.arc(0,0,150,0,Math.PI*2);ctx.fill();ctx.restore();
+  // Mirror horizontally so the figure faces the headline rather than the edge.
+  ctx.save();ctx.translate(2*cx,0);ctx.scale(-1,1);
+  if(o.motion) motion(ctx,cx,cy+30,238,-Math.PI*0.66,-Math.PI*0.04);
+  drawFigure(ctx,o.pose,fx,fy,fsize,{});
+  ctx.restore();
+
+  // --- text on the left ---
+  ctx.textAlign="left";
+  pill(ctx,o.category,74,74);
+
+  const f=s=>`400 ${s}px Anton, Impact, sans-serif`;
+  const {lines,size}=fitLines(ctx,(o.title||"").toUpperCase(),f,560,4,58,30);
+  const lh=size*1.09;
+  let y=330-((lines.length-1)*lh)/2;
+  ctx.font=f(size);ctx.letterSpacing="0.5px";
+  for(const l of lines){
+    ctx.fillStyle="#fff";
+    ctx.shadowColor="rgba(0,0,0,.6)";ctx.shadowBlur=16;ctx.shadowOffsetY=3;
+    ctx.fillText(l,74,y);ctx.shadowBlur=0;ctx.shadowOffsetY=0;y+=lh;
+  }
+  ctx.letterSpacing="0px";
+
+  const ry=y-lh+size*0.42;
+  const rg=ctx.createLinearGradient(74,0,264,0);rg.addColorStop(0,GOLD);rg.addColorStop(1,RED);
+  ctx.fillStyle=rg;rr(ctx,74,ry,190,6,3);ctx.fill();
+
+  // --- credential strip + logo ---
+  ctx.font="600 17px Oswald, sans-serif";ctx.letterSpacing="2.4px";
+  ctx.fillStyle="rgba(255,255,255,.52)";
+  ctx.fillText("COACH KISHORE KUMAR · NATIONAL WUSHU MEDALIST · SPORTS PSYCHOLOGIST".toUpperCase(),74,H-74);
+  ctx.letterSpacing="0px";
+
+  if(LOGO){const lw=86,lh2=LOGO.height*(lw/LOGO.width);
+    ctx.globalAlpha=.92;ctx.drawImage(LOGO,W-74-lw,58,lw,lh2);ctx.globalAlpha=1;}
+
+  return c.toDataURL("image/webp",o.q||0.82);
+};
+boot();
+</script>
