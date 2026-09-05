@@ -36,6 +36,11 @@ const AI_AND_SEARCH_CRAWLERS = [
   'WhatsApp',
 ];
 
+// Generated per request rather than frozen at build, so robots.txt and the
+// sitemap URL it advertises are always right even if the build environment was
+// missing SITE_URL. It is a few lines of text — the cost is nil.
+export const dynamic = 'force-dynamic';
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [

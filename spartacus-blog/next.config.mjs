@@ -5,7 +5,7 @@
  */
 const supabaseHost = (() => {
   try {
-    return new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').hostname;
+    return new URL(process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').hostname;
   } catch {
     return null;
   }

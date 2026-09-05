@@ -17,7 +17,6 @@
     "import:legacy": "node scripts/import-legacy-posts.mjs"
   },
   "dependencies": {
-    "@supabase/ssr": "0.12.6",
     "@supabase/supabase-js": "2.115.0",
     "marked": "18.0.11",
     "next": "15.5.25",

@@ -75,9 +75,15 @@ Useful scripts:
    - `supabase/migrations/0002_seed.sql` — the author record and the four pillar categories
    Both are idempotent, so re-running them is safe.
 3. **Project Settings → API**, copy into `.env.local`:
-   - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
-   - `anon` `public` key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Project URL → `SUPABASE_URL`
+   - `anon` `public` key → `SUPABASE_ANON_KEY`
    - `service_role` key → `SUPABASE_SERVICE_ROLE_KEY`
+
+   These are deliberately *not* `NEXT_PUBLIC_*` names. Next inlines every
+   `NEXT_PUBLIC_` reference at build time — in the server bundle too — so a host that
+   builds without them set would bake in `undefined` and ignore the runtime values
+   forever. Nothing client-side touches Supabase, so plain names are safer. The
+   `NEXT_PUBLIC_` spellings still work as fallbacks.
 
 **On the two keys:** the anon key is safe in the browser — RLS restricts it to *published* posts and
 nothing else. The service role key bypasses RLS entirely and must only ever live in server-side
@@ -120,57 +126,71 @@ Image generation failing never blocks a publish; it records a warning and the po
 
 ## 5. Hostinger — one-time setup
 
-Do these once, in this order:
+This account is on a **Business** shared-hosting plan that already runs Next.js apps
+through Hostinger's native Node.js pipeline (Node 22, `app_type: next`), so the blog
+uses the same mechanism rather than a bespoke deploy.
 
 1. **hPanel → Domains → Subdomains** → create `blog` under `spartacusmartialarts.com`.
-   Note the document root it creates.
-2. **hPanel → Advanced → Node.js** → create an application on that subdomain:
-   - Node version **20 or 22**
-   - Application root: the subdomain's directory (this is `HOSTINGER_APP_PATH`)
-   - Startup file: `current/server.js`
-   - Start command: `npm start`
-3. **Environment variables** on that Node.js app — add every runtime key:
-   `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
-   `SUPABASE_SERVICE_ROLE_KEY`, `HIGGSFIELD_API_KEY`, `ADMIN_PASSWORD_HASH`,
-   `ADMIN_SESSION_SECRET`, and `NODE_ENV=production`.
-4. **hPanel → Advanced → SSH Access** → enable SSH, note the host, port (usually 65002) and
-   username. Add the public half of a deploy key under **SSH Keys**.
-5. **SSL** → issue a certificate for `blog.spartacusmartialarts.com`.
+   Hostinger adds the DNS record and the vhost. Note the document root.
+2. **hPanel → Advanced → Node.js** → create an application on that subdomain with
+   exactly these settings (they mirror the working Next.js apps already on this plan):
+
+   | Setting | Value |
+   |---|---|
+   | Node.js version | `22` |
+   | Framework / app type | `next` |
+   | Package manager | `npm` |
+   | Root directory | `spartacus-blog` |
+   | Build script | `build` |
+   | Output directory | `.next` |
+   | Entry file | *(leave empty — Next apps do not need one)* |
+
+   **Root directory matters:** this repository holds the static main site at its root
+   and the blog in `spartacus-blog/`. Pointing at the repository root will make the
+   build fail with "no package.json".
+3. **Environment variables** on that Node.js app — add every key from `.env.example`:
+   `SITE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+   `HIGGSFIELD_API_KEY`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, and
+   `NODE_ENV=production`.
+
+   Set these **before** the first build. `SITE_URL` in particular is read while the
+   homepage, `sitemap.xml` and `llms.txt` are prerendered; if it is missing the build
+   log prints a warning and the site ships canonical URLs for the wrong domain.
+4. **SSL** → issue a certificate for `blog.spartacusmartialarts.com`.
 
 ---
 
-## 6. GitHub → Hostinger deploy
+## 6. Deploying
 
-The workflow lives at `.github/workflows/deploy-blog.yml` (repository root, not this folder) and
-runs on every push to `main` that touches `spartacus-blog/**`.
+**Hostinger's Git auto-deployment does the deploy.** In hPanel → Node.js → Git,
+connect this repository and the `main` branch. Every push to `main` triggers a build
+using the settings above. This is the same pipeline that already builds
+`kishorekumarcoach.com` successfully on this account, which is why it is preferred
+over a hand-rolled SSH deploy.
 
-It typechecks, lints, builds a standalone bundle, uploads it to a timestamped release directory,
-flips a `current` symlink, restarts the app, keeps the last five releases, and smoke-checks
-`robots.txt` afterwards.
+**GitHub Actions is the safety net, not the deploy.** Hostinger gives no feedback
+until after a push has landed, so `.github/workflows/blog-ci.yml` (at the repository
+root) runs on every push and pull request touching `spartacus-blog/**` and:
 
-Add these repository secrets (**Settings → Secrets and variables → Actions**):
+- typechecks and lints
+- builds with Node 22, matching the host
+- boots the built app and asserts: homepage, `robots.txt`, `llms.txt`, `sitemap.xml`
+  and `/about-kishore` return 200; an unknown slug returns 404; `/admin` redirects
+  rather than rendering; unauthenticated `POST /api/publish` returns 401; and
+  `robots.txt` still allows GPTBot, Google-Extended, ClaudeBot, PerplexityBot, CCBot
+  and Applebot-Extended
 
-| Secret | Value |
-|---|---|
-| `HOSTINGER_SSH_HOST` | Server IP from hPanel |
-| `HOSTINGER_SSH_PORT` | Usually `65002` |
-| `HOSTINGER_SSH_USER` | e.g. `u123456789` |
-| `HOSTINGER_SSH_KEY` | The **private** deploy key |
-| `HOSTINGER_APP_PATH` | Absolute path of the Node.js app root |
-| `NEXT_PUBLIC_SITE_URL` | `https://blog.spartacusmartialarts.com` |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key |
+It needs **no secrets** — the blog reads every credential at runtime from the
+Hostinger app's environment. Optionally set a repository *variable* (not secret)
+`SITE_URL` so CI builds with the production origin.
 
-The last two are needed at *build* time because Next inlines `NEXT_PUBLIC_*` into the client bundle.
-The secret keys (service role, Higgsfield, admin hash) are runtime-only and deliberately stay out of
-CI — they live only in the Hostinger app's environment.
+If a build fails, hPanel → Node.js → Builds shows the logs; the usual causes are a
+wrong root directory or a missing environment variable.
 
-> The restart step tries `pm2` and falls back to touching `tmp/restart.txt`. Adjust that one block
-> to match how your Hostinger plan actually restarts the app.
-
-**Alternative:** Hostinger's API can build a Node.js app from uploaded source instead of SSH
-(`startNode_jsBuild` / `restartNode_jsApplication`). The SSH route is used here because it fails
-loudly and supports instant rollback.
+**Alternatives, if you ever want them:** Hostinger's API can start a build from an
+uploaded archive (`POST .../node-js/builds` with `source_type: archive`), and the
+app can equally be deployed over SSH with rsync. Neither is needed while Git
+auto-deployment works.
 
 ---
 
@@ -228,7 +248,9 @@ After importing, run `npx tsx scripts/generate-images.ts` to give them brand ima
 1. **Google Search Console** — add `blog.spartacusmartialarts.com` as its own property. Subdomains
    need separate verification from the main domain. Submit `/sitemap.xml`.
 2. **Bing Webmaster Tools** — same, and it feeds ChatGPT's search index.
-3. Check `/robots.txt` and `/llms.txt` load on the live domain.
+3. Check `/robots.txt` and `/llms.txt` load on the live domain, and that the URLs
+   inside them say `blog.spartacusmartialarts.com` — if they say something else,
+   `SITE_URL` was missing from the build environment.
 4. Validate one live post in Google's Rich Results Test — it should report `BlogPosting`,
    `FAQPage`, `BreadcrumbList` and `Person`.
 5. **Quarterly:** re-check the top 5 posts, update them, and let the `updated_at` trigger refresh
@@ -241,7 +263,7 @@ After importing, run `npx tsx scripts/generate-images.ts` to give them brand ima
 Google treats `blog.spartacusmartialarts.com` as a related-but-separate property, so authority
 builds slightly slower than it would on `spartacusmartialarts.com/blog`. The subdomain was the
 explicit choice here and everything is built for it. If ranking speed later matters more than the
-separate-site feel, moving to a subfolder means changing `NEXT_PUBLIC_SITE_URL`, pointing a reverse
+separate-site feel, moving to a subfolder means changing `SITE_URL`, pointing a reverse
 proxy at `/blog`, and adding redirects — the application code does not change.
 
 ---

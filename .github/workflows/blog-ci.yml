@@ -1,0 +1,130 @@
+# ============================================================
+# CI for spartacus-blog/.
+#
+# Deployment itself is handled by Hostinger's native Git auto-deployment
+# (hPanel → Node.js app → Git), which already builds Next.js apps successfully
+# on this account. Hostinger gives no feedback until after a push has landed,
+# so this workflow is the safety net: it typechecks, lints, builds and boots
+# the app on every push and pull request, so a broken build is caught here
+# rather than on the live subdomain.
+#
+# Repository variable (Settings → Secrets and variables → Actions → Variables):
+#   SITE_URL   https://blog.spartacusmartialarts.com
+#
+# No secrets are needed. The blog reads Supabase and Higgsfield credentials at
+# RUNTIME from the Hostinger app's environment variables, so CI never handles
+# them. SITE_URL is not a secret but must match production: statically
+# prerendered routes freeze it into the build.
+# ============================================================
+name: Blog CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'spartacus-blog/**'
+      - '.github/workflows/blog-ci.yml'
+  pull_request:
+    paths:
+      - 'spartacus-blog/**'
+      - '.github/workflows/blog-ci.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: blog-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: spartacus-blog
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node 22 matches the Node.js version configured on the Hostinger app,
+      # so CI fails on the same things production would.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: spartacus-blog/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+          SITE_URL: ${{ vars.SITE_URL || 'https://blog.spartacusmartialarts.com' }}
+        run: npm run build
+
+      # Boot the built app and check the pages that must never break. This is
+      # what catches a regression the type checker cannot see — a crawler file
+      # that stops rendering, or an admin route that stops being protected.
+      - name: Boot and smoke-test
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://blog.spartacusmartialarts.com' }}
+          PORT: '3000'
+        run: |
+          set -euo pipefail
+          npm start &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+
+          for attempt in $(seq 1 30); do
+            if curl -fsS -o /dev/null http://localhost:3000/robots.txt; then break; fi
+            if [ "$attempt" = "30" ]; then echo "Server never came up." >&2; exit 1; fi
+            sleep 2
+          done
+
+          check() {
+            local path="$1" expected="$2"
+            local code
+            code=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000$path")
+            if [ "$code" != "$expected" ]; then
+              echo "FAIL $path — expected $expected, got $code" >&2
+              exit 1
+            fi
+            echo "ok   $path -> $code"
+          }
+
+          check /            200
+          check /robots.txt  200
+          check /llms.txt    200
+          check /sitemap.xml 200
+          check /about-kishore 200
+          check /no-such-post-should-404 404
+          # /admin must redirect to the login page, never render signed-out.
+          check /admin       307
+
+          # An unauthenticated publish call must be rejected.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST \
+            -H 'Content-Type: application/json' -d '{}' \
+            http://localhost:3000/api/publish)
+          if [ "$code" != "401" ]; then
+            echo "FAIL /api/publish is not rejecting unauthenticated calls (got $code)" >&2
+            exit 1
+          fi
+          echo "ok   /api/publish rejects unauthenticated -> 401"
+
+          # The AI-crawler allow-list is the whole point of the build; if a
+          # refactor drops one of these, fail here rather than lose the traffic.
+          robots=$(curl -s http://localhost:3000/robots.txt)
+          for bot in GPTBot Google-Extended ClaudeBot PerplexityBot CCBot Applebot-Extended; do
+            if ! grep -q "^User-Agent: $bot$" <<<"$robots"; then
+              echo "FAIL robots.txt no longer allows $bot" >&2
+              exit 1
+            fi
+            echo "ok   robots.txt allows $bot"
+          done

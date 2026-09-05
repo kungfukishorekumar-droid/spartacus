@@ -13,6 +13,20 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
  * null client as "no content yet" rather than crashing.
  */
 
+/**
+ * Read the project URL at RUNTIME.
+ *
+ * Deliberately NOT a NEXT_PUBLIC_ name: Next inlines every `NEXT_PUBLIC_*`
+ * reference at build time — in the server bundle too — so a host that builds
+ * without the variable set would bake in `undefined` and silently ignore the
+ * runtime value forever. Nothing client-side touches Supabase, so the plain
+ * name is both safer and simpler. The NEXT_PUBLIC_ fallbacks stay for anyone
+ * who already set them.
+ */
+function supabaseUrl(): string | undefined {
+  return process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+}
+
 let cachedRead: SupabaseClient | null = null;
 let cachedAdmin: SupabaseClient | null = null;
 let warnedRead = false;
@@ -20,12 +34,12 @@ let warnedAdmin = false;
 
 export function readClient(): SupabaseClient | null {
   if (cachedRead) return cachedRead;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.SUPABASE_ANON_KEY;
+  const url = supabaseUrl();
+  const key = process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) {
     if (!warnedRead) {
       warnedRead = true;
-      console.warn('[supabase] NEXT_PUBLIC_SUPABASE_URL / ANON_KEY missing — serving empty content.');
+      console.warn('[supabase] SUPABASE_URL / SUPABASE_ANON_KEY missing — serving empty content.');
     }
     return null;
   }
@@ -35,7 +49,7 @@ export function readClient(): SupabaseClient | null {
 
 export function adminClient(): SupabaseClient | null {
   if (cachedAdmin) return cachedAdmin;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
+  const url = supabaseUrl();
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) {
     if (!warnedAdmin) {
@@ -52,7 +66,7 @@ export function requireAdminClient(): SupabaseClient {
   const client = adminClient();
   if (!client) {
     throw new Error(
-      'Supabase admin client is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.',
+      'Supabase admin client is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.',
     );
   }
   return client;
