@@ -16,7 +16,7 @@ values (
     'Wushu Coach',
     'State-level Wushu Judge'
   ],
-  null,
+  'https://spartacusmartialarts.com/images/authors/kishore-kumar.webp',
   'Sports Psychologist & Martial Arts Coach',
   array[
     'https://www.instagram.com/kishorekumar.coach/',
@@ -26,6 +26,7 @@ values (
 on conflict (slug) do update set
   name        = excluded.name,
   bio         = excluded.bio,
+  avatar_url  = excluded.avatar_url,
   credentials = excluded.credentials,
   job_title   = excluded.job_title,
   same_as     = excluded.same_as;

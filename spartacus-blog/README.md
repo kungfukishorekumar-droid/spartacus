@@ -4,7 +4,7 @@ The blog for **Spartacus Martial Arts Academy** (Chennai) — built so it ranks 
 gets quoted by ChatGPT, Gemini, Perplexity and Claude.
 
 **Stack:** Next.js 15 (App Router, TypeScript) · Tailwind CSS · Supabase (Postgres) as the only
-data store · Higgsfield for image generation · deployed as a long-lived Node process on Hostinger.
+data store · deployed as a long-lived Node process on Hostinger.
 
 No headless CMS. No markdown files on disk. Every post lives in Supabase and is written through
 `/admin`.
@@ -61,7 +61,6 @@ Useful scripts:
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
 | `npm run hash-password -- "your-password"` | Prints `ADMIN_PASSWORD_HASH` + `ADMIN_SESSION_SECRET` |
-| `npx tsx scripts/generate-images.ts [slug]` | Backfill Higgsfield images for posts that have none |
 | `node --env-file=.env.local scripts/import-legacy-posts.mjs` | Dry-run import of the old static blog library |
 
 ---
@@ -108,19 +107,25 @@ variables. The plain password is never stored — only the scrypt hash. Sign in 
 
 ---
 
-## 4. Higgsfield images
+## 4. Images
 
-Set `HIGGSFIELD_API_KEY`. On publish, a post with no images gets a featured image plus two in-body
-images, generated from prompts built out of its own title and category in
-`lib/image-prompts.ts` (black / blood red / gold, Chennai training hall, no text). Alt text is
-generated with each image, so nothing reaches the database without it.
+There is no image API wired into this app. Images are made in whichever generator you
+prefer and their URLs pasted into the post.
 
-> **Confirm this before going live:** `lib/higgsfield.ts` uses the common
-> submit-job-then-poll pattern (`POST /image/generate` → `GET /image/jobs/:id`). Check the exact
-> endpoints and field names against your Higgsfield account's API docs and adjust that one file if
-> they differ — nothing else in the app touches the API shape.
+What the app does provide is **consistency**: the admin editor generates three
+brand-locked prompts for the post being edited — a 16:9 featured hero, an in-body
+training shot, and an in-body psychological counterpart — each with matching
+keyword-relevant alt text, ready to copy. The style guide lives in
+`lib/image-prompts.ts` (black / blood red / gold, Chennai training hall, no text), so
+the whole blog looks like one academy shot it rather than a stock-photo grab bag.
 
-Image generation failing never blocks a publish; it records a warning and the post still goes live.
+Alt text is not optional: publishing is blocked if any image lacks it.
+
+**Where images live.** `spartacusmartialarts.com` and Supabase Storage are allowed as
+image hosts by default. The existing library on the main site
+(`images/blog100/`, `images/blog/`, `images/authors/`) is already served there, so the
+115 imported posts reference it directly with nothing to re-upload. Add other hosts
+with `IMAGE_HOSTS` — read at build time, so set it in the build environment.
 
 ---
 
@@ -155,8 +160,7 @@ uses the same mechanism rather than a bespoke deploy.
    build fail with "no package.json".
 3. **Environment variables** on that Node.js app — add every key from `.env.example`:
    `SITE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `HIGGSFIELD_API_KEY`, `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, and
-   `NODE_ENV=production`.
+   `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, and `NODE_ENV=production`.
 
    Set these **before** the first build. `SITE_URL` in particular is read while the
    homepage, `sitemap.xml` and `llms.txt` are prerendered; if it is missing the build
@@ -215,9 +219,9 @@ auto-deployment works.
 - **FAQs** — 3 to 5, phrased the way people type them.
 - **SEO title / keywords / tags.**
 
-**Publish** runs the gate. Errors block; warnings do not. Publishing also generates the images,
-stamps `published_at`, and revalidates the homepage, the post, the pillar page, `sitemap.xml` and
-`llms.txt`.
+**Publish** runs the gate. Errors block; warnings do not. Publishing stamps
+`published_at` and revalidates the homepage, the post, the pillar page, `sitemap.xml`
+and `llms.txt`.
 
 Posts can also be published programmatically:
 
@@ -248,7 +252,8 @@ Posts land as drafts. `--publish` publishes only the ones that pass the same gat
 at the last dry run, 100 of 115 passed; the other 15 (older posts missing a direct-answer
 paragraph, or with an over-length excerpt) are listed by slug so they can be fixed by hand.
 
-After importing, run `npx tsx scripts/generate-images.ts` to give them brand images.
+Images come across too: each post keeps its existing picture from the main site's
+library, so the imported posts are illustrated immediately with nothing to re-upload.
 
 ---
 
@@ -322,16 +327,14 @@ spartacus-blog/
 ├── lib/
 │   ├── schema.ts                    # every JSON-LD generator
 │   ├── validate.ts                  # the publish gate
-│   ├── publish.ts                   # generate images → validate → go live → revalidate
-│   ├── higgsfield.ts                # image API adapter
-│   ├── image-prompts.ts             # brand style guide as prompt text
+│   ├── publish.ts                   # validate → go live → revalidate
+│   ├── image-prompts.ts             # brand style guide as copyable prompts
 │   ├── queries.ts                   # all reads
 │   ├── supabase.ts                  # anon client + service-role client
 │   ├── markdown.ts                  # markdown → sanitised HTML
 │   └── auth.ts                      # scrypt password + signed session cookie
 ├── scripts/
 │   ├── hash-password.mjs
-│   ├── generate-images.ts
 │   └── import-legacy-posts.mjs
 └── supabase/migrations/
 ```

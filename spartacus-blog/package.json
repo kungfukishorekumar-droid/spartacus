@@ -13,7 +13,6 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "hash-password": "node scripts/hash-password.mjs",
-    "generate-images": "tsx scripts/generate-images.ts",
     "import:legacy": "node scripts/import-legacy-posts.mjs"
   },
   "dependencies": {
@@ -36,7 +35,6 @@
     "eslint-config-next": "15.5.25",
     "postcss": "8.5.28",
     "tailwindcss": "3.4.19",
-    "tsx": "4.23.13",
     "typescript": "5.9.3"
   }
 }

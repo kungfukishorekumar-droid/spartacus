@@ -114,7 +114,10 @@ export function validateForPublish(input: ValidationInput): ValidationResult {
     }
   });
   if (!input.featured_image_url) {
-    warnings.push('No featured image yet — publishing will try to generate one.');
+    warnings.push(
+      'No featured image. Social shares and Google Discover fall back to the default image — ' +
+        'use the prompts in the editor to make one.',
+    );
   }
 
   // --- Internal linking (topic-cluster wiring) ----------------------------

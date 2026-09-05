@@ -161,10 +161,7 @@ export async function savePostAction(_prev: ActionState, formData: FormData): Pr
     }
     return {
       status: 'success',
-      message:
-        result.generatedImages > 0
-          ? `Published. ${result.generatedImages} image(s) generated.`
-          : 'Published.',
+      message: 'Published.',
       warnings: result.warnings,
       postId: postId!,
     };

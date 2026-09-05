@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useActionState, useMemo, useState } from 'react';
+import ImagePromptHelper from '@/components/admin/ImagePromptHelper';
 import { deletePostAction, savePostAction } from '@/app/admin/actions';
 import { initialActionState } from '@/lib/action-state';
 import {
@@ -55,6 +56,15 @@ export default function PostEditor({
   const [images, setImages] = useState<ImageDraft[]>(
     post?.images.map((i) => ({ url: i.url, alt_text: i.alt_text, role: i.role })) ?? [],
   );
+  const [featuredAlt, setFeaturedAlt] = useState(post?.featured_image_alt ?? '');
+  const [categoryId, setCategoryId] = useState(post?.category_id ?? '');
+  const [keywordsRaw, setKeywordsRaw] = useState(post?.seo_keywords?.join(', ') ?? '');
+
+  const categoryName = categories.find((c) => c.id === categoryId)?.name ?? null;
+  const keywords = keywordsRaw
+    .split(',')
+    .map((k) => k.trim())
+    .filter(Boolean);
 
   const effectiveSlug = slugTouched ? slug : slugify(title);
   const excerptLeft = MAX_EXCERPT_LENGTH - excerpt.length;
@@ -153,7 +163,8 @@ export default function PostEditor({
             <select
               id="category_id"
               name="category_id"
-              defaultValue={post?.category_id ?? ''}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
               className={field}
             >
               <option value="">— choose a pillar —</option>
@@ -300,9 +311,22 @@ export default function PostEditor({
           Images
         </h2>
         <p className="mt-1 text-xs text-ash/70">
-          Leave empty and publishing will generate a featured image plus two in-body images with
-          Higgsfield. Alt text is mandatory on every image.
+          Make the images in whichever generator you use, then paste the URLs here. Alt text is
+          mandatory on every image — publishing is blocked without it.
         </p>
+
+        <ImagePromptHelper
+          title={title}
+          categoryName={categoryName}
+          keywords={keywords}
+          onUseAltText={({ role, altText }) => {
+            if (role === 'featured') {
+              setFeaturedAlt(altText);
+            } else {
+              setImages((prev) => [...prev, { url: '', alt_text: altText, role: 'body' }]);
+            }
+          }}
+        />
 
         <div className="mt-4 grid gap-5 sm:grid-cols-2">
           <div>
@@ -323,7 +347,8 @@ export default function PostEditor({
             <input
               id="featured_image_alt"
               name="featured_image_alt"
-              defaultValue={post?.featured_image_alt ?? ''}
+              value={featuredAlt}
+              onChange={(e) => setFeaturedAlt(e.target.value)}
               className={field}
             />
           </div>
@@ -396,7 +421,8 @@ export default function PostEditor({
             <input
               id="seo_keywords"
               name="seo_keywords"
-              defaultValue={post?.seo_keywords?.join(', ') ?? ''}
+              value={keywordsRaw}
+              onChange={(e) => setKeywordsRaw(e.target.value)}
               className={field}
             />
           </div>

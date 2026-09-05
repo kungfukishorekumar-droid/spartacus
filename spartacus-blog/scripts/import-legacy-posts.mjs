@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Import the existing static-site blog library (../data/blogData.js +
- * ../data/blog100-part*.js) into Supabase.
+ * ../data/blog100-part*.js) into Supabase, images included.
  *
  *   node --env-file=.env.local scripts/import-legacy-posts.mjs           # dry run
  *   node --env-file=.env.local scripts/import-legacy-posts.mjs --write   # import as drafts
@@ -59,6 +59,18 @@ function loadLegacyPosts() {
 }
 
 // --- 2. Rewrite legacy links so they resolve from the blog subdomain --------
+/**
+ * Legacy image paths are relative to the main site's document root
+ * ("images/blog100/foo.webp"). Those files are already deployed and served
+ * there, so turn them into absolute URLs rather than re-hosting anything.
+ * next.config.mjs allows spartacusmartialarts.com as an image host.
+ */
+function absoluteImage(src) {
+  if (!src) return null;
+  if (/^https?:\/\//i.test(src)) return src;
+  return `${MAIN_SITE}/${String(src).replace(/^\/+/, '')}`;
+}
+
 function rewriteLinks(html) {
   return String(html ?? '')
     .replace(/href="(programs|contact|about|gallery|index)\.html"/g, `href="${MAIN_SITE}/$1.html"`)
@@ -166,8 +178,9 @@ async function main() {
       body_md: rewriteLinks(legacy.content),
       author_id: authorId,
       category_id: categoryIdByName.get(legacy.category) ?? null,
-      featured_image_url: null, // legacy images are relative paths on the old host
-      featured_image_alt: legacy.featuredImage?.alt ?? null,
+      featured_image_url: absoluteImage(legacy.featuredImage?.src),
+      featured_image_alt:
+        legacy.featuredImage?.alt ?? (legacy.title ? `${legacy.title} — Spartacus Martial Arts Academy, Chennai` : null),
       seo_title: legacy.seoTitle ?? null,
       seo_keywords: legacy.seoKeywords ?? [],
       published_at: toTimestamp(legacy),
@@ -201,6 +214,20 @@ async function main() {
     if (faqs.length) {
       await db.from('post_faqs').insert(faqs.map((f) => ({ ...f, post_id: data.id })));
     }
+
+    const inline = (legacy.inlineImages ?? [])
+      .map((img, i) => ({
+        post_id: data.id,
+        url: absoluteImage(img?.src),
+        alt_text: (img?.alt ?? '').trim(),
+        role: 'body',
+        position: i + 1,
+      }))
+      .filter((img) => img.url && img.alt_text);
+
+    await db.from('post_images').delete().eq('post_id', data.id);
+    if (inline.length) await db.from('post_images').insert(inline);
+
     imported += 1;
   }
 
@@ -218,10 +245,7 @@ async function main() {
     if (blocked.length > 40) console.log(`  … and ${blocked.length - 40} more`);
   }
 
-  console.log(
-    '\nNext: run `npx tsx scripts/generate-images.ts` to give the imported posts',
-    'brand images, then review them in /admin.',
-  );
+  console.log('\nImages point at the existing library on ' + MAIN_SITE + ' — nothing to re-upload.');
   if (!write) console.log('Re-run with --write to actually import.');
 }
 
