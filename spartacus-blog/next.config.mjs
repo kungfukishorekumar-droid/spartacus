@@ -49,6 +49,12 @@ const nextConfig = {
   // self-contained .next/standalone bundle (server + pruned node_modules) that
   // can be copied to Hostinger without running npm install on the host.
   output: process.env.NEXT_OUTPUT_STANDALONE === '1' ? 'standalone' : undefined,
+  // ESLint is not run during the production build: the host installs with
+  // --omit=dev, so eslint is deliberately absent there. Linting runs in CI
+  // (.github/workflows/blog-ci.yml), where the dev dependencies do exist.
+  eslint: { ignoreDuringBuilds: true },
+  // Type errors DO still fail the build — typescript is a runtime dependency
+  // for exactly that reason.
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
