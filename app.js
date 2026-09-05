@@ -70,9 +70,18 @@ const PAGES = [
 function currentPage(){ const p = location.pathname.split("/").pop(); return (p && p.indexOf(".html") > -1) ? p : "index.html"; }
 const WA_PATH = '<path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.7 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8zm4.5-5.6c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/>';
 
+/* The blog lives on its own host (blog.spartacusmartialarts.com). From the main
+   site, link straight to it so visitors never take a redirect hop; from the blog
+   host itself, keep the link relative. */
+function pageHref(file){
+  if (file !== "blog.html") return file;
+  if (location.hostname.indexOf("blog.") === 0) return file;
+  return (window.SPARTACUS_BLOG_SITE || "https://blog.spartacusmartialarts.com") + "/blog.html";
+}
+
 function injectChrome(){
   const cur = currentPage();
-  const navLinks = PAGES.map(p => `<a href="${p[0]}"${p[0]===cur?' class="active"':''}>${p[1]}</a>`).join("");
+  const navLinks = PAGES.map(p => `<a href="${pageHref(p[0])}"${p[0]===cur?' class="active"':''}>${p[1]}</a>`).join("");
 
   const header =
     '<header id="top"><div class="wrap nav">' +
@@ -105,7 +114,7 @@ function injectChrome(){
           '<a href="#" class="js-wa" data-program="Martial Arts Training" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="#25D366">' + WA_PATH + '</svg></a>' +
         '</div>' +
       '</div>' +
-      '<div class="foot-col"><h4>Quick Links</h4>' + PAGES.map(p=>`<a href="${p[0]}">${p[1]}</a>`).join("") + '</div>' +
+      '<div class="foot-col"><h4>Quick Links</h4>' + PAGES.map(p=>`<a href="${pageHref(p[0])}">${p[1]}</a>`).join("") + '</div>' +
       '<div class="foot-col"><h4>Contact</h4>' +
         '<p>📍 Chennai, Tamil Nadu</p>' +
         '<a href="#" class="js-wa" data-program="Martial Arts Training">📱 WhatsApp: 9884599939</a>' +
@@ -213,6 +222,8 @@ function boot(){
       if (!form.checkValidity()){ form.reportValidity(); return; }
       const lead = Object.fromEntries(new FormData(form).entries());
       lead.source = "Spartacus Website"; lead.academy = CONFIG.academyName; lead.timestamp = new Date().toISOString();
+      // attribution: which page / campaign actually produced this lead
+      if (typeof spAttribution === "function") lead.utm = spAttribution();
       const btn = $("#submitBtn"); btn.disabled = true; btn.textContent = "Sending…";
       // 1) always keep a local copy (offline safety net)
       try { const saved = JSON.parse(localStorage.getItem("spartacus_leads") || "[]"); saved.push(lead); localStorage.setItem("spartacus_leads", JSON.stringify(saved)); } catch(_){}
@@ -286,6 +297,7 @@ async function saveLead(lead){
           location: lead.location, program: lead.program, goal: lead.goal,
           role: lead.role, time: lead.time, message: lead.message,
           company: lead.company || "",              // honeypot (bots fill this)
+          utm: lead.utm || (typeof spAttribution === "function" ? spAttribution() : null),
           turnstile_token: (window.turnstile && window.__tsToken) || lead["cf-turnstile-response"] || ""
         })
       });
@@ -319,8 +331,9 @@ async function saveLead(lead){
         role:             lead.role || null,
         preferred_time:   lead.time || null,
         message:          lead.message || null,
-        source:           "website",
-        website_source:   "spartacus"
+        source:           lead.source_tag || "website",
+        website_source:   lead.website_source || "spartacus",
+        utm:              lead.utm || (typeof spAttribution === "function" ? spAttribution() : null)
       })
     });
     return res.ok;   // 201 = inserted

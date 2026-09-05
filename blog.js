@@ -6,7 +6,11 @@
   var POSTS = (window.BLOG_POSTS || []).slice().sort(function (a, b) { return new Date(b.publishedDate) - new Date(a.publishedDate); });
   var CATS = window.BLOG_CATEGORIES || [];
   var WA = window.BLOG_WHATSAPP || "https://wa.me/919884599939";
-  var SITE = "https://spartacusmartialarts.com";
+  // Which host is serving this page? The blog lives on its own subdomain, so
+  // canonical, og:url and JSON-LD must point at the host the reader is on.
+  var SITE = window.BLOG_SITE_BASE ||
+    (/^https?:$/.test(location.protocol) ? location.origin : "https://spartacusmartialarts.com");
+  var MAIN_SITE = window.SPARTACUS_MAIN_SITE || "https://spartacusmartialarts.com";
 
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function stripTags(h) { var d = document.createElement("div"); d.innerHTML = h || ""; return (d.textContent || "").trim(); }
@@ -170,7 +174,7 @@
     addJsonLd({
       "@context": "https://schema.org", "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: SITE + "/index.html" },
+        { "@type": "ListItem", position: 1, name: "Home", item: MAIN_SITE + "/index.html" },
         { "@type": "ListItem", position: 2, name: "Blog", item: SITE + "/blog.html" },
         { "@type": "ListItem", position: 3, name: p.title, item: url }
       ]

@@ -45,3 +45,4 @@ User-agent: CCBot
 Allow: /
 
 Sitemap: https://spartacusmartialarts.com/sitemap.xml
+Sitemap: https://blog.spartacusmartialarts.com/sitemap.xml

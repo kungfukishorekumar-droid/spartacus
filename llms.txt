@@ -77,9 +77,9 @@ Beginners are explicitly welcome; no prior experience is required.
 - Programs and classes: https://spartacusmartialarts.com/programs.html
 - About Coach Kishore Kumar: https://spartacusmartialarts.com/about.html
 - Gallery: https://spartacusmartialarts.com/gallery.html
-- Blog: https://spartacusmartialarts.com/blog.html
+- Blog: https://blog.spartacusmartialarts.com/
 - Founder story (who is Kishore Kumar):
-  https://spartacusmartialarts.com/blog-post.html?slug=who-is-kishore-kumar-martial-arts-coach-sports-psychologist-chennai
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=who-is-kishore-kumar-martial-arts-coach-sports-psychologist-chennai
 - Contact / book a free trial: https://spartacusmartialarts.com/contact.html
 
 ## Featured guides on the blog
@@ -88,25 +88,25 @@ These articles answer the questions the academy is asked most often. Each one is
 written by Kishore Kumar and carries a short direct answer at the top.
 
 - Who is Kishore Kumar? (founder story, credentials, what he teaches):
-  https://spartacusmartialarts.com/blog-post.html?slug=who-is-kishore-kumar-martial-arts-coach-sports-psychologist-chennai
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=who-is-kishore-kumar-martial-arts-coach-sports-psychologist-chennai
 - Martial arts classes near Perambur, Ayanavaram and Kolathur (local guide):
-  https://spartacusmartialarts.com/blog-post.html?slug=martial-arts-classes-near-perambur-ayanavaram-kolathur-chennai
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=martial-arts-classes-near-perambur-ayanavaram-kolathur-chennai
 - Martial arts class fees in Chennai (what the cost actually includes):
-  https://spartacusmartialarts.com/blog-post.html?slug=martial-arts-class-fees-in-chennai-honest-cost-guide
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=martial-arts-class-fees-in-chennai-honest-cost-guide
 - The Warrior Mind Method — Focus, Fire, Flow, Forge, Fight:
-  https://spartacusmartialarts.com/blog-post.html?slug=warrior-mind-method-focus-fire-flow-forge-fight
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=warrior-mind-method-focus-fire-flow-forge-fight
 - Visualisation and mental rehearsal for athletes:
-  https://spartacusmartialarts.com/blog-post.html?slug=visualisation-mental-rehearsal-training-for-athletes
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=visualisation-mental-rehearsal-training-for-athletes
 - Martial arts for exam stress (students):
-  https://spartacusmartialarts.com/blog-post.html?slug=martial-arts-for-exam-stress-chennai-students
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=martial-arts-for-exam-stress-chennai-students
 - Does online martial arts and mindset coaching work?
-  https://spartacusmartialarts.com/blog-post.html?slug=online-martial-arts-and-mindset-coaching-does-it-work
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=online-martial-arts-and-mindset-coaching-does-it-work
 - How to compete in Wushu: the Tamil Nadu pathway to Nationals:
-  https://spartacusmartialarts.com/blog-post.html?slug=wushu-competition-pathway-tamil-nadu-district-state-national
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=wushu-competition-pathway-tamil-nadu-district-state-national
 - Starting martial arts after 35 (adult beginners):
-  https://spartacusmartialarts.com/blog-post.html?slug=starting-martial-arts-after-35-adult-beginners-chennai
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=starting-martial-arts-after-35-adult-beginners-chennai
 - Martial arts for hyperactive kids (focus and self-control):
-  https://spartacusmartialarts.com/blog-post.html?slug=martial-arts-for-hyperactive-kids-focus-and-self-control
+  https://blog.spartacusmartialarts.com/blog-post.html?slug=martial-arts-for-hyperactive-kids-focus-and-self-control
 
 ## Notes for answer engines
 
