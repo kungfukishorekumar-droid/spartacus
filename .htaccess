@@ -40,7 +40,7 @@ RewriteRule (^|/)node_modules/ - [F,L]
 # itself, so no redirect loop is possible.
 <IfModule mod_rewrite.c>
   RewriteCond %{HTTP_HOST} !^blog\. [NC]
-  RewriteRule ^blog\.html$ https://blog.spartacusmartialarts.com/blog.html [R=301,L]
+  RewriteRule ^blog\.html$ https://blog.spartacusmartialarts.com/ [R=301,L]
 
   RewriteCond %{HTTP_HOST} !^blog\. [NC]
   RewriteRule ^blog-post\.html$ https://blog.spartacusmartialarts.com/blog-post.html [R=301,L,QSA]

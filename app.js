@@ -75,13 +75,19 @@ const WA_PATH = '<path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.
    host itself, keep the link relative. */
 function pageHref(file){
   if (file !== "blog.html") return file;
-  if (location.hostname.indexOf("blog.") === 0) return file;
-  return (window.SPARTACUS_BLOG_SITE || "https://blog.spartacusmartialarts.com") + "/blog.html";
+  // The blog listing is the front page of the blog host, so link to the bare
+  // domain — blog.spartacusmartialarts.com — from either side.
+  if (location.hostname.indexOf("blog.") === 0) return "/";
+  return (window.SPARTACUS_BLOG_SITE || "https://blog.spartacusmartialarts.com") + "/";
 }
+function isBlogHost(){ return location.hostname.indexOf("blog.") === 0; }
 
 function injectChrome(){
   const cur = currentPage();
-  const navLinks = PAGES.map(p => `<a href="${pageHref(p[0])}"${p[0]===cur?' class="active"':''}>${p[1]}</a>`).join("");
+  const navLinks = PAGES.map(p => {
+    const active = (p[0] === "blog.html") ? isBlogHost() : (p[0] === cur && !isBlogHost());
+    return `<a href="${pageHref(p[0])}"${active?' class="active"':''}>${p[1]}</a>`;
+  }).join("");
 
   const header =
     '<header id="top"><div class="wrap nav">' +

@@ -20,8 +20,9 @@
 
   // Pages that live on the BLOG host. Everything else belongs to the main site.
   var BLOG_PAGES = /^(blog\.html|blog-post\.html)(\?|#|$)/;
-  // Links we must never touch.
-  var SKIP = /^(https?:|\/\/|#|mailto:|tel:|javascript:|data:)/i;
+  // Links we must never touch. A leading "/" means the link is already absolute
+  // for THIS host (e.g. the blog root), so it must be left exactly as it is.
+  var SKIP = /^(https?:|\/|#|mailto:|tel:|javascript:|data:)/i;
 
   var onBlogHost = location.hostname.indexOf("blog.") === 0;
 
@@ -35,8 +36,15 @@
   function fix(a) {
     var href = a.getAttribute("href");
     if (!href || SKIP.test(href)) return;
-    var clean = href.replace(/^\.\//, "").replace(/^\//, "");
-    if (BLOG_PAGES.test(clean)) return;          // stays on the blog host
+    var clean = href.replace(/^\.\//, "");
+    // The blog listing IS this host's front page. Point at "/" so visitors see
+    // blog.spartacusmartialarts.com, not blog.spartacusmartialarts.com/blog.html.
+    if (/^blog\.html(\?|#|$)/.test(clean)) {
+      a.dataset.spFixed = "1";
+      a.setAttribute("href", "/" + clean.slice("blog.html".length));
+      return;
+    }
+    if (BLOG_PAGES.test(clean)) return;          // article pages stay as-is
     if (a.dataset.spFixed === "1") return;
     a.dataset.spFixed = "1";
     a.setAttribute("href", MAIN + "/" + clean);

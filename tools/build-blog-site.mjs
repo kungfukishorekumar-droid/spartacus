@@ -69,10 +69,12 @@ for (const d of DIRS) {
 {
   const p = path.join(OUT, "blog.html");
   let html = fs.readFileSync(p, "utf8");
-  html = html.replaceAll(`${MAIN}/blog.html`, `${BLOG}/blog.html`);
+  // The listing is served at the bare root (DirectoryIndex blog.html), so that
+  // is the canonical URL — one clean address, no redirect.
+  html = html.replaceAll(`${MAIN}/blog.html`, `${BLOG}/`);
   html = html.replace(
     '<meta property="og:type" content="website" />',
-    `<meta property="og:type" content="website" />\n<meta property="og:url" content="${BLOG}/blog.html" />`
+    `<meta property="og:type" content="website" />\n<meta property="og:url" content="${BLOG}/" />`
   );
   fs.writeFileSync(p, html);
 }
@@ -83,7 +85,7 @@ posts.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
 const newest = posts[0]?.publishedDate || new Date().toISOString().slice(0, 10);
 
 const urls = [
-  `  <url><loc>${BLOG}/blog.html</loc><lastmod>${newest}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+  `  <url><loc>${BLOG}/</loc><lastmod>${newest}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
   ...posts.map(p =>
     `  <url><loc>${BLOG}/blog-post.html?slug=${p.slug}</loc><lastmod>${p.publishedDate}</lastmod><priority>0.7</priority></url>`)
 ];
