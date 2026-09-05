@@ -8,8 +8,9 @@
 # the app on every push and pull request, so a broken build is caught here
 # rather than on the live subdomain.
 #
-# Repository variable (Settings → Secrets and variables → Actions → Variables):
-#   SITE_URL   https://blog.spartacusmartialarts.com
+# Repository variables (Settings → Secrets and variables → Actions → Variables):
+#   SITE_URL   https://blog.spartacusmartialarts.com   (origin only, no path)
+#   BASE_PATH  empty for a subdomain, or /blog to serve as a subfolder
 #
 # No secrets are needed. The blog reads Supabase and Higgsfield credentials at
 # RUNTIME from the Hostinger app's environment variables, so CI never handles
@@ -67,6 +68,7 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: '1'
           SITE_URL: ${{ vars.SITE_URL || 'https://blog.spartacusmartialarts.com' }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
         run: npm run build
 
       # Boot the built app and check the pages that must never break. This is
@@ -75,15 +77,20 @@ jobs:
       - name: Boot and smoke-test
         env:
           SITE_URL: ${{ vars.SITE_URL || 'https://blog.spartacusmartialarts.com' }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
           PORT: '3000'
         run: |
           set -euo pipefail
+          # Every route moves under BASE_PATH when the blog is mounted as a
+          # subfolder, so the checks below follow it.
+          BASE="${BASE_PATH:-}"
+          ROOT="${BASE:-/}"
           npm start &
           SERVER_PID=$!
           trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
 
           for attempt in $(seq 1 30); do
-            if curl -fsS -o /dev/null http://localhost:3000/robots.txt; then break; fi
+            if curl -fsS -o /dev/null "http://localhost:3000$BASE/robots.txt"; then break; fi
             if [ "$attempt" = "30" ]; then echo "Server never came up." >&2; exit 1; fi
             sleep 2
           done
@@ -99,19 +106,19 @@ jobs:
             echo "ok   $path -> $code"
           }
 
-          check /            200
-          check /robots.txt  200
-          check /llms.txt    200
-          check /sitemap.xml 200
-          check /about-kishore 200
-          check /no-such-post-should-404 404
+          check "$ROOT"                    200
+          check "$BASE/robots.txt"         200
+          check "$BASE/llms.txt"           200
+          check "$BASE/sitemap.xml"        200
+          check "$BASE/about-kishore"      200
+          check "$BASE/no-such-post-404"   404
           # /admin must redirect to the login page, never render signed-out.
-          check /admin       307
+          check "$BASE/admin"              307
 
           # An unauthenticated publish call must be rejected.
           code=$(curl -s -o /dev/null -w '%{http_code}' -X POST \
             -H 'Content-Type: application/json' -d '{}' \
-            http://localhost:3000/api/publish)
+            "http://localhost:3000$BASE/api/publish")
           if [ "$code" != "401" ]; then
             echo "FAIL /api/publish is not rejecting unauthenticated calls (got $code)" >&2
             exit 1
@@ -120,7 +127,7 @@ jobs:
 
           # The AI-crawler allow-list is the whole point of the build; if a
           # refactor drops one of these, fail here rather than lose the traffic.
-          robots=$(curl -s http://localhost:3000/robots.txt)
+          robots=$(curl -s "http://localhost:3000$BASE/robots.txt")
           for bot in GPTBot Google-Extended ClaudeBot PerplexityBot CCBot Applebot-Extended; do
             if ! grep -q "^User-Agent: $bot$" <<<"$robots"; then
               echo "FAIL robots.txt no longer allows $bot" >&2

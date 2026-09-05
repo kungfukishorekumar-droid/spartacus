@@ -12,7 +12,11 @@ import type { Author, Category, FullPost, Post, PostFaq } from './types';
 
 type Json = Record<string, unknown>;
 
-const ORG_ID = absoluteUrl('/#organization');
+// Anchored to the MAIN domain, not the blog's mount point: the academy is one
+// organisation whether the blog sits on a subdomain or at /blog. If the main
+// site also emits Organization schema, both must use this same @id or engines
+// see two rival entities.
+const ORG_ID = `${site.mainSiteUrl}/#organization`;
 const SITE_ID = absoluteUrl('/#website');
 const PERSON_ID = absoluteUrl(`${site.authorPagePath}#person`);
 

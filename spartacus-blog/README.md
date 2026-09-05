@@ -258,13 +258,39 @@ After importing, run `npx tsx scripts/generate-images.ts` to give them brand ima
 
 ---
 
-## One honest flag on the subdomain
+## Subdomain vs subfolder
 
-Google treats `blog.spartacusmartialarts.com` as a related-but-separate property, so authority
-builds slightly slower than it would on `spartacusmartialarts.com/blog`. The subdomain was the
-explicit choice here and everything is built for it. If ranking speed later matters more than the
-separate-site feel, moving to a subfolder means changing `SITE_URL`, pointing a reverse
-proxy at `/blog`, and adding redirects — the application code does not change.
+The app supports both, via `BASE_PATH`:
+
+| `BASE_PATH` | The blog lives at | Notes |
+|---|---|---|
+| *(empty)* | `blog.spartacusmartialarts.com` | Google treats it as a related-but-separate property; authority builds slower |
+| `/blog` | `spartacusmartialarts.com/blog` | Inherits the main domain's authority — the stronger SEO position |
+
+Both modes are covered by CI. Everything derived from the mount point — canonical
+tags, JSON-LD `@id`s, the sitemap, `llms.txt`, asset URLs — follows `BASE_PATH`
+automatically. The one exception is deliberate: the `Organization` JSON-LD `@id` is
+always anchored to `https://spartacusmartialarts.com/#organization`, because the
+academy is one organisation regardless of where the blog sits. If the main site also
+emits `Organization` schema it must use that same `@id`, or engines see two rival
+entities.
+
+**Two things the subfolder mode needs that the subdomain mode does not:**
+
+1. **`robots.txt` must be at the domain root.** Crawlers only read
+   `spartacusmartialarts.com/robots.txt` — they ignore `/blog/robots.txt`. The main
+   site's existing root `robots.txt` already allows GPTBot, ClaudeBot,
+   PerplexityBot, Google-Extended, CCBot and Applebot-Extended, so nothing needs
+   adding there except the blog's sitemap:
+
+   ```
+   Sitemap: https://spartacusmartialarts.com/blog/sitemap.xml
+   ```
+
+2. **`llms.txt` is conventionally read from the domain root too.** Either point the
+   root `llms.txt` at the blog's, or proxy `/llms.txt` to `/blog/llms.txt`.
+
+Do not switch `BASE_PATH` on a live site without redirects — it changes every URL.
 
 ---
 

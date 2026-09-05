@@ -11,8 +11,16 @@ const supabaseHost = (() => {
   }
 })();
 
+// Mount point. Empty for a subdomain; '/blog' to serve as a subfolder of the
+// main site. Must match BASE_PATH in lib/site.ts — both read the same variable.
+const basePath = (process.env.BASE_PATH ?? '')
+  .trim()
+  .replace(/\/+$/, '')
+  .replace(/^(?!\/)(.+)$/, '/$1');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  ...(basePath ? { basePath } : {}),
   // The deploy workflow sets NEXT_OUTPUT_STANDALONE=1 so the build produces a
   // self-contained .next/standalone bundle (server + pruned node_modules) that
   // can be copied to Hostinger without running npm install on the host.
