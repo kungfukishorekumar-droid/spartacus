@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import JsonLd from '@/components/JsonLd';
 import PostCard from '@/components/PostCard';
-import { getCategoryBySlug, getPostsByCategory } from '@/lib/queries';
+import { getCategoryBySlug, getPostsByCategory, staticCategorySlugs } from '@/lib/queries';
 import { breadcrumbSchema, collectionPageSchema, graph } from '@/lib/schema';
 import { absoluteUrl, site } from '@/lib/site';
 
@@ -10,7 +10,7 @@ export const revalidate = 300;
 export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return [];
+  return staticCategorySlugs();
 }
 
 type Params = { params: Promise<{ slug: string }> };

@@ -9,7 +9,7 @@ import FaqSection from '@/components/FaqSection';
 import JsonLd from '@/components/JsonLd';
 import PostCard from '@/components/PostCard';
 import { readingTimeMinutes, renderMarkdown } from '@/lib/markdown';
-import { getPostBySlug, getRedirect, getRelatedPosts } from '@/lib/queries';
+import { getPostBySlug, getRedirect, getRelatedPosts, staticPostSlugs } from '@/lib/queries';
 import {
   blogPostingSchema,
   breadcrumbSchema,
@@ -22,10 +22,8 @@ import { absoluteUrl, site } from '@/lib/site';
 export const revalidate = 300;
 export const dynamicParams = true;
 
-// Nothing is prerendered at build time: posts come from Supabase and are
-// cached on first request (ISR), so a build never needs database access.
 export function generateStaticParams() {
-  return [];
+  return staticPostSlugs();
 }
 
 type Params = { params: Promise<{ slug: string }> };

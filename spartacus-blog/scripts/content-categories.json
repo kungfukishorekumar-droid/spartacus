@@ -1,0 +1,52 @@
+{
+  "_comment": "Category metadata. `description` is the pillar hub intro — written to rank for the pillar keyword on its own, not just to introduce the list below it. `pillar: true` puts the category in the main navigation and on the homepage.",
+
+  "Athlete Mindset": {
+    "slug": "athlete-mindset", "pillar": true, "sort_order": 1,
+    "description": "Sports psychology is the training that decides who performs when it actually counts. Everything here is about the mental side of competing — focus under pressure, pre-competition nerves, self-talk, recovery after a loss — written by a practising sports psychologist who also competes and coaches in Chennai."
+  },
+  "Parent Guide": {
+    "slug": "parent-guide", "pillar": true, "sort_order": 2,
+    "description": "Straight answers for parents considering martial arts for their child: what a good class actually looks like, what changes at home and how long it takes, how to tell a safe academy from a showy one, and how to support a child's training without adding pressure."
+  },
+  "Kids Martial Arts": {
+    "slug": "kids-martial-arts", "pillar": true, "sort_order": 3,
+    "description": "Martial arts for children in Chennai — the right age to start, what the first months look like, how focus and discipline actually develop, and what to expect from a class run properly. Written for parents who want the reasoning, not just the timetable."
+  },
+  "Beginner Guide": {
+    "slug": "beginner-guide", "pillar": true, "sort_order": 4,
+    "description": "Everything a complete beginner needs before the first class: which martial art suits which goal, what to wear and bring, how often to train, the mistakes almost everyone makes in the first month, and how progress really works once the novelty wears off."
+  },
+  "Discipline & Confidence": {
+    "slug": "discipline-confidence", "pillar": true, "sort_order": 5,
+    "description": "Discipline is a skill, not a personality trait — and confidence is what is left once competence is real. These are the habits martial arts builds and how to keep them going on the weeks when motivation does not show up."
+  },
+  "Wushu Training": {
+    "slug": "wushu-training", "pillar": false, "sort_order": 6,
+    "description": "Wushu explained by a national medalist and state-level judge: stances, footwork, forms, conditioning and competition preparation, and how to progress from a first class to the competition floor."
+  },
+  "Kungfu Wisdom": {
+    "slug": "kungfu-wisdom", "pillar": false, "sort_order": 7,
+    "description": "The traditional side of Kung Fu — the principles behind the technique, what the old training methods were actually for, and how that thinking applies to training and life today."
+  },
+  "Self Defense": {
+    "slug": "self-defense", "pillar": false, "sort_order": 8,
+    "description": "Practical self-defence: awareness and avoidance first, then the small number of physical skills that still work under stress. What to train, what to ignore, and how to tell a serious class from a demonstration."
+  },
+  "Women's Self Defense": {
+    "slug": "womens-self-defense", "pillar": false, "sort_order": 9,
+    "description": "Self-defence for girls and women in Chennai — awareness, boundaries, escaping holds, and striking effectively regardless of size or strength. No athletic background needed to start."
+  },
+  "Kickboxing Fitness": {
+    "slug": "kickboxing-fitness", "pillar": false, "sort_order": 10,
+    "description": "Kickboxing as training, not just a workout: stance, guard, combinations, conditioning, and why it builds stamina and confidence faster than most gym routines."
+  },
+  "Chennai Martial Arts": {
+    "slug": "chennai-martial-arts", "pillar": false, "sort_order": 11,
+    "description": "Training in Chennai specifically — choosing an academy, what classes cost and why, timings that work around school and office hours, and what is available across Perambur, Ayanavaram, Kilpauk, Anna Nagar and nearby areas."
+  },
+  "Karate Basics": {
+    "slug": "karate-basics", "pillar": false, "sort_order": 12,
+    "description": "Karate fundamentals for beginners: stances, blocks, punches and kicks, how the belt system marks progress, and what the first few months of structured training involve."
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "_comment": "Fixes for the 15 original cornerstone posts, which predate the direct-answer requirement. answer_summary is the paragraph AI engines quote; excerpt is the meta description and must stay under 155 characters. Edit freely — build-content.mjs applies these on top of the legacy data.",
+
+  "martial-arts-classes-in-chennai-for-kids-and-beginners": {
+    "answer_summary": "The best beginner class in Chennai is the one with a qualified coach, small groups and a clear syllabus — not the one with the flashiest moves. Look for structured warm-ups, supervised partner work, and a coach who corrects each student individually. Most beginners, children and adults alike, start with two sessions a week.",
+    "excerpt": "What to look for in a beginner martial arts class in Chennai: coaching quality, group size, safety, and a clear syllabus."
+  },
+  "why-martial-arts-good-for-kids-discipline-confidence": {
+    "answer_summary": "Martial arts builds discipline in children because progress is visible and earned: every stance, correction and belt is feedback they can see. Confidence follows from competence, not from praise. Two classes a week for a few months is usually enough for parents to notice calmer behaviour and better focus at home.",
+    "excerpt": "How martial arts builds discipline and confidence in children — what actually changes, and how long it takes to show at home."
+  },
+  "wushu-classes-in-chennai-beginner-guide": {
+    "answer_summary": "Wushu is a Chinese martial art built on speed, balance and controlled athleticism, and beginners in Chennai can start with no prior experience. The first months cover stances, footwork and basic forms before anything acrobatic. Expect two or three sessions a week, with flexibility work from day one.",
+    "excerpt": "Starting Wushu in Chennai: what beginners learn first, how often to train, and what the first few months really look like."
+  },
+  "kungfu-vs-karate-vs-wushu-which-martial-art-is-best": {
+    "answer_summary": "There is no single best martial art — only the one that matches your goal. Karate suits those who want structure and clear belt progression, Kung Fu suits those drawn to traditional depth and self-mastery, and Wushu suits athletes who want speed, flexibility and competition. Try a class in each before deciding."
+  },
+  "self-defence-classes-in-chennai-what-parents-students-should-know": {
+    "answer_summary": "Good self-defence training teaches awareness and avoidance first, and physical technique second. The skills that actually work under stress are simple and repeatable: escaping grabs, creating distance, and shouting for help. Look for a class that drills those under mild pressure rather than teaching long, complicated sequences.",
+    "excerpt": "What to look for in a Chennai self-defence class: awareness first, then simple technique that still works under stress."
+  },
+  "how-martial-arts-improves-focus-fitness-confidence": {
+    "answer_summary": "Martial arts improves focus because every class demands sustained attention on one task with immediate feedback. Fitness comes from full-body conditioning rather than isolated exercise, and confidence grows from measurable progress. Most people notice the change in their focus before they notice it in the mirror.",
+    "excerpt": "How martial arts improves focus, fitness and confidence — the mechanism behind each, and which one changes first."
+  },
+  "best-age-to-start-martial-arts-for-kids": {
+    "answer_summary": "Most children are ready for structured martial arts at around five or six, when they can follow instructions in a group and hold attention for a full class. Younger children benefit more from playful coordination and listening drills. There is no upper limit — teenagers and adults start successfully all the time."
+  },
+  "how-sports-psychology-helps-athletes-perform-under-pressure": {
+    "answer_summary": "Sports psychology helps athletes perform under pressure by making the response to pressure rehearsed rather than improvised. Breathing routines, pre-performance cues and attention control are trained the same way technique is trained. The goal is not to remove nerves, but to stop them deciding the outcome.",
+    "excerpt": "How sports psychology trains athletes for pressure — the routines that stop nerves from deciding the result."
+  },
+  "martial-arts-for-girls-and-women-confidence-safety-strength": {
+    "answer_summary": "Martial arts gives girls and women practical safety skills, real physical strength, and the confidence that comes from knowing what their body can do. Training focuses on awareness, escaping holds, and striking effectively regardless of size. Most start with no athletic background at all and progress quickly."
+  },
+  "how-to-choose-best-martial-arts-academy-near-you": {
+    "answer_summary": "Judge an academy by its coach, not its marketing. Watch one full class and look for structured warm-ups, individual corrections, supervised partner work, and students who look engaged rather than exhausted. Ask about the coach's qualifications and competition record before you ask about the fees.",
+    "excerpt": "How to choose a martial arts academy: what to watch in one trial class, and the questions to ask before you pay."
+  },
+  "karate-training-in-chennai-beginner-guide": {
+    "answer_summary": "Karate is a striking art built on structure: fixed stances, precise technique, and a belt system that marks progress clearly. Beginners in Chennai start with basic blocks, punches and kicks long before any sparring. Two sessions a week is enough to progress steadily, for children and adults alike.",
+    "excerpt": "Starting Karate in Chennai: what beginners learn first, how the belt system works, and how often to train."
+  },
+  "boxing-training-in-chennai-for-fitness-and-confidence": {
+    "answer_summary": "Boxing builds fitness faster than most training because it combines conditioning, footwork and constant decision-making in every round. Beginners spend the first weeks on stance, guard and basic punches on pads — there is no sparring early on. It suits anyone wanting stamina, fat loss and genuine self-defence confidence."
+  },
+  "kickboxing-classes-in-chennai-fitness-and-self-defence": {
+    "answer_summary": "Kickboxing combines punches and kicks into one of the most effective full-body workouts available, and it doubles as practical self-defence. Beginners learn stance, guard and basic combinations on pads before any contact. Most people see clear stamina and strength gains within a couple of months."
+  },
+  "muay-thai-training-in-chennai-beginner-guide": {
+    "answer_summary": "Muay Thai is called the art of eight limbs because it uses fists, elbows, knees and shins. Beginners in Chennai start with stance, guard and basic kicks on pads, with conditioning built into every session from the first class. It demands more conditioning than most striking arts — which is exactly why it builds it so fast."
+  },
+  "judo-training-in-chennai-for-students-and-beginners": {
+    "answer_summary": "Judo teaches you to control and throw an opponent using leverage rather than strength, which is why it suits students of any build. The very first thing every beginner learns is how to fall safely. It builds balance, body awareness, and close-range self-defence that genuinely works."
+  }
+}

@@ -3,11 +3,20 @@
 The blog for **Spartacus Martial Arts Academy** (Chennai) — built so it ranks in Google **and**
 gets quoted by ChatGPT, Gemini, Perplexity and Claude.
 
-**Stack:** Next.js 15 (App Router, TypeScript) · Tailwind CSS · Supabase (Postgres) as the only
-data store · deployed as a long-lived Node process on Hostinger.
+**Stack:** Next.js 15 (App Router, TypeScript) · Tailwind CSS · deployed as a long-lived
+Node process on Hostinger.
 
-No headless CMS. No markdown files on disk. Every post lives in Supabase and is written through
-`/admin`.
+**Content has two sources, in this order:**
+
+1. **`content/blog.json`** — the 115-post archive, committed to this repo and generated
+   from the main site's existing library by `npm run build:content`. This is the default.
+   With it, the blog builds, deploys and serves every post **with no database and no
+   credentials at all**, and every post is prerendered as static HTML.
+2. **Supabase** — used instead, automatically, as soon as `SUPABASE_URL` and
+   `SUPABASE_ANON_KEY` are set. That switches writing to the `/admin` UI and page
+   generation to ISR.
+
+Nothing in the pages changes between the two; `lib/queries.ts` picks the source.
 
 ---
 

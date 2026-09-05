@@ -1,5 +1,17 @@
+import { fileContent } from './content-files';
 import { readClient } from './supabase';
 import type { Author, Category, FullPost, Post, PostFaq, PostImage, Tag } from './types';
+
+/**
+ * Every read goes through here, and every read has two sources:
+ *
+ *   Supabase, when it is configured — the admin UI writes there.
+ *   content/blog.json otherwise — the 115 posts committed to this repo.
+ *
+ * That ordering is what lets the blog deploy and serve its full archive with
+ * no database and no credentials, while still upgrading cleanly the moment
+ * Supabase keys are added.
+ */
 
 const POST_COLUMNS = '*';
 const FULL_POST_COLUMNS = `
@@ -31,7 +43,7 @@ function shape(raw: RawFullPost): FullPost {
 /** One published post by slug, with author, category, FAQs, images and tags. */
 export async function getPostBySlug(slug: string): Promise<FullPost | null> {
   const db = readClient();
-  if (!db) return null;
+  if (!db) return fileContent.postBySlug(slug);
   const { data, error } = await db
     .from('posts')
     .select(FULL_POST_COLUMNS)
@@ -48,7 +60,7 @@ export async function getPostBySlug(slug: string): Promise<FullPost | null> {
 /** Published posts, newest first. */
 export async function getPublishedPosts(limit = 20, offset = 0): Promise<Post[]> {
   const db = readClient();
-  if (!db) return [];
+  if (!db) return fileContent.posts(limit, offset);
   const { data, error } = await db
     .from('posts')
     .select(POST_COLUMNS)
@@ -67,7 +79,7 @@ export async function getAllPublishedPostRefs(): Promise<
   Pick<Post, 'slug' | 'title' | 'excerpt' | 'published_at' | 'updated_at' | 'category_id'>[]
 > {
   const db = readClient();
-  if (!db) return [];
+  if (!db) return fileContent.allPostRefs();
   const { data, error } = await db
     .from('posts')
     .select('slug, title, excerpt, published_at, updated_at, category_id')
@@ -85,7 +97,7 @@ export async function getAllPublishedPostRefs(): Promise<
 
 export async function getCategories(): Promise<Category[]> {
   const db = readClient();
-  if (!db) return [];
+  if (!db) return fileContent.categories();
   const { data, error } = await db
     .from('categories')
     .select('*')
@@ -100,7 +112,7 @@ export async function getCategories(): Promise<Category[]> {
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   const db = readClient();
-  if (!db) return null;
+  if (!db) return fileContent.categoryBySlug(slug);
   const { data, error } = await db.from('categories').select('*').eq('slug', slug).maybeSingle();
   if (error) {
     console.error('[queries] getCategoryBySlug', slug, error.message);
@@ -111,7 +123,7 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 
 export async function getPostsByCategory(categoryId: string, limit = 50): Promise<Post[]> {
   const db = readClient();
-  if (!db) return [];
+  if (!db) return fileContent.postsByCategory(categoryId, limit);
   const { data, error } = await db
     .from('posts')
     .select(POST_COLUMNS)
@@ -139,7 +151,7 @@ export async function getRelatedPosts(
 
 export async function getAuthorBySlug(slug: string): Promise<Author | null> {
   const db = readClient();
-  if (!db) return null;
+  if (!db) return fileContent.authorBySlug(slug);
   const { data, error } = await db.from('authors').select('*').eq('slug', slug).maybeSingle();
   if (error) {
     console.error('[queries] getAuthorBySlug', slug, error.message);
@@ -162,4 +174,22 @@ export async function getRedirect(fromPath: string): Promise<string | null> {
     return null;
   }
   return (data as { to_path: string } | null)?.to_path ?? null;
+}
+
+/**
+ * Slugs to prerender at build time.
+ *
+ * With the file source, every post is known up front, so the whole archive is
+ * built as static HTML — the fastest thing to serve and the best case for Core
+ * Web Vitals. With Supabase the set is unknown at build (and a build must not
+ * need database access), so pages are generated on demand and cached by ISR.
+ */
+export function staticPostSlugs(): { slug: string }[] {
+  if (readClient()) return [];
+  return fileContent.allPostRefs().map((p) => ({ slug: p.slug }));
+}
+
+export function staticCategorySlugs(): { slug: string }[] {
+  if (readClient()) return [];
+  return fileContent.categories().map((c) => ({ slug: c.slug }));
 }

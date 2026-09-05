@@ -13,6 +13,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "hash-password": "node scripts/hash-password.mjs",
+    "build:content": "node scripts/build-content.mjs",
     "import:legacy": "node scripts/import-legacy-posts.mjs"
   },
   "dependencies": {
