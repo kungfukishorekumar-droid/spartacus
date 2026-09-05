@@ -158,13 +158,22 @@ uses the same mechanism rather than a bespoke deploy.
    **Root directory matters:** this repository holds the static main site at its root
    and the blog in `spartacus-blog/`. Pointing at the repository root will make the
    build fail with "no package.json".
-3. **Environment variables** on that Node.js app — add every key from `.env.example`:
+3. **Environment variables** on that Node.js app — every key from `.env.example`:
    `SITE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
    `ADMIN_PASSWORD_HASH`, `ADMIN_SESSION_SECRET`, and `NODE_ENV=production`.
+
+   `SITE_URL` and `NODE_ENV` are already set on this account. The remaining four
+   carry real credentials, so set them in hPanel rather than pasting them anywhere
+   else — `SUPABASE_SERVICE_ROLE_KEY` bypasses row-level security entirely.
+
+   > **Saving replaces the whole set.** Any variable you leave out is deleted, so when
+   > you add the Supabase keys make sure `SITE_URL` and `NODE_ENV` are still in the
+   > list. (The API takes `{key, value}` objects, not `{name, value}`.)
 
    Set these **before** the first build. `SITE_URL` in particular is read while the
    homepage, `sitemap.xml` and `llms.txt` are prerendered; if it is missing the build
    log prints a warning and the site ships canonical URLs for the wrong domain.
+   Changing it later needs a rebuild, not just a restart.
 4. **SSL** → issue a certificate for `blog.spartacusmartialarts.com`.
 
 ---
