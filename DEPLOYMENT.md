@@ -28,6 +28,18 @@ Until this runs, tracking silently does nothing — the site is unaffected.
 
 ## Step 2 — Connect Hostinger to GitHub (3 minutes, no password needed)
 
+> **Order matters.** Everything in this document lives on the pull request
+> branch, not on `main` yet. The **blog** can be deployed right now — the
+> `blog-dist` branch is already built from that work. The **main site** must
+> not be deployed from `main` until the pull request is merged, or you would
+> publish the old site: no visitor tracking, no redirects from the old blog
+> URLs, and a Blog menu item still pointing at the wrong place.
+>
+> Merging the PR also switches on the workflow that keeps `blog-dist` current
+> automatically. Until then the branch is only updated when it is rebuilt by
+> hand.
+
+
 The repository is public, so Hostinger can pull it directly. **You never have to
 put an FTP password anywhere.**
 
