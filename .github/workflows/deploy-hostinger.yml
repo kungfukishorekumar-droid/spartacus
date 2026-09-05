@@ -9,7 +9,9 @@
 # site's document root. The main-site job therefore excludes blog/** so a
 # main-site deploy can never wipe the blog.
 #
-# One-time setup — GitHub → Settings → Secrets and variables → Actions:
+# This workflow is OPTIONAL. Without the secrets below it skips cleanly and
+# reports success, because the site deploys through hPanel Git by default.
+# To use FTP instead — GitHub → Settings → Secrets and variables → Actions:
 #   HOSTINGER_FTP_SERVER    145.79.25.192
 #   HOSTINGER_FTP_USERNAME  u824263812
 #   HOSTINGER_FTP_PASSWORD  (your hosting FTP password, from hPanel → Files → FTP Accounts)
@@ -33,29 +35,32 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Fail early if the FTP secrets are missing
+      - name: Are the FTP secrets configured?
+        id: cfg
         env:
           SERVER: ${{ secrets.HOSTINGER_FTP_SERVER }}
           USERNAME: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           PASSWORD: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         run: |
-          missing=""
-          [ -z "$SERVER" ]   && missing="$missing HOSTINGER_FTP_SERVER"
-          [ -z "$USERNAME" ] && missing="$missing HOSTINGER_FTP_USERNAME"
-          [ -z "$PASSWORD" ] && missing="$missing HOSTINGER_FTP_PASSWORD"
-          if [ -n "$missing" ]; then
-            echo "::error::Missing repository secret(s):$missing"
-            echo "Add them under Settings → Secrets and variables → Actions."
-            exit 1
+          if [ -n "$SERVER" ] && [ -n "$USERNAME" ] && [ -n "$PASSWORD" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "All FTP secrets present — deploying."
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::FTP secrets are not set, so this optional deploy is skipped."
+            echo "The site deploys through Hostinger hPanel Git instead (see DEPLOYMENT.md)."
+            echo "To switch FTP deploys on, add HOSTINGER_FTP_SERVER, HOSTINGER_FTP_USERNAME"
+            echo "and HOSTINGER_FTP_PASSWORD under Settings -> Secrets and variables -> Actions."
           fi
-          echo "All FTP secrets present."
 
       - name: Set up Node
+        if: steps.cfg.outputs.ready == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Build the blog bundle
+        if: steps.cfg.outputs.ready == 'true'
         run: |
           node tools/build-blog-site.mjs
           test -f dist-blog/blog.html
@@ -65,6 +70,7 @@ jobs:
 
       # ---------- 1. MAIN SITE ----------
       - name: Deploy main site → spartacusmartialarts.com
+        if: steps.cfg.outputs.ready == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -94,6 +100,7 @@ jobs:
 
       # ---------- 2. BLOG SUBDOMAIN ----------
       - name: Deploy blog → blog.spartacusmartialarts.com
+        if: steps.cfg.outputs.ready == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -104,6 +111,7 @@ jobs:
           server-dir: /domains/spartacusmartialarts.com/public_html/blog/
 
       - name: Summary
+        if: steps.cfg.outputs.ready == 'true'
         run: |
           {
             echo "### Deployed"
