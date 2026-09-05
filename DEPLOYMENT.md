@@ -26,24 +26,47 @@ Until this runs, tracking silently does nothing — the site is unaffected.
 
 ---
 
-## Step 2 — Add three GitHub secrets (3 minutes)
+## Step 2 — Connect Hostinger to GitHub (3 minutes, no password needed)
 
-GitHub → your repo → **Settings** → **Secrets and variables** → **Actions** →
-**New repository secret**. Add these three:
+The repository is public, so Hostinger can pull it directly. **You never have to
+put an FTP password anywhere.**
 
-| Secret name | Value |
+There are two Git connections to make in hPanel → **Website** → **Git**:
+
+**A. The blog** → `blog.spartacusmartialarts.com`
+
+| Field | Value |
 |---|---|
-| `HOSTINGER_FTP_SERVER` | `145.79.25.192` |
-| `HOSTINGER_FTP_USERNAME` | `u824263812` |
-| `HOSTINGER_FTP_PASSWORD` | your FTP password |
+| Repository | `https://github.com/kungfukishorekumar-droid/spartacus.git` |
+| Branch | `blog-dist` |
+| Directory | `/domains/spartacusmartialarts.com/public_html/blog` |
 
-Get the password from **hPanel → Files → FTP Accounts** (create one or reset the
-existing password). Never paste it into a chat or a file — only into the secret box.
+Click **Create**, then **Deploy**. The blog is live.
 
-Then run the deploy: **Actions** tab → **Deploy to Hostinger** → **Run workflow**.
-After that, every push to `main` deploys automatically.
+The `blog-dist` branch holds the *built* blog — its root is exactly the blog's
+document root, so there is nothing to compile. A GitHub Action rebuilds and
+force-pushes it automatically whenever the blog changes on `main`, so after the
+first setup you only ever click **Deploy** (or switch on **Auto-deployment** in
+hPanel and stop clicking altogether).
 
----
+**B. The main site** → `spartacusmartialarts.com`
+
+| Field | Value |
+|---|---|
+| Repository | `https://github.com/kungfukishorekumar-droid/spartacus.git` |
+| Branch | `main` |
+| Directory | `/domains/spartacusmartialarts.com/public_html` |
+
+The root `.htaccess` blocks everything that is repository-only — `tools/`,
+`supabase/`, `dist-blog/`, `.sql`, `.md`, dotfiles — so a plain Git copy is safe
+to serve.
+
+> **Optional: FTP deploys instead.** `.github/workflows/deploy-hostinger.yml`
+> pushes both targets over FTP on every commit, which removes the Deploy click
+> entirely. It needs three repository secrets — `HOSTINGER_FTP_SERVER`
+> (`145.79.25.192`), `HOSTINGER_FTP_USERNAME` (`u824263812`) and
+> `HOSTINGER_FTP_PASSWORD` (from hPanel → Files → FTP Accounts). Use it only if
+> you want fully hands-off deploys; the Git route above needs no credentials.
 
 ## Step 3 — Tell Google about the new blog host (5 minutes)
 
@@ -88,19 +111,11 @@ discarded it).
 
 ## Deploying
 
-**Automatic (set up in Step 2)** — push to `main`, and
-`.github/workflows/deploy-hostinger.yml` builds the blog and uploads both targets.
-The main-site job excludes `blog/**`, so it can never overwrite the blog.
-
-**Manual fallback — hPanel Git**
-
-1. hPanel → **Website** → **Git**
-2. Repository: `https://github.com/kungfukishorekumar-droid/spartacus.git`, branch `main`
-3. Directory: `/domains/spartacusmartialarts.com/public_html`
-4. **Create**, then **Deploy** whenever you want changes live
-
-Note that hPanel Git copies the repository as-is; it does **not** run the blog
-build. Use it for the main site, and let GitHub Actions handle the blog.
+| What | How |
+|---|---|
+| Blog content or images changed | Push to `main` → the Action rebuilds `blog-dist` → click **Deploy** in hPanel |
+| Main site pages changed | Push to `main` → click **Deploy** on the main site's Git connection |
+| Want zero clicks | Turn on **Auto-deployment** in hPanel, or add the three FTP secrets |
 
 **Building the blog locally**
 
@@ -108,7 +123,15 @@ build. Use it for the main site, and let GitHub Actions handle the blog.
 node tools/build-blog-site.mjs     # → dist-blog/  (125 articles + sitemap + robots + .htaccess)
 ```
 
----
+**Regenerating the article artwork**
+
+```bash
+node tools/render-blog-images.mjs            # all 127 header images
+node tools/render-blog-images.mjs --preview  # one sample per category
+```
+
+Both are free and need no image service — the artwork is drawn with the Canvas
+API in headless Chromium.
 
 ## Reading your numbers
 
