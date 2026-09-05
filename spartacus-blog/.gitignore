@@ -1,0 +1,18 @@
+node_modules/
+.next/
+out/
+build/
+.env
+.env.local
+.env*.local
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+npm-debug.log*
+.vercel
+
+# The repo root .gitignore excludes package.json / package-lock.json (they are
+# kept out of the static site's Hostinger upload). The blog is a real Node app
+# and needs both — `npm ci` in CI depends on the lockfile.
+!package.json
+!package-lock.json
