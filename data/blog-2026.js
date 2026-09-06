@@ -1290,4 +1290,116 @@
     ]
   });
 
+  /* =========================================================
+     14 — INJURY / RISK  (deliberately NARROW)
+     The library already covers safety from four angles: choosing a safe
+     academy, sparring safety, beginner training safety, and the "is it
+     violent?" objection. A general "is it safe?" post would cannibalise
+     all four. This one owns the one query none of them answer — what
+     injuries actually happen — plus medical conditions and the Chennai
+     physical environment (floor surface, heat). It links to the other
+     four so the safety cluster reinforces instead of competing.
+     ========================================================= */
+  mk({
+    slug: "martial-arts-injuries-children-honest-risk-guide",
+    title: "Is Martial Arts Dangerous for Kids? What Injuries Actually Happen",
+    seoTitle: "Is Martial Arts Dangerous for Kids? Injury Guide",
+    seoDescription: "An honest answer on martial arts injuries in children — what actually happens, what causes most of them, and what genuinely reduces the risk.",
+    category: "Parent Guide", subcategory: "Safety and Injuries",
+    publishedDate: "2026-09-06", publishedTime: "10:20 PM",
+    excerpt: "No coach should tell you martial arts is completely safe — no physical activity is. Here is the honest version: the injuries that actually occur in children's classes, what causes most of them, and the things that genuinely reduce the risk.",
+    quickAnswer: "In a well-run children's class, the common injuries are minor: bruises, jammed fingers, mat burns and muscle strains. Serious injuries are uncommon because beginners do not spar. Most incidents happen at the end of class when children are tired, on hard floors, or between badly matched partners.",
+    seoKeywords: [
+      "is martial arts dangerous for kids",
+      "martial arts injuries children",
+      "is karate safe for kids",
+      "martial arts injury risk",
+      "kids martial arts safety chennai"
+    ],
+    geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Kolathur", "Tamil Nadu"],
+    imagePrompt: "A coach kneeling to check on a young student at the edge of a training mat in a well-lit academy, calm and reassuring, other children training in the background, documentary feel, no text.",
+    content: `
+<p>If a coach tells you martial arts is completely safe, be careful. No physical activity is completely safe — not cricket, not football, not cycling to school. What an honest coach can tell you is exactly what tends to go wrong, and what is done to make it rare.</p>
+<p>So here is that answer, without the marketing.</p>
+
+<h2>What injuries actually happen in kids' classes?</h2>
+<p>In a properly run beginners' class, the overwhelming majority are minor and unremarkable:</p>
+<ul>
+  <li><strong>Bruises</strong> — from pads, a mistimed block, a knock against a partner</li>
+  <li><strong>Jammed or bent fingers and toes</strong> — the single most common complaint, usually from a hand or foot catching a pad or the floor</li>
+  <li><strong>Mat burns and scrapes</strong> — friction, especially on knees and elbows</li>
+  <li><strong>Muscle strains</strong> — from over-stretching or a cold start</li>
+  <li><strong>Rolled ankles</strong> — from landing or turning awkwardly</li>
+</ul>
+<p>What is genuinely uncommon in beginner children's training: fractures, concussions and dental injuries. The reason is simple — <strong>beginners do not spar</strong>. Nearly all the serious injury risk in martial arts sits in uncontrolled contact, and beginners are not doing any.</p>
+
+<h2>When do most injuries happen?</h2>
+<p>After years of coaching, the pattern is consistent. Injuries cluster around four moments:</p>
+<ol>
+  <li><strong>The last fifteen minutes.</strong> Tired children lose form, drop their guard and land badly. A coach who keeps intensity high right to the bell is the risk, not the child.</li>
+  <li><strong>A skipped or rushed warm-up.</strong> Cold muscles and sudden kicking are a bad combination.</li>
+  <li><strong>Badly matched partners.</strong> Size and experience gaps cause more injuries than aggression does.</li>
+  <li><strong>Ego.</strong> A child trying something they have not been taught yet, usually to impress someone.</li>
+</ol>
+<p>Notice that three of the four are about how the class is <em>run</em>, not about martial arts itself. That is the whole point.</p>
+
+<h2>The thing almost nobody checks: the floor</h2>
+<p>This matters more in Chennai than most parents realise. Plenty of halls here are <strong>concrete or tile with a thin mat laid over the top</strong> — or no mat at all. Concrete does not forgive a bad landing.</p>
+<p>Before you enrol, go and stand on the training surface. Press it with your foot. Ask what is underneath. A proper mat, or a sprung wooden floor, changes the injury profile of everything a child does in that room — falling, rolling, jumping, even simple footwork.</p>
+<p>Heat is the second environmental factor, and it is a serious one during April and May; I covered how a well-run session handles it in ${P("martial-arts-summer-camp-chennai-parents-guide", "the summer camp guide")}.</p>
+
+<h2>Learning to fall is injury prevention</h2>
+<p>Here is the part parents rarely hear. One of the first things a good class teaches is <strong>how to fall</strong> — how to land without putting an arm out, how to spread impact, how to protect the head.</p>
+<p>That skill does not stay on the mat. Children fall off cycles, down steps and in playgrounds. A child who has practised falling safely a few hundred times carries a genuine protective habit into all of it. In that sense, structured martial arts training can reduce a child's overall injury risk rather than add to it.</p>
+
+<h2>What if my child has a medical condition?</h2>
+<p><strong>Tell the coach. Always, and in writing if you can.</strong> None of these are automatic barriers, but every one of them changes how a session should be run:</p>
+<ul>
+  <li><strong>Asthma</strong> — inhaler present at every class, intensity built gradually, no pressure to "push through" breathlessness</li>
+  <li><strong>Glasses</strong> — fine for non-contact training; sports straps help, and they come off for any partner drill</li>
+  <li><strong>A previous injury or fracture</strong> — the coach adapts drills rather than finding out mid-session</li>
+  <li><strong>Epilepsy, heart conditions, or anything under specialist care</strong> — get clearance from your doctor first, and share what they advise</li>
+  <li><strong>Joint hypermobility</strong> — common in children, and it changes how far stretching should go</li>
+</ul>
+<p>A coach who reacts to this information with questions rather than a shrug is the one you want.</p>
+
+<h2>Is it safe for a five or six-year-old?</h2>
+<p>Yes, when the class is built for that age — short drills, games, coordination work, almost no partner contact, and a batch of their own. The risk with young children is rarely injury; it is a class pitched at older kids that they cannot follow. That is a coaching failure, not a safety property of martial arts. More on readiness in ${P("best-age-to-start-martial-arts-for-kids", "the best age to start")}.</p>
+
+<h2>What actually reduces the risk?</h2>
+<p>Five things, in order of impact: a qualified coach who is actually watching; a full warm-up; age and size-grouped partners; a forgiving floor; and no sparring until the basics are genuinely solid. Each of those is a question you can ask before you pay.</p>
+<p>The related reading covers each in depth — ${P("what-makes-safe-martial-arts-academy-for-children", "the five marks of a safe children's academy")}, ${P("why-sparring-must-be-taught-with-safety-and-respect", "how sparring should be introduced")}, and ${P("how-to-train-martial-arts-safely-as-beginner", "training safely as a beginner")}. If the aggression question is the one actually worrying you, that is answered separately in ${P("martial-arts-is-not-violence-controlled-strength", "martial arts is not violence")}.</p>
+
+<h2>What to do if your child does get hurt</h2>
+<p>Expect a coach to stop the class, check the child themselves, apply basic first aid, and tell you what happened before you have to ask. Bruises and jammed fingers usually need ice and a day off, nothing more. Anything involving the head, a joint that will not bear weight, or pain that persists past a couple of days needs a doctor, not a coach's opinion.</p>
+<p>What you should never accept is an injury being hidden from you, or a child being told to keep going through real pain.</p>
+
+<h2>The honest comparison</h2>
+<p>The right question is not "is martial arts risk-free" — nothing is. It is "how does this compare with the alternatives." Against most field and contact sports played on hard ground, a supervised beginners' martial arts class with no sparring is a controlled environment: small groups, an adult watching continuously, and a curriculum that spends its first weeks teaching children how to land.</p>
+<p>Come and watch a session before deciding — stand on the floor, look at the batch size, see how the warm-up is run. ${L.trial} or ${L.wa} and ask me any of the questions on this page directly.</p>`,
+    faqs: [
+      F("Is martial arts dangerous for children?",
+        "Not in a well-run beginners' class. Common injuries are minor — bruises, jammed fingers, mat burns and strains. Serious injuries are uncommon because beginners do not spar, and most contact risk in martial arts comes from uncontrolled sparring."),
+      F("What are the most common injuries in kids' martial arts?",
+        "Jammed or bent fingers and toes are the most frequent, followed by bruises, mat burns and minor muscle strains. Most occur late in a session when children are tired, after a rushed warm-up, or between badly matched partners."),
+      F("Do children break bones in martial arts?",
+        "It is uncommon in beginner children's training, because beginners do not spar and are not thrown onto hard surfaces. The risk rises with uncontrolled contact and unforgiving floors, which is why supervision and the training surface matter so much."),
+      F("Can my child train with asthma or glasses?",
+        "Usually yes. Asthma requires the inhaler at every class and intensity built gradually with no pressure to push through breathlessness. Glasses are fine for non-contact training and come off for partner drills. Tell the coach before the first session."),
+      F("Is martial arts safe for a 5 or 6 year old?",
+        "Yes, in a class designed for that age — short drills, games, coordination work, minimal partner contact and an age-grouped batch. The usual problem for young children is a class pitched at older students, not injury risk."),
+      F("Does the training floor really matter?",
+        "Considerably. Many halls in Chennai are concrete or tile with a thin mat, or no mat at all. Concrete does not forgive bad landings. Stand on the surface and ask what is underneath before enrolling."),
+      F("Should I tell the coach about an old injury?",
+        "Always, and in writing if possible. A coach who knows can adapt drills in advance; a coach who finds out mid-session cannot. The same applies to any condition under specialist care, where you should also get medical clearance first."),
+      F("What should happen if my child is hurt in class?",
+        "The coach should stop, check the child personally, give basic first aid and tell you what happened without being asked. Head impacts, a joint that will not bear weight, or pain lasting more than a couple of days need a doctor.")
+    ],
+    relatedPosts: [
+      "what-makes-safe-martial-arts-academy-for-children",
+      "why-sparring-must-be-taught-with-safety-and-respect",
+      "how-to-train-martial-arts-safely-as-beginner"
+    ]
+  });
+
 })();
