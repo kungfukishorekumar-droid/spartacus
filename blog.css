@@ -362,3 +362,82 @@ figure.bimg-fig figcaption{color:var(--muted);font-size:.82rem;margin-top:8px;te
 /* ---- inline links inside prose ---- */
 .post-body a{color:var(--gold-2);border-bottom:1px solid rgba(233,196,90,.4);transition:color .2s,border-color .2s}
 .post-body a:hover{color:#fff;border-bottom-color:var(--gold)}
+
+/* ============================================================
+   LISTING HERO — redesign
+   The hero was 1,201px tall on a 720px viewport (1.7 screens), and the
+   14 category chips wrapped into three rows, pushing the first article
+   more than three screens down. This compresses the hero, turns the
+   filters into a single swipeable row, and gets articles into view.
+   ============================================================ */
+
+.blog-hero{
+  padding:clamp(46px,6vw,74px) 0 clamp(16px,2.2vw,24px);
+  text-align:center;
+  border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(760px 300px at 50% -8%, rgba(225,29,42,.18), transparent 64%),
+    radial-gradient(520px 220px at 50% 0, rgba(233,196,90,.07), transparent 70%);
+}
+.blog-hero .eyebrow{font-size:.68rem}
+.blog-hero .page-title{
+  font-size:clamp(1.85rem,5vw,3.05rem);
+  margin:10px 0 8px;line-height:1.02;
+}
+.blog-hero .page-sub{
+  font-size:1rem;line-height:1.6;max-width:580px;margin:0 auto 16px;
+}
+
+/* Credibility line — who wrote these, stated plainly (also good for AEO) */
+.blog-hero-stats{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:8px 16px;margin:0 auto 18px;color:var(--muted);
+  font-family:var(--font-head);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+}
+.blog-hero-stats b{color:var(--gold-2);font-weight:600}
+.blog-hero-stats span{display:inline-flex;align-items:center;gap:7px}
+.blog-hero-stats span::before{
+  content:"";width:5px;height:5px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 8px var(--gold);
+}
+
+/* Search becomes the primary action in the hero */
+.blog-search{max-width:600px;margin:0 auto}
+.blog-search input{padding:15px 22px;font-size:1rem}
+
+/* Filters: one swipeable row instead of a three-row wall of chips.
+   Fades at both edges hint that there is more to scroll. */
+.blog-filters{
+  display:flex;flex-wrap:nowrap;justify-content:flex-start;
+  gap:8px;margin:16px auto 0;max-width:100%;
+  overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+  padding:2px 4px 6px;
+  scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%);
+}
+.blog-filters::-webkit-scrollbar{display:none}
+.blog-chip{flex:0 0 auto;scroll-snap-align:start;white-space:nowrap}
+/* Centre the chips only when they actually fit. Plain "center" on an
+   overflowing scroll container clips the first chips and makes them
+   unreachable; "safe center" falls back to flex-start when it overflows. */
+.blog-filters{justify-content:safe center}
+
+.blog-subfilters{
+  display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;
+  padding:2px 4px 4px;scrollbar-width:none;justify-content:flex-start;
+}
+.blog-subfilters::-webkit-scrollbar{display:none}
+.blog-subchip{flex:0 0 auto;white-space:nowrap}
+
+/* Hero CTAs: compact, and "Start Reading" is redundant beside the grid */
+.blog-hero .hero-actions{gap:10px;margin-bottom:14px;justify-content:center}
+.blog-hero .hero-actions .btn{padding:12px 24px;font-size:.86rem}
+
+@media (max-width:700px){
+  .blog-hero{padding-top:clamp(34px,9vw,52px)}
+  .blog-hero .page-sub{font-size:.95rem;margin-bottom:14px}
+  .blog-hero-stats{font-size:.66rem;gap:6px 12px}
+  .blog-search input{padding:13px 18px;font-size:.95rem}
+}

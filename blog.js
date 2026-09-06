@@ -59,6 +59,10 @@
   function renderListing(root) {
     var state = { cat: "all", sub: "all", q: "", shown: 12 };
 
+    // Hero credibility line: keep the guide count accurate as posts are added.
+    var heroCount = root.querySelector("#blogHeroCount");
+    if (heroCount) heroCount.textContent = POSTS.length;
+
     var featured = POSTS[0];
     var featSide = POSTS.slice(1, 4);
     root.querySelector("#blogFeatured").innerHTML =
