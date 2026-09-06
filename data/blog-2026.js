@@ -1045,4 +1045,123 @@
     ]
   });
 
+  /* =========================================================
+     12 — SUMMER CAMP
+     Second content-gap post: zero coverage of summer/holiday camps across
+     all 126 articles, despite it being the highest-volume seasonal parent
+     search in Chennai. Published in September deliberately — it needs
+     months to rank before the April/May season.
+     PERSONALISE: this year's camp dates, timings and fee.
+     ========================================================= */
+  mk({
+    slug: "martial-arts-summer-camp-chennai-parents-guide",
+    title: "Martial Arts Summer Camp in Chennai: What Parents Should Actually Ask",
+    seoTitle: "Martial Arts Summer Camp in Chennai: Parent Guide",
+    seoDescription: "How martial arts summer camps work in Chennai, when to book, the heat question nobody asks, and how to judge a camp before you pay for your child's holidays.",
+    category: "Parent Guide", subcategory: "Summer Camp",
+    publishedDate: "2026-09-06", publishedTime: "06:15 PM",
+    excerpt: "Chennai summer camps fill up long before the holidays start, and most parents book on a WhatsApp forward. Here is what a martial arts camp actually involves, the questions worth asking, and the one thing almost nobody checks — the heat.",
+    quickAnswer: "Martial arts summer camps in Chennai usually run through the April–May school holidays, in short daily batches. Good camps fill by March, so enquire early. Before booking, confirm who coaches the sessions, the batch size, the indoor training arrangement and the hydration breaks — heat safety matters more here than anywhere else.",
+    seoKeywords: [
+      "martial arts summer camp chennai",
+      "summer camp in chennai for kids",
+      "summer classes for kids chennai",
+      "holiday camp chennai kids",
+      "kids summer camp near me chennai",
+      "april may summer camp chennai"
+    ],
+    geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Kolathur", "Villivakkam", "Purasaiwakkam", "Anna Nagar", "Tamil Nadu"],
+    imagePrompt: "Indian children in white martial arts uniforms training in a bright airy indoor academy hall during summer, water bottles lined up at the edge of the mat, energetic and joyful, cinematic, no text.",
+    content: `
+<p>Every February my phone starts filling with the same message: <em>"Coach, summer camp irukka?"</em> By the time the holidays actually arrive, the good batches are gone.</p>
+<p>Summer camp is often a child's first real contact with martial arts — and for a lot of families it decides whether they ever come back. So here is an honest guide to how these camps work in Chennai, what to ask before you pay, and the one question almost no parent thinks to ask.</p>
+
+<h2>When do summer camps run in Chennai?</h2>
+<p>Most run through the <strong>April and May school holidays</strong>, in short daily or alternate-day batches — typically a few weeks long. Because every academy, sports club and activity centre in the city is competing for the same six-week window, the well-run camps are usually full by <strong>March</strong>.</p>
+<p>If you are reading this outside the season, that is actually the right time to plan. Ask now, and you choose the batch; ask in April, and you take whatever is left.</p>
+
+<h2>What actually happens in a martial arts summer camp?</h2>
+<p>A good camp is not a holiday babysitting service with a uniform. A well-structured session usually covers:</p>
+<ul>
+  <li><strong>Warm-up and mobility</strong> — done properly, this is where injuries get prevented</li>
+  <li><strong>Basics</strong> — stance, guard, footwork, one or two strikes taught cleanly rather than ten taught badly</li>
+  <li><strong>Fitness through play</strong> — games and relays that build stamina without feeling like punishment</li>
+  <li><strong>Discipline routines</strong> — bowing in, lining up, waiting your turn, thanking your partner</li>
+  <li><strong>Basic safety and self-defence awareness</strong> — age-appropriate, never frightening</li>
+</ul>
+<p>What your child should come home with is not a long list of techniques. It is a straighter posture, a better appetite, and the feeling of having been good at something.</p>
+
+<h2>The question nobody asks: what about the heat?</h2>
+<p>This is the one I wish more parents raised. <strong>April and May are the hottest weeks of the Chennai year.</strong> A camp that trains children hard in an unventilated hall at noon is not building discipline — it is risking heat exhaustion.</p>
+<p>Before booking, ask specifically:</p>
+<ul>
+  <li>Is training <strong>indoors</strong>, and how is the hall ventilated?</li>
+  <li>What <strong>time of day</strong> is the batch? Early morning and late evening are the sane windows.</li>
+  <li>How often are <strong>water breaks</strong>, and is the intensity adjusted on the hottest days?</li>
+  <li>What happens if a child feels dizzy or unwell mid-session?</li>
+</ul>
+<p>Any coach worth trusting will answer these immediately, because they have already thought about them. Hesitation is your answer.</p>
+
+<h2>Is a camp worth it, or should my child just join regular classes?</h2>
+<p>It depends on what you are testing. A camp is the <strong>low-commitment way to find out whether your child enjoys martial arts</strong> — a few weeks, a fixed cost, no long-term decision. Regular classes are what actually build skill, because progress in martial arts comes from consistency over months, not intensity over weeks.</p>
+<p>My honest advice: use the camp as the trial, and decide in the last week whether to continue. If your child is disappointed the camp is ending, you have your answer.</p>
+
+<h2>What age is right for a summer camp?</h2>
+<p>Most children are ready from around <strong>five or six</strong>, when they can follow instructions in a group and wait their turn. Younger children can still benefit from playful coordination sessions, but look for age-grouped batches — a six-year-old and a thirteen-year-old in the same batch serves neither. More on this in ${P("best-age-to-start-martial-arts-for-kids", "the best age to start martial arts")}.</p>
+
+<h2>What should you check before booking?</h2>
+<ol>
+  <li><strong>Who actually takes the sessions?</strong> Camps are the most common time for academies to hand classes to junior assistants. Ask for the coach's name and credentials.</li>
+  <li><strong>How many children per batch?</strong> Holiday batches swell. Ask for the cap, not the average.</li>
+  <li><strong>Are batches age-grouped?</strong></li>
+  <li><strong>What is the total cost</strong>, including uniform or gear if required?</li>
+  <li><strong>What is the daily schedule</strong> and how long is each session?</li>
+  <li><strong>Is there a trial or an observation day</strong> before you commit?</li>
+</ol>
+<p>The same logic applies here as when ${P("how-to-choose-best-martial-arts-academy-near-you", "choosing any martial arts academy")} — and the cost questions are covered in detail in ${P("martial-arts-class-fees-in-chennai-honest-cost-guide", "the Chennai fees guide")}.</p>
+
+<h2>What should my child bring?</h2>
+<ul>
+  <li>A large water bottle — larger than you think</li>
+  <li>Comfortable clothes for day one; a uniform only if the camp requires it</li>
+  <li>A small towel</li>
+  <li>Hair tied back, nails cut short, no watches or chains</li>
+  <li>A light snack for after the session, not before</li>
+</ul>
+<p>If it is your child's very first class, ${P("prepare-child-for-first-martial-arts-class", "this guide to preparing for a first session")} covers the nerves too.</p>
+
+<h2>Will restless children cope with a camp?</h2>
+<p>Usually better than in a classroom. Short drills, immediate feedback and clear finish lines suit high-energy children well — that is the whole basis of ${P("martial-arts-for-hyperactive-kids-focus-and-self-control", "why martial arts works for restless kids")}. Tell the coach beforehand, so the batch is set up for it rather than surprised by it.</p>
+
+<h2>Summer camp at Spartacus</h2>
+<p>Our camp runs from our Perambur academy, and most families travel in from Vyasarpadi, Ayanavaram, Kolathur, Villivakkam, Purasaiwakkam and Anna Nagar. Sessions are taken by me personally — I am a Wushu National Medalist, Kung Fu Black Belt, certified Sports Psychologist and State-level Judge — and batches are age-grouped and capped so every child gets corrected by name.</p>
+<p>Dates, timings and the fee change each season, so rather than post a number that goes stale, ${L.wa} on <strong>+91 98845 99939</strong> and I will send you this year's camp schedule and cost directly. If you would rather your child tries a normal class first, you can ${L.trial} any time of year.</p>
+
+<h2>One last thing</h2>
+<p>The best outcome of a summer camp is not a certificate. It is a child who, in June, asks whether they can keep going. Choose the camp that makes that likely — small batches, a real coach, and enough respect for the Chennai heat to train sensibly in it.</p>`,
+    faqs: [
+      F("When do summer camps start in Chennai?",
+        "Most martial arts summer camps run through the April and May school holidays. Popular batches usually fill by March, so it is worth enquiring a few weeks before the holidays begin rather than after they start."),
+      F("What age can my child join a martial arts summer camp?",
+        "Most children are ready from around five or six, once they can follow group instructions and wait their turn. Look for age-grouped batches so younger and older children are not trained together."),
+      F("How much does a summer camp cost in Chennai?",
+        "Camp fees vary by academy, batch length and session frequency, and often exclude uniform or gear. Ask for the total cost including any extras before booking. Message us on WhatsApp for the current Spartacus camp fee."),
+      F("Is martial arts training safe in the Chennai summer heat?",
+        "It is, if the camp is run sensibly — indoor ventilated training, early morning or evening batches, frequent water breaks and reduced intensity on the hottest days. Ask each academy these questions directly before you book."),
+      F("Does my child need any experience to join a summer camp?",
+        "No. Summer camps are designed for complete beginners and start from stance, guard and basic movement. Most children in a camp batch have never trained before."),
+      F("What should my child bring to a martial arts summer camp?",
+        "A large water bottle, comfortable clothes, a small towel, hair tied back and short nails. A uniform is only needed if the camp specifically requires one."),
+      F("Can my child continue regular classes after the camp?",
+        "Yes, and that is the point of a camp — it is a low-commitment way to find out whether your child enjoys training. Skill comes from consistency over months, so continuing into regular batches is where real progress happens."),
+      F("Do you run a summer camp in Perambur?",
+        "Yes. Our camp runs from the Spartacus academy in Perambur, with families travelling in from Vyasarpadi, Ayanavaram, Kolathur, Villivakkam, Purasaiwakkam and Anna Nagar. Message Coach Kishore on WhatsApp for this season's dates and timings.")
+    ],
+    relatedPosts: [
+      "best-age-to-start-martial-arts-for-kids",
+      "prepare-child-for-first-martial-arts-class",
+      "martial-arts-for-hyperactive-kids-focus-and-self-control"
+    ]
+  });
+
 })();

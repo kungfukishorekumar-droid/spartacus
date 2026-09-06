@@ -10,6 +10,7 @@
    ============================================================ */
 import fs from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -77,6 +78,29 @@ for (const d of DIRS) {
     `<meta property="og:type" content="website" />\n<meta property="og:url" content="${BLOG}/" />`
   );
   fs.writeFileSync(p, html);
+}
+
+/* ---------- cache-bust the post data ----------
+   The blog host caches .js for a week (max-age=604800). The data/*.js files
+   change on every publish, so without a version in the URL a returning
+   visitor keeps their cached copy and simply does not see new articles for
+   up to seven days. Stamp them with a hash of their own contents, so the
+   URL changes exactly when the data changes — and never otherwise. */
+{
+  const dataDir = path.join(OUT, "data");
+  const names = fs.readdirSync(dataDir).filter(f => f.endsWith(".js")).sort();
+  const h = crypto.createHash("md5");
+  for (const n of names) h.update(fs.readFileSync(path.join(dataDir, n)));
+  const ver = h.digest("hex").slice(0, 10);
+
+  for (const page of ["blog.html", "blog-post.html"]) {
+    const p = path.join(OUT, page);
+    if (!fs.existsSync(p)) continue;
+    let html = fs.readFileSync(p, "utf8");
+    html = html.replace(/src="(data\/[^"?]+\.js)(\?[^"]*)?"/g, `src="$1?v=${ver}"`);
+    fs.writeFileSync(p, html);
+  }
+  console.log("  data cache-bust version:", ver);
 }
 
 /* ---------- sitemap: every article, on the blog host ---------- */
