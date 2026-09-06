@@ -1402,4 +1402,117 @@
     ]
   });
 
+
+  /* =========================================================
+     15 — CLASS TIMINGS / CHOOSING A BATCH
+     True zero-coverage gap: the only "timing" match in 129 posts was
+     "The Secret of Strong Kicks: Hips, Balance, Timing" — unrelated.
+     High commercial intent ("martial arts classes chennai timings",
+     "evening classes"). No batch times invented; the post is about how to
+     CHOOSE a slot, which is where families actually go wrong.
+     PERSONALISE: the real batch timetable.
+     ========================================================= */
+  mk({
+    slug: "martial-arts-class-timings-chennai-choosing-a-batch",
+    title: "Martial Arts Class Timings in Chennai: How to Pick a Batch You Will Actually Keep",
+    seoTitle: "Martial Arts Class Timings in Chennai: Batch Guide",
+    seoDescription: "Morning or evening, how many days a week, and the Chennai traffic rule that decides whether your child is still training in month four.",
+    category: "Parent Guide", subcategory: "Timings and Batches",
+    publishedDate: "2026-09-07", publishedTime: "08:30 AM",
+    excerpt: "Most children who quit martial arts do not lose interest — they lose the slot. Here is how to choose a class time your family can actually sustain, and the Chennai-specific factors that decide it.",
+    quickAnswer: "Most Chennai academies run early-morning and evening batches on weekdays, with weekend options. Choose the slot you can keep on a bad week, not your best week: consistency produces results, and the most common reason children stop training is an unsustainable timing, not lost interest.",
+    seoKeywords: [
+      "martial arts class timings chennai",
+      "evening martial arts classes chennai",
+      "morning martial arts classes chennai",
+      "kids martial arts batch timings",
+      "weekend martial arts classes chennai"
+    ],
+    geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Kolathur", "Villivakkam", "Purasaiwakkam", "Anna Nagar", "Tamil Nadu"],
+    imagePrompt: "A wall clock beside a neatly folded martial arts uniform and belt on a bench at the edge of a training hall, warm evening light through a window, quiet and orderly, no text.",
+    content: `
+<p>Parents ask me about fees first and timings second. In practice it is the wrong order — the fee is paid once a month and forgotten, while the timing is negotiated with traffic, homework and dinner every single week.</p>
+<p>After years of coaching in Chennai, I can tell you the pattern plainly: <strong>most children who stop training did not lose interest. They lost the slot.</strong> The batch was fine in January and impossible by April. So here is how to choose one that survives.</p>
+
+<h2>What time are martial arts classes usually held?</h2>
+<p>Most Chennai academies run <strong>early-morning batches before school or work</strong>, and <strong>evening batches</strong> after them, on weekdays — with weekend options that are usually the fullest. Sessions typically last around an hour.</p>
+<p>Beyond that, timings vary by academy and by age group, so treat any specific timetable you read online as indicative and confirm the current batches directly.</p>
+
+<h2>Morning or evening — which is actually better?</h2>
+<p>Neither is better in the abstract. They fail in different ways:</p>
+<table>
+  <thead><tr><th></th><th>Works when</th><th>Breaks when</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Early morning</strong></td><td>Your household already wakes early; the child is a morning person; you want the day's energy set before school.</td><td>Bedtime is late. A child short on sleep trains badly and resents it within three weeks.</td></tr>
+    <tr><td><strong>Evening</strong></td><td>Training becomes the natural end of the school day and burns off the day's restlessness.</td><td>Homework, tuition and Chennai peak-hour traffic all land in the same window.</td></tr>
+    <tr><td><strong>Weekend</strong></td><td>Weekdays are genuinely full; you want zero commute stress.</td><td>Family plans, functions and travel eat weekends — attendance gets patchy fast.</td></tr>
+  </tbody>
+</table>
+<p>The honest test is not "which suits us?" It is <strong>"which one still works on a bad week?"</strong> Choose for the bad week.</p>
+
+<h2>The Chennai factor nobody plans for: the commute</h2>
+<p>This decides more enrolments than any other single thing. A class twenty minutes away in free traffic can be fifty minutes at 6pm — and a fifty-minute journey twice a week is quietly abandoned by month three.</p>
+<p>Before committing to a batch, do this once: <strong>travel the route at exactly the time you would be travelling</strong>. Not on a Sunday afternoon. If it is unpleasant once, it will be unbearable twenty times.</p>
+<p>This is also why the nearest good academy usually beats the better academy further away — consistency wins over marginal quality. If you are weighing up areas, ${P("martial-arts-classes-near-perambur-ayanavaram-kolathur-chennai", "the local guide to Perambur, Ayanavaram and Kolathur")} covers the North Chennai options.</p>
+
+<h2>How many days a week?</h2>
+<p><strong>Two to three sessions a week is the sweet spot for most beginners</strong>, children and adults alike. It is enough for the body to learn a pattern and enough for the habit to stick, without turning the week into logistics.</p>
+<ul>
+  <li><strong>One day a week</strong> — progress is slow, and each class is spent recovering what was forgotten. Better than nothing, but manage expectations.</li>
+  <li><strong>Two to three days</strong> — steady, visible progress. What I recommend to almost everyone starting out.</li>
+  <li><strong>Four or more</strong> — for competition-track students, and it needs a matching sleep and food routine to be safe.</li>
+</ul>
+<p>Starting at two and adding a third once the routine is established is far more durable than starting at four and dropping to one.</p>
+
+<h2>What about homework, tuition and exam season?</h2>
+<p>Be realistic in advance and you will not have to quit later. Exam months are the usual breaking point — families stop for exams and never restart, because the habit is gone.</p>
+<p>The better move is to <strong>reduce rather than stop</strong>: drop to one session a week through the exam period and keep the thread intact. Training is also one of the more effective ways to manage exam pressure, which I have written about separately in ${P("martial-arts-for-exam-stress-chennai-students", "martial arts and exam stress")}.</p>
+
+<h2>What happens if we miss classes?</h2>
+<p>Ask this before you enrol — the answer varies a lot and it matters. Specifically:</p>
+<ol>
+  <li>Can a missed class be made up in another batch?</li>
+  <li>Is there a limit on make-ups per month?</li>
+  <li>What happens during holidays and school trips?</li>
+  <li>Is the fee paused for a long absence, or does it run on?</li>
+</ol>
+<p>None of these have a single right answer, but an academy that has clearly thought about them is easier to stay enrolled with. The same question set appears in ${P("how-to-choose-best-martial-arts-academy-near-you", "choosing an academy")} and ${P("martial-arts-class-fees-in-chennai-honest-cost-guide", "the fees guide")}.</p>
+
+<h2>Should young children and teenagers train together?</h2>
+<p>No — and a timetable that mixes them is a warning sign. A six-year-old and a fifteen-year-old need different drills, different pacing and different language. Ask which batch your child would actually be placed in, not just what time it starts. Readiness by age is covered in ${P("best-age-to-start-martial-arts-for-kids", "the best age to start")}.</p>
+
+<h2>Adults: pick the slot that survives work</h2>
+<p>For working adults the failure mode is predictable — an evening batch that a 7pm meeting kills twice a month, until it is easier to stop. If your work runs late unpredictably, an <strong>early-morning batch is usually the more honest choice</strong>, because almost nothing gets scheduled over 6am. Adults starting later in life will also find ${P("starting-martial-arts-after-35-adult-beginners-chennai", "the guide to starting after 35")} useful.</p>
+
+<h2>Our batches at Spartacus</h2>
+<p>We run age-grouped batches at the Perambur academy, with students travelling in from Vyasarpadi, Ayanavaram, Kolathur, Villivakkam, Purasaiwakkam and Anna Nagar. Timings change as batches fill and as new age groups open, so rather than publish a timetable that goes out of date, ${L.wa} on <strong>+91 98845 99939</strong> with your child's age and the part of the city you travel from, and I will tell you which batches currently have space and which will actually suit your week.</p>
+<p>You can also ${L.trial} first and see the batch before deciding anything.</p>
+
+<h2>The rule worth remembering</h2>
+<p>A perfect class you attend twice a month does nothing. An adequate class you attend twice a week changes a child. Pick for attendance, and the rest takes care of itself.</p>`,
+    faqs: [
+      F("What time are martial arts classes in Chennai usually held?",
+        "Most academies run early-morning batches before school or work and evening batches afterwards on weekdays, with weekend options that tend to fill fastest. Sessions usually last about an hour, but exact timings vary by academy and age group."),
+      F("How many days a week should my child train?",
+        "Two to three sessions a week suits most beginners. One day a week makes progress slow because each class is spent recovering what was forgotten, while four or more is for competition-track students and needs a matching sleep and food routine."),
+      F("Is morning or evening better for martial arts class?",
+        "Neither is better in general — they fail differently. Morning batches break when bedtime is late; evening batches collide with homework, tuition and peak-hour traffic. Choose the slot that still works on a bad week, not your best week."),
+      F("Do you have weekend martial arts batches?",
+        "Weekend batches are common across Chennai academies and usually the most in demand. They suit families whose weekdays are full, though attendance can get patchy when family plans and travel take over. Message us for current weekend availability."),
+      F("What happens if we miss classes?",
+        "Policies vary, so ask before enrolling: whether missed classes can be made up in another batch, whether there is a monthly limit, what happens over holidays, and whether fees pause during a long absence."),
+      F("Should we stop classes during exam season?",
+        "Reducing is better than stopping. Families who pause for exams often never restart because the habit is gone. Dropping to one session a week keeps the routine alive, and training itself helps manage exam pressure."),
+      F("How long is one martial arts class?",
+        "Around an hour is typical for a regular batch, including warm-up, technique and conditioning. Younger children's batches are often shorter, since attention rather than stamina is the limiting factor."),
+      F("Can children and teenagers train in the same batch?",
+        "They should not. Different ages need different drills, pacing and language. Ask which specific batch your child would join and who else is in it, rather than only asking what time it starts.")
+    ],
+    relatedPosts: [
+      "martial-arts-class-fees-in-chennai-honest-cost-guide",
+      "how-to-choose-best-martial-arts-academy-near-you",
+      "best-age-to-start-martial-arts-for-kids"
+    ]
+  });
+
 })();
