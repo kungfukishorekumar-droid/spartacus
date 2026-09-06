@@ -1,0 +1,377 @@
+/* ============================================================
+   SPARTACUS — UX / MOTION LAYER
+   Loads AFTER styles.css. Adds typography polish, animated
+   backgrounds, and micro-interactions on every interactive element.
+   Nothing here renames or removes existing classes.
+
+   Sections:
+     01  Motion tokens + global easing
+     02  Typography refinement
+     03  Animated background (aurora + grain + vignette)
+     04  Buttons — sweep, ripple, press, focus
+     05  Header / nav / drawer
+     06  Cards + images
+     07  Scroll reveal + stagger
+     08  Forms
+     09  Utility UI (scroll progress, back-to-top, scrollbar)
+     10  Accessibility — focus + reduced motion
+   ============================================================ */
+
+/* ---------- 01 · MOTION TOKENS ---------- */
+:root{
+  /* durations — micro 150-300ms, fluid 400-600ms (never >600ms) */
+  --t-fast:.18s; --t-mid:.28s; --t-slow:.45s; --t-fluid:.6s;
+  /* easings — ease-out entering, ease-in exiting, spring for play */
+  --e-out:cubic-bezier(.22,1,.36,1);
+  --e-in:cubic-bezier(.55,0,1,.45);
+  --e-spring:cubic-bezier(.34,1.56,.64,1);
+  --e-smooth:cubic-bezier(.65,.05,.36,1);
+  --ring:0 0 0 3px rgba(233,196,90,.55);
+}
+html{scroll-behavior:smooth}
+::selection{background:var(--red);color:#fff}
+::-moz-selection{background:var(--red);color:#fff}
+
+/* ---------- 02 · TYPOGRAPHY REFINEMENT ---------- */
+body{
+  font-optical-sizing:auto;
+  text-rendering:optimizeLegibility;
+  -moz-osx-font-smoothing:grayscale;
+}
+h1,h2,h3,h4{text-wrap:balance}
+p,.section-sub,.page-sub,.post-excerpt{text-wrap:pretty}
+/* fluid display scale — no layout shift, scales 375 → 1440 */
+.page-title{font-size:clamp(2.1rem,6.4vw,4rem);line-height:.98;letter-spacing:.005em}
+.section-title{font-size:clamp(1.8rem,5vw,3.1rem);line-height:1;letter-spacing:.005em}
+.hero-copy h1{letter-spacing:.004em}
+.section-sub,.page-sub{line-height:1.7;max-width:66ch}
+/* gold gradient accent text */
+.gold-text{
+  background:linear-gradient(100deg,var(--gold-2) 0%,#fff3cf 42%,var(--gold) 62%,var(--gold-deep) 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:goldFlow 7s var(--e-smooth) infinite;
+}
+@keyframes goldFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+/* eyebrow gets a slow shimmer sweep */
+.eyebrow{position:relative;overflow:hidden;isolation:isolate}
+.eyebrow::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(105deg,transparent 30%,rgba(233,196,90,.28) 50%,transparent 70%);
+  transform:translateX(-120%);animation:sweep 5.5s var(--e-smooth) infinite;
+}
+@keyframes sweep{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+
+/* ---------- 03 · ANIMATED BACKGROUND ---------- */
+/* Fixed, GPU-only (transform/opacity), sits behind all content. */
+body::before{
+  content:"";position:fixed;inset:-25vmax;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(38vmax 32vmax at 18% 12%,rgba(225,29,42,.20),transparent 62%),
+    radial-gradient(34vmax 30vmax at 82% 26%,rgba(233,196,90,.13),transparent 64%),
+    radial-gradient(40vmax 34vmax at 50% 92%,rgba(225,29,42,.11),transparent 66%);
+  filter:blur(28px);
+  animation:aurora 26s var(--e-smooth) infinite alternate;
+  will-change:transform;
+}
+@keyframes aurora{
+  0%  {transform:translate3d(0,0,0) scale(1) rotate(0deg)}
+  50% {transform:translate3d(2.5%,-2%,0) scale(1.09) rotate(1.2deg)}
+  100%{transform:translate3d(-2%,2.5%,0) scale(1.04) rotate(-1.2deg)}
+}
+/* fine film grain — kills gradient banding, adds premium texture */
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- 04 · BUTTONS ---------- */
+.btn{
+  transition:transform var(--t-mid) var(--e-spring),
+             box-shadow var(--t-mid) var(--e-out),
+             filter var(--t-mid) var(--e-out),
+             border-color var(--t-mid) var(--e-out),
+             color var(--t-mid) var(--e-out);
+  isolation:isolate;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;      /* removes 300ms tap delay */
+  min-height:44px;                /* touch target floor */
+}
+/* light sweep across the face on hover */
+.btn::before{
+  content:"";position:absolute;top:0;left:-80%;width:55%;height:100%;z-index:1;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);
+  transform:skewX(-22deg);transition:left var(--t-slow) var(--e-out);pointer-events:none;
+}
+.btn:hover::before,.btn:focus-visible::before{left:135%}
+.btn:hover{filter:saturate(1.08) brightness(1.04)}
+.btn:active{transform:translateY(1px) scale(.965);transition-duration:.09s}
+.btn-primary:hover{transform:translateY(-3px) scale(1.022);box-shadow:0 24px 48px -12px var(--red-glow),0 0 0 1px rgba(255,255,255,.09) inset}
+.btn-gold:hover{transform:translateY(-3px) scale(1.022);box-shadow:0 24px 48px -12px rgba(233,196,90,.6)}
+.btn-wa:hover{transform:translateY(-3px) scale(1.022);box-shadow:0 24px 48px -12px rgba(37,211,102,.6)}
+.btn-ghost:hover{transform:translateY(-3px) scale(1.015);background:rgba(233,196,90,.09);box-shadow:0 16px 34px -16px rgba(233,196,90,.5)}
+/* arrow / icon nudges forward */
+.btn svg{transition:transform var(--t-mid) var(--e-spring)}
+.btn:hover svg{transform:translateX(3px)}
+/* click ripple (element injected by ux.js) */
+.rippl{
+  position:absolute;border-radius:50%;transform:scale(0);pointer-events:none;z-index:2;
+  background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);
+  animation:rippl .62s var(--e-out) forwards;
+}
+@keyframes rippl{to{transform:scale(2.6);opacity:0}}
+/* breathing pulse on the single most important CTA */
+.btn-primary.btn-pulse{animation:pulseGlow 2.8s var(--e-smooth) infinite}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 14px 30px -10px var(--red-glow),0 0 0 0 rgba(225,29,42,.5)}
+  50%    {box-shadow:0 18px 38px -10px var(--red-glow),0 0 0 14px rgba(225,29,42,0)}
+}
+/* WhatsApp float — gentle idle bob + ring */
+.wa-float{transition:transform var(--t-mid) var(--e-spring),box-shadow var(--t-mid) var(--e-out);animation:bob 3.4s var(--e-smooth) infinite}
+.wa-float:hover{transform:scale(1.12) rotate(-6deg)}
+.wa-float::after{
+  content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  box-shadow:0 0 0 0 rgba(37,211,102,.55);animation:pulseRing 2.6s var(--e-out) infinite;
+}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+@keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}70%,100%{box-shadow:0 0 0 18px rgba(37,211,102,0)}}
+/* mobile sticky bar buttons */
+.mobile-bar .btn{min-height:46px}
+.mobile-bar .btn:active{transform:scale(.955)}
+
+/* ---------- 05 · HEADER / NAV / DRAWER ---------- */
+header#top{transition:background var(--t-slow) var(--e-out),backdrop-filter var(--t-slow) var(--e-out),box-shadow var(--t-slow) var(--e-out),transform var(--t-slow) var(--e-out)}
+header#top.sp-scrolled{backdrop-filter:blur(16px) saturate(1.3);box-shadow:0 12px 34px -20px rgba(0,0,0,.95),0 1px 0 0 rgba(233,196,90,.14)}
+header#top.sp-hide{transform:translateY(-102%)}          /* hides scrolling down, returns scrolling up */
+.brand .logo-img{transition:transform var(--t-slow) var(--e-spring),filter var(--t-slow) var(--e-out)}
+.brand:hover .logo-img{transform:scale(1.07) rotate(-3deg);filter:drop-shadow(0 0 12px rgba(233,196,90,.5))}
+/* nav underline grows from centre */
+.nav-links a{position:relative;padding-bottom:4px}
+.nav-links a::after{
+  content:"";position:absolute;left:50%;bottom:0;height:2px;width:0;border-radius:2px;
+  background:linear-gradient(90deg,var(--gold-2),var(--red));
+  transform:translateX(-50%);transition:width var(--t-mid) var(--e-out);
+}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-links a.active{color:var(--gold-2)}
+/* burger → X morph */
+.burger span{transition:transform var(--t-mid) var(--e-spring),opacity var(--t-fast) var(--e-out),background var(--t-mid)}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0;transform:scaleX(0)}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+/* drawer links cascade in */
+.drawer{transition:transform var(--t-slow) var(--e-out),opacity var(--t-mid) var(--e-out)}
+.drawer a{transition:transform var(--t-mid) var(--e-out),opacity var(--t-mid) var(--e-out),color var(--t-fast),padding-left var(--t-mid) var(--e-out)}
+.drawer:not(.open) a{opacity:0;transform:translateX(26px)}
+.drawer.open a{opacity:1;transform:none}
+.drawer.open a:nth-child(2){transition-delay:.06s}
+.drawer.open a:nth-child(3){transition-delay:.10s}
+.drawer.open a:nth-child(4){transition-delay:.14s}
+.drawer.open a:nth-child(5){transition-delay:.18s}
+.drawer.open a:nth-child(6){transition-delay:.22s}
+.drawer.open a:nth-child(7){transition-delay:.26s}
+.drawer a:not(.btn):hover{color:var(--gold-2);padding-left:8px}
+
+/* ---------- 06 · CARDS + IMAGES ---------- */
+.card,.prog-card,.blog-card,.auth-card,.join-card,.step,.review,.qa,.feat-mini,.fees-card{
+  transition:transform var(--t-slow) var(--e-out),
+             border-color var(--t-slow) var(--e-out),
+             box-shadow var(--t-slow) var(--e-out),
+             background var(--t-slow) var(--e-out);
+  will-change:transform;
+}
+.card:hover,.prog-card:hover,.auth-card:hover,.join-card:hover,.step:hover,.review:hover,.fees-card:hover{
+  transform:translateY(-7px);
+  border-color:rgba(233,196,90,.4);
+  box-shadow:0 32px 60px -28px rgba(0,0,0,.92),0 0 0 1px rgba(233,196,90,.14);
+}
+.blog-card:hover{transform:translateY(-8px) scale(1.012)}
+/* sheen sweep across card face */
+.card,.prog-card,.blog-card{position:relative;overflow:hidden}
+.card::after,.prog-card::after,.blog-card::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;z-index:3;
+  background:linear-gradient(115deg,transparent 38%,rgba(233,196,90,.10) 50%,transparent 62%);
+  transform:translateX(-100%);transition:opacity var(--t-mid) var(--e-out);
+}
+.card:hover::after,.prog-card:hover::after,.blog-card:hover::after{opacity:1;animation:sheen .95s var(--e-out)}
+@keyframes sheen{to{transform:translateX(100%)}}
+/* image zoom inside any card */
+.prog-card img,.blog-card .bimg img,.feat-mini .bimg img,.card img,.g-item img{
+  transition:transform var(--t-fluid) var(--e-out),filter var(--t-fluid) var(--e-out);
+}
+.prog-card:hover img,.blog-card:hover .bimg img,.feat-mini:hover .bimg img,.g-item:hover img{
+  transform:scale(1.07);filter:saturate(1.12) contrast(1.04);
+}
+/* read-more arrow slides */
+.blog-readmore{transition:gap var(--t-mid) var(--e-spring),color var(--t-fast)}
+.blog-card:hover .blog-readmore{gap:12px;color:var(--gold)}
+/* category chips */
+.blog-chip,.blog-subchip{transition:transform var(--t-fast) var(--e-spring),background var(--t-mid),color var(--t-mid),border-color var(--t-mid);touch-action:manipulation;min-height:38px}
+/* touch devices get the full 44px target; mice keep the compact chip */
+@media (pointer:coarse){.blog-chip,.blog-subchip{min-height:44px}}
+.blog-chip:hover,.blog-subchip:hover{transform:translateY(-2px)}
+.blog-chip:active,.blog-subchip:active{transform:scale(.95)}
+.blog-chip.active{box-shadow:0 10px 24px -12px var(--red-glow)}
+/* benefit tiles + trust pills */
+.benefit,.hero-trust span{transition:transform var(--t-mid) var(--e-spring),border-color var(--t-mid),background var(--t-mid)}
+.benefit:hover{transform:translateY(-4px) scale(1.03);border-color:rgba(233,196,90,.45)}
+.hero-trust span:hover{transform:translateY(-2px);border-color:rgba(233,196,90,.4)}
+/* FAQ accordion */
+.faq-q{transition:color var(--t-mid) var(--e-out),background var(--t-mid) var(--e-out);min-height:48px}
+.faq-q:hover{color:var(--gold-2)}
+.faq-a{transition:max-height var(--t-slow) var(--e-out),opacity var(--t-mid) var(--e-out)}
+.faq-item:not(.open) .faq-a{opacity:0}
+.faq-item.open .faq-a{opacity:1}
+.faq-q .pm{transition:transform var(--t-mid) var(--e-spring)}
+.faq-item.open .faq-q .pm{transform:rotate(180deg)}
+/* quick answer box entrance */
+.quick-answer{animation:riseIn var(--t-fluid) var(--e-out) both}
+
+/* ---------- 07 · SCROLL REVEAL + STAGGER ---------- */
+.reveal{transition:opacity var(--t-fluid) var(--e-out),transform var(--t-fluid) var(--e-out)}
+:where(html.js) .reveal{opacity:0;transform:translateY(26px)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d0{transition-delay:0s}.reveal.d1{transition-delay:.07s}
+.reveal.d2{transition-delay:.14s}.reveal.d3{transition-delay:.21s}
+/* directional variants — add data-anim to any element */
+:where(html.js) [data-anim="left"]  {opacity:0;transform:translateX(-34px)}
+:where(html.js) [data-anim="right"] {opacity:0;transform:translateX(34px)}
+:where(html.js) [data-anim="scale"] {opacity:0;transform:scale(.93)}
+:where(html.js) [data-anim="up"]    {opacity:0;transform:translateY(34px)}
+[data-anim]{transition:opacity var(--t-fluid) var(--e-out),transform var(--t-fluid) var(--e-out)}
+[data-anim].in{opacity:1;transform:none}
+/* grid children cascade (blog cards, programs, gallery) */
+.blog-grid > *,.g-grid > *{animation:riseIn var(--t-fluid) var(--e-out) both}
+.blog-grid > :nth-child(1),.g-grid > :nth-child(1){animation-delay:.02s}
+.blog-grid > :nth-child(2),.g-grid > :nth-child(2){animation-delay:.07s}
+.blog-grid > :nth-child(3),.g-grid > :nth-child(3){animation-delay:.12s}
+.blog-grid > :nth-child(4),.g-grid > :nth-child(4){animation-delay:.17s}
+.blog-grid > :nth-child(5),.g-grid > :nth-child(5){animation-delay:.22s}
+.blog-grid > :nth-child(6),.g-grid > :nth-child(6){animation-delay:.27s}
+.blog-grid > :nth-child(n+7),.g-grid > :nth-child(n+7){animation-delay:.3s}
+@keyframes riseIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+/* hero entrance on load */
+.hero-copy > *{animation:riseIn .8s var(--e-out) both}
+.hero-copy > :nth-child(1){animation-delay:.05s}
+.hero-copy > :nth-child(2){animation-delay:.13s}
+.hero-copy > :nth-child(3){animation-delay:.21s}
+.hero-copy > :nth-child(4){animation-delay:.29s}
+.hero-copy > :nth-child(5){animation-delay:.37s}
+.hero-copy > :nth-child(6){animation-delay:.45s}
+.hero-copy > :nth-child(n+7){animation-delay:.5s}
+
+/* ---------- 08 · FORMS ---------- */
+input,select,textarea{
+  transition:border-color var(--t-mid) var(--e-out),box-shadow var(--t-mid) var(--e-out),background var(--t-mid) var(--e-out);
+}
+/* 16px floor on every text field — anything smaller makes iOS Safari zoom
+   the page in on focus. Selectors mirror styles.css/blog.css so they win. */
+input,select,textarea,
+.blog-search input,
+.field input,.field select,.field textarea{font-size:16px}
+
+.field input:focus,.field select:focus,.field textarea:focus,
+input:focus,select:focus,textarea:focus{
+  outline:none;border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(233,196,90,.16),0 8px 26px -16px rgba(233,196,90,.55);
+}
+.field input:hover:not(:focus),.field select:hover:not(:focus),.field textarea:hover:not(:focus),
+input:hover:not(:focus),select:hover:not(:focus),textarea:hover:not(:focus){border-color:rgba(255,255,255,.2)}
+.field label,.form-row label{transition:color var(--t-mid) var(--e-out)}
+.field:focus-within label,.form-row:focus-within label{color:var(--gold-2)}
+#formSuccess{animation:popIn var(--t-fluid) var(--e-spring) both}
+@keyframes popIn{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:none}}
+/* submit button busy state */
+.btn[disabled]{opacity:.6;cursor:not-allowed;filter:grayscale(.25)}
+.btn[disabled]::before{display:none}
+
+/* ---------- 09 · UTILITY UI ---------- */
+/* reading / scroll progress bar */
+#sp-progress{
+  position:fixed;top:0;left:0;height:3px;width:0;z-index:9999;pointer-events:none;
+  background:linear-gradient(90deg,var(--red),var(--gold-2),var(--gold));
+  box-shadow:0 0 12px rgba(233,196,90,.6);transition:width .1s linear;
+}
+/* back to top */
+/* Bottom-LEFT on purpose: the WhatsApp float owns the bottom-right corner
+   and the sticky mobile bar owns the bottom edge. */
+#sp-top{
+  position:fixed;left:18px;right:auto;bottom:96px;z-index:60;width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;cursor:pointer;
+  background:linear-gradient(160deg,var(--panel),var(--ink));border:1px solid rgba(233,196,90,.35);
+  color:var(--gold-2);opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;
+  transition:opacity var(--t-mid) var(--e-out),transform var(--t-mid) var(--e-spring),border-color var(--t-mid);
+}
+#sp-top.show{opacity:1;transform:none;pointer-events:auto}
+#sp-top:hover{border-color:var(--gold);transform:translateY(-3px) scale(1.06)}
+#sp-top:active{transform:scale(.94)}
+#sp-top svg{width:19px;height:19px}
+@media(min-width:861px){#sp-top{left:26px;bottom:30px}}   /* no sticky bar on desktop */
+/* custom scrollbar */
+*{scrollbar-width:thin;scrollbar-color:rgba(233,196,90,.42) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-deep),var(--red-deep));border-radius:10px;border:2px solid var(--black)}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--gold),var(--red))}
+/* generic link + footer polish */
+.foot-col a,.foot-social a{transition:color var(--t-mid) var(--e-out),transform var(--t-mid) var(--e-spring)}
+.foot-col a:hover{color:var(--gold-2);transform:translateX(4px)}
+.foot-social a:hover{transform:translateY(-3px) scale(1.1)}
+/* TOC active link */
+.toc a{transition:color var(--t-mid),border-color var(--t-mid),padding-left var(--t-mid) var(--e-out)}
+.toc a:hover{padding-left:14px}
+
+/* ---------- 10 · ACCESSIBILITY ---------- */
+/* visible keyboard focus everywhere (never removed) */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,[tabindex]:focus-visible{
+  outline:none;box-shadow:var(--ring);border-radius:8px;
+}
+.btn:focus-visible{box-shadow:var(--ring),0 18px 38px -14px rgba(0,0,0,.8)}
+/* skip link for keyboard users */
+.sp-skip{
+  position:fixed;top:-60px;left:12px;z-index:10000;padding:11px 18px;border-radius:0 0 10px 10px;
+  background:var(--gold);color:#1a1303;font-family:var(--font-head);font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;transition:top var(--t-mid) var(--e-out);
+}
+.sp-skip:focus{top:0}
+
+/* Respect the OS "reduce motion" setting — kill decorative motion,
+   keep every element visible and usable. */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+  html{scroll-behavior:auto}
+  .reveal,[data-anim],.blog-grid > *,.g-grid > *,.hero-copy > *{opacity:1!important;transform:none!important}
+  body::before{animation:none}
+  .wa-float,.wa-float::after,.eyebrow::after,.gold-text{animation:none}
+  .gold-text{-webkit-text-fill-color:var(--gold-2);color:var(--gold-2)}
+}
+
+/* Small screens: calmer motion, bigger targets */
+@media (max-width:640px){
+  .card:hover,.prog-card:hover,.blog-card:hover{transform:translateY(-3px)}
+  .btn{min-height:46px}
+  body::before{filter:blur(38px);opacity:.85}
+}
+
+/* TOC active section (set by ux.js scroll-spy) */
+.toc a.toc-on{color:var(--gold-2);border-color:var(--gold);padding-left:14px;font-weight:600}
+
+/* ---------- CASCADE FIX ----------
+   Section 07's `.reveal` rule is declared after section 06 and shares its
+   (0,1,0) specificity, so on cards that are ALSO reveal targets it replaced
+   the hover transition — border/shadow snapped instead of easing.
+   Re-declare the card transition here (last wins) and include opacity so the
+   scroll-reveal fade still works. */
+.card,.prog-card,.blog-card,.auth-card,.join-card,.step,.review,.qa,.feat-mini,.fees-card{
+  transition:transform var(--t-slow) var(--e-out),
+             border-color var(--t-slow) var(--e-out),
+             box-shadow var(--t-slow) var(--e-out),
+             background var(--t-slow) var(--e-out),
+             opacity var(--t-fluid) var(--e-out);
+}
