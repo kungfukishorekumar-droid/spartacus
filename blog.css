@@ -273,3 +273,92 @@ figure.bimg-fig figcaption{color:var(--muted);font-size:.82rem;margin-top:8px;te
   .blog-card:hover, .feat-mini:hover, .blog-featured .feat-main:hover { transform: none !important }
   .blog-card::after { display: none }
 }
+
+/* ============================================================
+   READING EXPERIENCE — article typography & components
+   Tables, FAQs, quotes and the Quick Answer block previously had no
+   styling at all, so long-form posts rendered as raw browser defaults.
+   Everything here is layout-stable (no CLS) and uses the brand palette.
+   ============================================================ */
+
+/* ---- rhythm & measure ---- */
+.post-body{font-size:1.06rem;line-height:1.78;color:var(--mist)}
+.post-body > p:first-of-type{font-size:1.14rem;color:#e8e8ee}   /* lead paragraph */
+.post-body p{margin:0 0 18px}
+
+/* ---- headings get a gold rule so sections are scannable ---- */
+.post-body h2{
+  position:relative;margin:38px 0 14px;font-size:clamp(1.35rem,3.2vw,1.65rem);
+  color:#fff;letter-spacing:0;text-transform:none;
+}
+.post-body h2::before{
+  content:"";display:block;width:46px;height:3px;border-radius:3px;margin-bottom:14px;
+  background:linear-gradient(90deg,var(--red),var(--gold));
+}
+.post-body h3{margin:26px 0 10px;color:#fff}
+
+/* ---- Quick Answer: the block answer engines quote. Make it unmissable. ---- */
+.quick-answer{
+  position:relative;margin:26px 0 30px;padding:20px 22px 20px 24px;
+  background:linear-gradient(150deg,rgba(233,196,90,.10),rgba(22,22,25,.85));
+  border:1px solid rgba(233,196,90,.30);border-left:4px solid var(--gold);
+  border-radius:14px;
+}
+.quick-answer h4{
+  font-family:var(--font-head);text-transform:uppercase;letter-spacing:.16em;
+  font-size:.7rem;color:var(--gold-2);margin:0 0 8px;
+}
+.quick-answer p{margin:0;color:#f0efe9;font-size:1.05rem;line-height:1.7}
+
+/* ---- TABLES — fees, timings and comparisons (snippet bait) ---- */
+.post-body table{
+  width:100%;border-collapse:separate;border-spacing:0;margin:24px 0;
+  background:linear-gradient(160deg,var(--panel),var(--ink));
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  font-size:.97rem;
+}
+.post-body thead th{
+  background:rgba(233,196,90,.10);color:var(--gold-2);
+  font-family:var(--font-head);font-weight:600;text-transform:uppercase;
+  letter-spacing:.09em;font-size:.74rem;text-align:left;
+  padding:13px 16px;border-bottom:1px solid rgba(233,196,90,.22);
+}
+.post-body tbody td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.post-body tbody tr:last-child td{border-bottom:0}
+.post-body tbody tr{transition:background .25s ease}
+.post-body tbody tr:hover{background:rgba(255,255,255,.035)}
+.post-body td strong{color:#fff}
+/* narrow screens: let a wide table scroll instead of breaking the layout */
+@media (max-width:640px){
+  .post-body table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+}
+
+/* ---- lists ---- */
+.post-body ul,.post-body ol{margin:0 0 18px 22px}
+.post-body li{margin:8px 0}
+.post-body ul li::marker{color:var(--gold)}
+.post-body ol li::marker{color:var(--gold-2);font-family:var(--font-head);font-weight:600}
+
+/* ---- pull quote ---- */
+.post-body blockquote{
+  margin:26px 0;padding:18px 22px;border-left:3px solid var(--red);
+  background:rgba(255,255,255,.03);border-radius:0 12px 12px 0;
+  font-family:var(--font-head);font-size:1.1rem;color:#fff;font-style:italic;
+}
+
+/* ---- FAQ block (was unstyled) ---- */
+.faq-item{
+  border:1px solid var(--line);border-radius:14px;margin:12px 0;
+  background:linear-gradient(160deg,var(--panel),var(--ink));
+  transition:border-color .3s ease, transform .3s cubic-bezier(.2,.7,.3,1);
+}
+.faq-item:hover{border-color:rgba(233,196,90,.32);transform:translateY(-2px)}
+.faq-q{
+  font-family:var(--font-head);font-weight:600;color:#fff;font-size:1.02rem;
+  padding:16px 18px 8px;margin:0;line-height:1.35;
+}
+.faq-a{padding:0 18px 16px;margin:0;color:var(--mist);font-size:.97rem;line-height:1.7}
+
+/* ---- inline links inside prose ---- */
+.post-body a{color:var(--gold-2);border-bottom:1px solid rgba(233,196,90,.4);transition:color .2s,border-color .2s}
+.post-body a:hover{color:#fff;border-bottom-color:var(--gold)}

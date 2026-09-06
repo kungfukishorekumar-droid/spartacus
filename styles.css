@@ -66,7 +66,10 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;letter-spacing:.01em;li
 .btn:not(.btn-ghost)::after{content:"";position:absolute;left:0;right:0;top:0;height:48%;background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0));border-radius:50px;pointer-events:none}
 
 /* ============================ HEADER ============================ */
-header{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(14px);background:rgba(10,10,11,.72);border-bottom:1px solid var(--line);transition:background .3s}
+/* Scoped to the site nav (#top) on purpose. Blog article pages contain a
+   second <header class="post-head"> for the article title — a bare "header"
+   selector here pins that to the viewport and buries the nav underneath it. */
+header#top{position:fixed;top:0;left:0;right:0;z-index:60;backdrop-filter:blur(14px);background:rgba(10,10,11,.72);border-bottom:1px solid var(--line);transition:background .3s}
 section[id],[id]{scroll-margin-top:84px}
 .nav{display:flex;align-items:center;justify-content:space-between;height:74px}
 .brand{display:flex;align-items:center;gap:12px}
