@@ -103,6 +103,34 @@ for (const d of DIRS) {
   console.log("  data cache-bust version:", ver);
 }
 
+/* ---------- cache-bust the top-level CSS/JS the same way ----------
+   These carry a hand-written ?v= stamp in the source HTML, which means a
+   change to blog.js or blog.css only reaches visitors if someone remembers
+   to bump it by hand. That was missed once already (a blog.js fix shipped
+   but browsers kept the cached copy for a week). Stamp each asset with a
+   hash of its own bytes instead, so bumping is automatic and exact. */
+{
+  const assets = ["styles.css","blog.css","ux.css","fx.css","app.js","blog.js",
+                  "blog-lead.js","ux.js","fx.js","analytics.js","track.js","site-base.js"];
+  const vers = {};
+  for (const a of assets) {
+    const f = path.join(OUT, a);
+    if (!fs.existsSync(f)) continue;
+    vers[a] = crypto.createHash("md5").update(fs.readFileSync(f)).digest("hex").slice(0, 10);
+  }
+  for (const page of ["blog.html", "blog-post.html"]) {
+    const p = path.join(OUT, page);
+    if (!fs.existsSync(p)) continue;
+    let html = fs.readFileSync(p, "utf8");
+    for (const [a, v] of Object.entries(vers)) {
+      const esc = a.replace(".", "\\.");
+      html = html.replace(new RegExp(`(href|src)="${esc}(\\?[^"]*)?"`, "g"), `$1="${a}?v=${v}"`);
+    }
+    fs.writeFileSync(p, html);
+  }
+  console.log("  asset cache-bust: per-file content hashes applied");
+}
+
 /* ---------- sitemap: every article, on the blog host ---------- */
 const posts = loadPosts();
 posts.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));

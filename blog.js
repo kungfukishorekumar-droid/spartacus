@@ -3,7 +3,19 @@
    from window.BLOG_POSTS. Adds SEO meta + JSON-LD on detail pages.
    ============================================================ */
 (function () {
-  var POSTS = (window.BLOG_POSTS || []).slice().sort(function (a, b) { return new Date(b.publishedDate) - new Date(a.publishedDate); });
+  // Sort newest first. publishedTime is part of the key: several posts now
+  // share a publishedDate, and sorting on the date alone left same-day posts
+  // in arbitrary order (so "Featured" was not reliably the newest article).
+  function postStamp(p) {
+    var t = 0, m = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(p.publishedTime || "");
+    if (m) {
+      var h = parseInt(m[1], 10) % 12;
+      if (/PM/i.test(m[3])) h += 12;
+      t = h * 60 + parseInt(m[2], 10);
+    }
+    return new Date(p.publishedDate).getTime() + t * 60000;
+  }
+  var POSTS = (window.BLOG_POSTS || []).slice().sort(function (a, b) { return postStamp(b) - postStamp(a); });
   var CATS = window.BLOG_CATEGORIES || [];
   var WA = window.BLOG_WHATSAPP || "https://wa.me/919884599939";
   // Which host is serving this page? The blog lives on its own subdomain, so
