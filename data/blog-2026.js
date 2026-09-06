@@ -1164,4 +1164,130 @@
     ]
   });
 
+  /* =========================================================
+     13 — SCHOOL & CORPORATE WORKSHOPS (B2B)
+     Third content gap: zero coverage across 127 posts, despite
+     institutions being one of the five stated audiences. Written for the
+     decision maker (principal, coordinator, HR/L&D) rather than a parent -
+     logistics, safety and credentials, not motivation.
+     PERSONALISE: workshop fee, travel radius, past institutions.
+     ========================================================= */
+  mk({
+    slug: "self-defence-workshops-schools-corporates-chennai",
+    title: "Self-Defence & Mindset Workshops for Schools and Companies in Chennai",
+    seoTitle: "Self-Defence Workshops for Schools & Companies",
+    seoDescription: "How self-defence and mindset workshops work for Chennai schools, colleges and companies — format, group sizes, space needed, safety, and how to book a session.",
+    category: "Coach & Academy", subcategory: "Workshops & Institutions",
+    publishedDate: "2026-09-06", publishedTime: "09:05 PM",
+    excerpt: "A practical brief for principals, coordinators and HR teams: what a self-defence or mindset workshop actually involves, how much space and time it needs, how safety is handled, and what to send when you enquire.",
+    quickAnswer: "Self-defence and mindset workshops for Chennai schools and companies typically run 60–120 minutes for a single group, in any clear indoor hall. Sessions are non-contact and suitable for complete beginners. Confirm the instructor's credentials, the participant cap per session and the supervision ratio before booking.",
+    seoKeywords: [
+      "self defence workshop for schools chennai",
+      "corporate self defence workshop chennai",
+      "women safety workshop chennai",
+      "school martial arts programme chennai",
+      "corporate wellness workshop chennai",
+      "self defence training for employees"
+    ],
+    geoKeywords: ["Chennai", "Perambur", "Ayanavaram", "Kolathur", "Anna Nagar", "Purasaiwakkam", "Tamil Nadu"],
+    imagePrompt: "A large group of Indian school students in uniform in a school assembly hall learning a basic self-defence stance from an instructor, bright practical lighting, documentary feel, no text.",
+    content: `
+<p>This one is not written for parents. It is for the person who has to organise the session — a principal, a PE or activities coordinator, a counsellor, or an HR and L&amp;D manager who has been asked to "arrange something on safety."</p>
+<p>Here is the practical brief: what these workshops actually involve, what your side needs to provide, how safety is handled, and what to send when you enquire so you get a straight answer instead of three rounds of questions.</p>
+
+<h2>What is a self-defence workshop, exactly?</h2>
+<p>It is a single structured session — usually <strong>60 to 120 minutes</strong> — that teaches awareness and a small number of practical responses to complete beginners. It is <strong>not</strong> a martial arts class, and it is not a fitness bootcamp. Nobody is graded, nobody spars, and no prior experience is assumed.</p>
+<p>The realistic goal of one session is not to make participants fighters. It is to change what they <em>notice</em>, what they <em>say</em>, and how early they act — which is where most real-world safety is actually decided.</p>
+
+<h2>Why schools and colleges book these</h2>
+<p>Institutions in Chennai are increasingly expected to show something concrete on student safety and life skills, not just a circular. A workshop gives you:</p>
+<ul>
+  <li>A defined safety session you can point to, with an identifiable qualified instructor</li>
+  <li>Content that lands for teenagers — practical, physical, not a lecture</li>
+  <li>An option to extend into focus, exam pressure and confidence, which is often the bigger need</li>
+</ul>
+<p>For senior classes, the mindset half is frequently more valuable than the physical half — see ${P("martial-arts-for-exam-stress-chennai-students", "martial arts and exam stress")}.</p>
+
+<h2>Why companies book these</h2>
+<p>The three requests I hear most often from Chennai workplaces:</p>
+<ul>
+  <li><strong>Women's safety sessions</strong> — often around commuting, late shifts and travel</li>
+  <li><strong>Wellness or engagement days</strong> — something physical that is not another webinar</li>
+  <li><strong>Performance-under-pressure sessions</strong> — closer to sports psychology than to martial arts</li>
+</ul>
+<p>That last one is where a sports-psychology background matters more than a black belt. Composure under pressure is a trainable skill, and it is the same skill whether the pressure is a competition mat or a quarter-end review — the mechanism is described in ${P("how-sports-psychology-helps-athletes-perform-under-pressure", "how sports psychology helps under pressure")}.</p>
+
+<h2>What a session actually covers</h2>
+<ol>
+  <li><strong>Awareness</strong> — recognising a situation early, when options are still cheap</li>
+  <li><strong>Voice and boundaries</strong> — the most under-taught and most used skill in the whole session</li>
+  <li><strong>Distance and positioning</strong> — how not to be where the problem is</li>
+  <li><strong>A few simple releases</strong> — wrist grabs, being grabbed from behind, taught slowly and repeated</li>
+  <li><strong>What to do afterwards</strong> — reporting, support, who to tell</li>
+</ol>
+<p>Deliberately few techniques, repeated often. A session that rushes through twenty moves leaves participants with none of them.</p>
+
+<h2>Logistics: what you need to provide</h2>
+<table>
+  <thead><tr><th>Requirement</th><th>What is needed</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Space</strong></td><td>Any clear indoor hall, assembly area or large classroom with the furniture moved back. Mats are not essential for a non-contact session.</td></tr>
+    <tr><td><strong>Duration</strong></td><td>60–120 minutes per group, depending on age and depth.</td></tr>
+    <tr><td><strong>Group size</strong></td><td>Smaller groups get hands-on correction. Very large assemblies work as awareness talks, but practice quality drops — split into batches where possible.</td></tr>
+    <tr><td><strong>Clothing</strong></td><td>Regular uniform or office wear is fine. Participants should be able to move; flag anything restrictive in advance.</td></tr>
+    <tr><td><strong>Supervision</strong></td><td>For school sessions, staff present throughout, as your child-safety policy requires.</td></tr>
+    <tr><td><strong>Equipment</strong></td><td>Nothing from your side. A microphone helps in a large hall.</td></tr>
+  </tbody>
+</table>
+
+<h2>Is it safe for beginners and children?</h2>
+<p>Yes, when the session is run as intended: <strong>non-contact, no sparring, no throws onto hard floors</strong>. Techniques are demonstrated slowly and practised at low intensity with a partner of similar size. Nobody is put on the spot in front of the group, and participants can opt out of any physical drill.</p>
+<p>Ask any provider directly what happens if a participant has an injury, a medical condition, or simply does not want to be touched. A prepared answer tells you a great deal.</p>
+
+<h2>Who delivers the session?</h2>
+<p>This is the question worth asking hardest, because "self-defence workshop" is unregulated and anyone may offer one.</p>
+<p>I deliver these sessions personally. I am a <strong>Wushu National Medalist, Kung Fu Black Belt, certified Sports Psychologist, Wushu Coach and State-level Wushu Judge</strong>, and I run Spartacus Martial Arts Academy in Perambur. The sports-psychology qualification is the part that matters for institutions: it is why a session can move beyond technique into pressure, focus and confidence, and why the language used with teenagers is careful rather than alarming. More background is in ${P("who-is-kishore-kumar-martial-arts-coach-sports-psychologist-chennai", "the full founder profile")}.</p>
+
+<h2>One session or a programme?</h2>
+<p>A single workshop is the right starting point — it is low commitment and tells you how your group responds. If you want durable change, a <strong>short series</strong> works far better: skills repeated across several sessions are retained, skills seen once are not. Many institutions start with one session per year group, then extend the format that lands best.</p>
+
+<h2>What to send when you enquire</h2>
+<p>Send these five things and you will get a clear proposal in one reply rather than a back-and-forth:</p>
+<ol>
+  <li>Institution name and area in Chennai</li>
+  <li>Type of group — school year, college department, or team/department</li>
+  <li>Approximate number of participants, and whether they can be split into batches</li>
+  <li>Preferred date window and session length</li>
+  <li>The space available — hall, classroom, open ground, indoor or outdoor</li>
+</ol>
+<p>Workshop fees depend on group size, session length and travel, so rather than publish a number that will not fit your situation, ${L.wa} on <strong>+91 98845 99939</strong> with the five points above and I will send you a specific proposal. We work across Chennai, with most sessions in and around Perambur, Ayanavaram, Kolathur, Purasaiwakkam and Anna Nagar.</p>
+<p>Related reading for the people who will ask you about it afterwards: ${P("self-defence-classes-in-chennai-what-parents-students-should-know", "self-defence classes explained for parents and students")} and ${P("martial-arts-for-girls-and-women-confidence-safety-strength", "martial arts for girls and women")}.</p>
+
+<h2>The honest expectation to set</h2>
+<p>One workshop will not make anyone safe. What a good session reliably does is give people permission to trust their instincts, language to set a boundary, and a small number of responses they have physically rehearsed. That is a genuine, defensible outcome — and it is worth far more than a session that promises everything and is forgotten by Monday.</p>`,
+    faqs: [
+      F("Do you conduct self-defence workshops in schools in Chennai?",
+        "Yes. Sessions run for schools, colleges and companies across Chennai and are delivered personally by Kishore Kumar, a Wushu National Medalist, certified Sports Psychologist and State-level Judge. Message +91 98845 99939 with your group details for a proposal."),
+      F("How long is a typical workshop?",
+        "Usually 60 to 120 minutes per group, depending on the age of participants and how much practice time you want. Larger groups are best split into batches so everyone gets corrected rather than just watching."),
+      F("How many participants can attend one session?",
+        "Smaller groups allow hands-on correction and are strongly preferred. Very large assemblies can be run as awareness sessions, but the practical quality drops — splitting into batches gives a far better outcome."),
+      F("What space and equipment do we need to provide?",
+        "Any clear indoor hall, assembly area or large classroom with furniture moved back. Mats are not required for a non-contact session, and no equipment is needed from your side. A microphone helps in a large hall."),
+      F("Is a self-defence workshop safe for school students?",
+        "Yes. Sessions are non-contact with no sparring and no throws. Techniques are demonstrated slowly and practised at low intensity with similar-sized partners, participants may opt out of any drill, and school staff remain present throughout."),
+      F("Do you run women's safety workshops for companies?",
+        "Yes. Workplace sessions commonly focus on awareness, boundaries and practical responses relevant to commuting, late shifts and travel, and can be combined with a confidence and pressure-management segment."),
+      F("How much does a school or corporate workshop cost?",
+        "Fees depend on group size, session length and travel within Chennai, so a specific quote is given per enquiry. Send your institution, group size, preferred dates and available space on WhatsApp for a proposal."),
+      F("Can a workshop become a regular programme?",
+        "Yes, and it works considerably better. Skills repeated across a short series are retained, while skills seen once usually are not. Many institutions begin with a single session per year group and extend the format that works best.")
+    ],
+    relatedPosts: [
+      "who-is-kishore-kumar-martial-arts-coach-sports-psychologist-chennai",
+      "self-defence-classes-in-chennai-what-parents-students-should-know",
+      "martial-arts-for-girls-and-women-confidence-safety-strength"
+    ]
+  });
+
 })();
