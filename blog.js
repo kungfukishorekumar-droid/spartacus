@@ -57,7 +57,7 @@
 
   /* ======================= LISTING PAGE ======================= */
   function renderListing(root) {
-    var state = { cat: "all", sub: "all", q: "" };
+    var state = { cat: "all", sub: "all", q: "", shown: 12 };
 
     var featured = POSTS[0];
     var featSide = POSTS.slice(1, 4);
@@ -95,12 +95,45 @@
         return true;
       });
     }
-    function renderGrid() {
+    /* Render in pages. Dumping all 126 cards at once built a ~27,000px wall
+       of articles and a needlessly heavy DOM; showing a page at a time is
+       both faster and far easier to scan. Filtering/searching resets to
+       page one. */
+    var PAGE = 12;
+    function renderGrid(reset) {
+      if (reset !== false) state.shown = PAGE;
       var list = filtered();
       var grid = root.querySelector("#blogGrid");
-      grid.innerHTML = list.length ? list.map(card).join("") : '<div class="blog-empty">No articles found. Try another search or category.</div>';
+      var slice = list.slice(0, state.shown);
+
+      grid.innerHTML = list.length
+        ? slice.map(card).join("")
+        : '<div class="blog-empty">No articles found. Try another search or category.</div>';
       root.querySelector("#blogCount").textContent = list.length + " article" + (list.length === 1 ? "" : "s");
+
+      // "Load more" lives after the grid and is rebuilt on every render
+      var more = root.querySelector("#blogMore");
+      if (!more) {
+        more = document.createElement("div");
+        more.id = "blogMore";
+        more.className = "blog-more";
+        grid.parentNode.insertBefore(more, grid.nextSibling);
+      }
+      var remaining = list.length - slice.length;
+      if (remaining > 0) {
+        more.innerHTML = '<div><button type="button" id="blogMoreBtn">Load more articles</button>' +
+          '<span class="more-left">' + remaining + " more</span></div>";
+      } else {
+        more.innerHTML = "";
+      }
     }
+
+    // one delegated listener, so it survives every re-render
+    root.addEventListener("click", function (e) {
+      if (!e.target.closest("#blogMoreBtn")) return;
+      state.shown += PAGE;
+      renderGrid(false);
+    });
 
     catBar.addEventListener("click", function (e) {
       var b = e.target.closest("[data-cat]"); if (!b) return;

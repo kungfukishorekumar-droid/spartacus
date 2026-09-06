@@ -163,3 +163,113 @@ figure.bimg-fig figcaption{color:var(--muted);font-size:.82rem;margin-top:8px;te
 .bl-tick{width:58px;height:58px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;font-size:1.7rem;color:#0a0a0b;background:linear-gradient(135deg,var(--gold-2),var(--gold-deep));box-shadow:0 14px 30px -12px rgba(233,196,90,.6)}
 .bl-success h4{font-family:var(--font-display);text-transform:uppercase;font-size:1.4rem;margin-bottom:8px}
 .bl-success p{color:var(--mist);margin-bottom:18px}
+
+/* ============================================================
+   3D DEPTH LAYER
+   Real perspective and depth using CSS 3D transforms only.
+   No WebGL, no Three.js, no JavaScript, 0 KB added — every effect
+   below animates only transform/opacity, which the GPU handles off
+   the main thread, so this costs nothing in LCP, CLS or INP.
+   Tilt is gated to devices that actually have a pointer, and fully
+   disabled under prefers-reduced-motion.
+   ============================================================ */
+
+/* The grid is the 3D stage: children rotate inside this frustum. */
+.blog-grid,
+.blog-featured,
+.blog-section .feat-side { perspective: 1400px; perspective-origin: 50% 40%; }
+
+/* ---- Cards: lift and rotate toward the reader ---- */
+.blog-card,
+.feat-mini,
+.blog-featured .feat-main {
+  transform-origin: 50% 90%;
+  transition: transform .5s cubic-bezier(.2,.7,.3,1),
+              box-shadow .5s cubic-bezier(.2,.7,.3,1),
+              border-color .35s ease;
+  will-change: transform;
+}
+
+/* A soft light sheen that sweeps across on hover — sells the 3D tilt. */
+.blog-card { position: relative; }
+.blog-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  border-radius: inherit; opacity: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.10) 47%, rgba(233,196,90,.14) 52%, transparent 68%);
+  transition: opacity .5s ease, transform .7s cubic-bezier(.2,.7,.3,1);
+  transform: translateX(-40%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .blog-card:hover {
+    transform: translateY(-12px) rotateX(7deg) rotateY(-3deg) scale(1.025);
+    box-shadow:
+      0 44px 70px -34px rgba(0,0,0,.95),
+      0 20px 44px -28px rgba(225,29,42,.42),
+      0 0 0 1px rgba(233,196,90,.28);
+    border-color: rgba(233,196,90,.45);
+  }
+  .blog-card:hover::after { opacity: 1; transform: translateX(40%); }
+
+  /* the image drifts at a different rate → parallax depth inside the card */
+  .blog-card .bimg img { transition: transform .6s cubic-bezier(.2,.7,.3,1); }
+  .blog-card:hover .bimg img { transform: scale(1.07); }
+
+  .blog-featured .feat-main:hover {
+    transform: translateY(-10px) rotateX(5deg) scale(1.015);
+    box-shadow: 0 50px 80px -34px rgba(0,0,0,.95), 0 0 0 1px rgba(233,196,90,.35);
+  }
+  .blog-featured .feat-main .bimg img { transition: transform .6s cubic-bezier(.2,.7,.3,1); }
+  .blog-featured .feat-main:hover .bimg img { transform: scale(1.05); }
+
+  .feat-mini:hover {
+    transform: translateX(6px) rotateY(-5deg) scale(1.02);
+    box-shadow: 0 24px 44px -28px rgba(0,0,0,.9), 0 0 0 1px rgba(233,196,90,.24);
+  }
+
+  /* filter chips get a small 3D press */
+  .blog-chip, .blog-subchip { transition: transform .22s ease, background .22s ease, color .22s ease, border-color .22s ease; }
+  .blog-chip:hover, .blog-subchip:hover { transform: translateY(-2px) scale(1.04); }
+}
+
+/* Pressing always works, including on touch — tactile feedback. */
+.blog-card:active, .feat-mini:active, .blog-featured .feat-main:active { transform: scale(.985); }
+.blog-chip:active, .blog-subchip:active { transform: scale(.95); }
+
+/* ---- Cards arrive with a subtle 3D fold-in (once, on load) ---- */
+@keyframes cardIn {
+  from { opacity: 0; transform: perspective(1400px) rotateX(12deg) translateY(26px); }
+  to   { opacity: 1; transform: perspective(1400px) rotateX(0)     translateY(0); }
+}
+.blog-grid > .blog-card { animation: cardIn .55s cubic-bezier(.2,.7,.3,1) both; }
+.blog-grid > .blog-card:nth-child(1),
+.blog-grid > .blog-card:nth-child(2),
+.blog-grid > .blog-card:nth-child(3) { animation-delay: .02s }
+.blog-grid > .blog-card:nth-child(n+4) { animation-delay: .08s }
+.blog-grid > .blog-card:nth-child(n+7) { animation-delay: .14s }
+
+/* ---- Load more ---- */
+.blog-more { display: flex; justify-content: center; margin: 34px 0 4px }
+.blog-more button {
+  font-family: var(--font-head); font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  font-size: .9rem; color: #fff; padding: 15px 34px; border-radius: 50px; cursor: pointer;
+  background: linear-gradient(160deg, var(--panel-2), var(--ink));
+  border: 1px solid rgba(233,196,90,.35);
+  transition: transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .3s, border-color .3s;
+}
+.blog-more button:hover {
+  transform: translateY(-3px) scale(1.03);
+  border-color: var(--gold);
+  box-shadow: 0 22px 44px -24px rgba(233,196,90,.5);
+}
+.blog-more button:active { transform: scale(.97) }
+.blog-more .more-left { display:block; font-size:.7rem; letter-spacing:.14em; color:var(--muted); margin-top:8px; text-align:center }
+
+/* ---- Respect reduced motion: depth stays, movement goes ---- */
+@media (prefers-reduced-motion: reduce) {
+  .blog-card, .feat-mini, .blog-featured .feat-main,
+  .blog-chip, .blog-subchip, .blog-more button { transition: none !important }
+  .blog-grid > .blog-card { animation: none !important; opacity: 1 !important; transform: none !important }
+  .blog-card:hover, .feat-mini:hover, .blog-featured .feat-main:hover { transform: none !important }
+  .blog-card::after { display: none }
+}
