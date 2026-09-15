@@ -50,48 +50,52 @@
 </head>
 <body>
 <main>
-<section class="page-hero"><div class="wrap">
-  <span class="eyebrow red reveal">Get Started</span>
-  <h1 class="page-title reveal d1">Book Your <span class="gold-text">Free Trial Class</span></h1>
-  <p class="page-sub reveal d2">Fill the form or message Coach Kishore on WhatsApp — he'll share batch timings, fees and your free trial slot.</p>
-</div></section>
 <!-- ============================ LEAD CAPTURE ============================ -->
 <section class="pad" id="contact">
   <div class="wrap lead">
     <div class="lead-copy reveal">
-      <span class="eyebrow red">Book Your Free Trial</span>
-      <h2 class="section-title">Book Your <span class="gold-text">Free Trial Class</span></h2>
-      <p class="section-sub" style="margin-bottom:22px">Fill in your details and Coach Kishore will personally reach out with batch timings, fees, and your free trial slot. No pressure — just a confident first step.</p>
+      <span class="eyebrow red">Free Trial Class</span>
+      <h1 class="section-title">Your child leaves more confident &mdash; <span class="gold-text">not more aggressive</span></h1>
+      <p class="section-sub" style="margin-bottom:22px">That is the difference a sports psychologist makes. Coach Kishore is a National Wushu medalist <em>and</em> a qualified sports psychologist, so the discipline your child builds on the mat shows up in their studies too.</p>
       <div class="parent-points">
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Free trial class — try before you join</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Personal guidance from Coach Kishore</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Right program picked for your goal</b></div>
+        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Free trial first &mdash; decide after you have seen a class</b></div>
+        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Beginners and shy children welcome &mdash; no experience needed</b></div>
+        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Batch timings that work around school and exams</b></div>
       </div>
     </div>
 
     <div class="form-card reveal d1">
       <form id="leadForm" novalidate>
+        <!-- Name and phone are the only required fields. Everything below is
+             optional on purpose: Coach Kishore rings every enquiry anyway, and
+             each extra compulsory box is one more reason for a parent on a
+             phone to give up. Five were required before — age, role and style
+             among them — which asked a parent to make decisions they came here
+             to ask about. Field names are unchanged so the CRM still maps them. -->
         <div class="form-row">
-          <div class="field"><label for="name">Name <span class="req">*</span></label><input id="name" name="name" type="text" placeholder="Your full name" required /></div>
-          <div class="field"><label for="age">Age <span class="req">*</span></label><input id="age" name="age" type="number" min="3" max="80" placeholder="e.g. 12" required /></div>
+          <div class="field"><label for="name">Name <span class="req">*</span></label><input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required /></div>
+          <div class="field"><label for="phone">Phone / WhatsApp <span class="req">*</span></label><input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9 +]{10,15}" placeholder="10-digit mobile" autocomplete="tel" required /></div>
+        </div>
+
+        <p class="form-note" style="margin:2px 0 14px">That is all we need &mdash; the rest just helps Coach Kishore prepare before he calls.</p>
+
+        <div class="form-row">
+          <div class="field"><label for="age">Child&rsquo;s age</label><input id="age" name="age" type="number" min="3" max="80" placeholder="e.g. 12" /></div>
+          <div class="field"><label for="role">You are</label>
+            <select id="role" name="role"><option value="" disabled selected>Select</option><option>Parent (enrolling a child)</option><option>Student</option><option>Adult</option></select>
+          </div>
         </div>
         <div class="form-row">
-          <div class="field"><label for="role">You are <span class="req">*</span></label>
-            <select id="role" name="role" required><option value="" disabled selected>Select</option><option>Parent (enrolling a child)</option><option>Student</option><option>Adult</option></select>
+          <div class="field"><label for="program">Martial art</label>
+            <select id="program" name="program"><option value="" selected>Not sure &mdash; suggest for me</option><option>Wushu</option><option>Kung Fu</option><option>Karate</option><option>Judo</option><option>Kick Boxing</option><option>Boxing</option></select>
           </div>
-          <div class="field"><label for="program">Martial Art Interest <span class="req">*</span></label>
-            <select id="program" name="program" required><option value="" disabled selected>Select</option><option>Wushu</option><option>Kung Fu</option><option>Karate</option><option>Judo</option><option>Kick Boxing</option><option>Boxing</option><option>Not sure — suggest for me</option></select>
+          <div class="field"><label for="goal">What matters most</label>
+            <select id="goal" name="goal"><option value="" disabled selected>Select</option><option>Confidence</option><option>Discipline</option><option>Self-defense</option><option>Fitness</option><option>Competition</option></select>
           </div>
         </div>
         <div class="form-row">
-          <div class="field"><label for="goal">Goal</label>
-            <select id="goal" name="goal"><option value="" disabled selected>Select</option><option>Fitness</option><option>Self-defense</option><option>Competition</option><option>Confidence</option><option>Discipline</option></select>
-          </div>
-          <div class="field"><label for="location">Location (Area)</label><input id="location" name="location" type="text" placeholder="e.g. Ayanavaram, Chennai" /></div>
-        </div>
-        <div class="form-row">
-          <div class="field"><label for="phone">Phone Number <span class="req">*</span></label><input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9 +]{10,15}" placeholder="10-digit mobile" required /></div>
-          <div class="field"><label for="time">Preferred Time</label>
+          <div class="field"><label for="location">Your area</label><input id="location" name="location" type="text" placeholder="e.g. Ayanavaram, Chennai" /></div>
+          <div class="field"><label for="time">Preferred time</label>
             <select id="time" name="time"><option value="" disabled selected>Select</option><option>Early Morning</option><option>Morning</option><option>Evening</option><option>Weekend</option></select>
           </div>
         </div>
@@ -100,8 +104,8 @@
         <div class="hp-field" aria-hidden="true"><label for="company">Company</label><input id="company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
         <!-- Cloudflare Turnstile mounts here once CONFIG.turnstileSiteKey is set -->
         <div id="turnstile" class="turnstile-box"></div>
-        <button type="submit" class="btn btn-primary btn-block" id="submitBtn" data-track="lead_submit">Book Free Trial Class →</button>
-        <p class="form-note">By submitting, you'll also get the option to message us instantly on WhatsApp.</p>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn" data-track="lead_submit">Book My Child&rsquo;s Free Trial &rarr;</button>
+        <p class="form-note">Coach Kishore calls back the same day, usually within a few hours. No fee, no obligation &mdash; and you can message on WhatsApp straight after submitting.</p>
       </form>
 
       <div class="form-success" id="formSuccess">
