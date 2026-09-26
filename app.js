@@ -324,32 +324,52 @@ async function saveLead(lead){
     } catch (err) { return false; }
   }
 
-  // Legacy path (used until leadEndpoint is configured): direct insert.
+  // Direct path (used until leadEndpoint is configured): write into the
+  // WarriorCRM inbox. There is no "leads" table in this Supabase project —
+  // inserting there returned 404 on every submission. public_leads is the
+  // table the CRM reads, and it takes one JSON column, "payload", in the
+  // CRM's own field names (the same shape warriorcrm.js sends). The CRM
+  // de-duplicates on phone, so the warriorcrm.js backup capture of the same
+  // form does not create a second lead.
   if (!CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey) return false;
   try {
-    const res = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,"") + "/rest/v1/leads", {
+    const q = new URLSearchParams(location.search);
+    const roles = { "parent (enrolling a child)":"Parent", "parent":"Parent",
+                    "student":"Athlete", "adult":"Athlete" };
+    const payload = {
+      name:              lead.name || "",
+      phone:             lead.phone || "",
+      email:             lead.email || "",
+      athleteAge:        lead.age || "",
+      leadType:          roles[String(lead.role || "").toLowerCase()] || "Athlete",
+      interestedProgram: lead.program || "",
+      location:          lead.location || "",
+      goal:              lead.goal || "",
+      preferredTime:     lead.time || "",
+      mainProblem:       lead.message || "",
+      source:            location.hostname.replace(/^www\./, ""),
+      campaign:          q.get("utm_campaign") || q.get("campaign") || "",
+      utmSource:         q.get("utm_source") || "",
+      utmMedium:         q.get("utm_medium") || "",
+      utmContent:        q.get("utm_content") || "",
+      clickId:           q.get("fbclid") || q.get("gclid") || "",
+      landingPage:       location.href,
+      referrer:          document.referrer || "",
+      captureMethod:     "app.js saveLead" + (lead.source_tag ? " (" + lead.source_tag + ")" : ""),
+      dateAdded:         new Date().toISOString().slice(0, 10),
+      stage:             "New Lead",
+      status:            "Active"
+    };
+    const res = await fetch(CONFIG.supabaseUrl.replace(/\/+$/,"") + "/rest/v1/public_leads", {
       method: "POST",
+      keepalive: true,   // the WhatsApp tab opens right after; don't drop the request
       headers: {
         "Content-Type": "application/json",
         "apikey": CONFIG.supabaseAnonKey,
         "Authorization": "Bearer " + CONFIG.supabaseAnonKey,
         "Prefer": "return=minimal"
       },
-      body: JSON.stringify({
-        full_name:        lead.name || "",
-        phone:            lead.phone || "",
-        email:            lead.email || null,
-        age:              lead.age || null,
-        city:             lead.location || null,
-        program_interest: lead.program || null,
-        goal:             lead.goal || null,
-        role:             lead.role || null,
-        preferred_time:   lead.time || null,
-        message:          lead.message || null,
-        source:           lead.source_tag || "website",
-        website_source:   lead.website_source || "spartacus",
-        utm:              lead.utm || (typeof spAttribution === "function" ? spAttribution() : null)
-      })
+      body: JSON.stringify({ payload })
     });
     return res.ok;   // 201 = inserted
   } catch (err) { return false; }
