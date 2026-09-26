@@ -324,13 +324,18 @@ async function saveLead(lead){
     } catch (err) { return false; }
   }
 
-  // Direct path (used until leadEndpoint is configured): write into the
-  // WarriorCRM inbox. There is no "leads" table in this Supabase project —
-  // inserting there returned 404 on every submission. public_leads is the
-  // table the CRM reads, and it takes one JSON column, "payload", in the
-  // CRM's own field names (the same shape warriorcrm.js sends). The CRM
-  // de-duplicates on phone, so the warriorcrm.js backup capture of the same
-  // form does not create a second lead.
+  // warriorcrm.js, when it loaded, has already sent this form to the CRM
+  // inbox: it listens to every <form> in the capture phase, i.e. before this
+  // handler runs. Inserting again stored the same lead twice in public_leads
+  // (seen 2026-09-26) — the table does not de-duplicate. So only write
+  // directly when the CRM script is absent (blocked, failed to load).
+  if (window.WarriorCRM && window.WarriorCRM.site) return true;
+
+  // Direct path: write into the WarriorCRM inbox. There is no "leads" table
+  // in this Supabase project — inserting there returned 404 on every
+  // submission. public_leads is the table the CRM reads, and it takes one
+  // JSON column, "payload", in the CRM's own field names (the same shape
+  // warriorcrm.js sends).
   if (!CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey) return false;
   try {
     const q = new URLSearchParams(location.search);
