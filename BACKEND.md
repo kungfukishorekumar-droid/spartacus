@@ -8,14 +8,15 @@ Row Level Security (the public key can insert, never read).
 |---|---|---|---|
 | Contact + blog form leads | `app.js` `saveLead()` | `public_leads` (owned by WarriorCRM) | ✅ live |
 | Visits + backup lead capture | `warriorcrm.js` (CRM script) | `public_leads` | ✅ live (main site; blog after next deploy) |
-| Page views, time on page, scroll depth, reached-form | `track.js` | `page_views`, `page_engagement` | ⏳ run the migration |
-| Rate-limit ledger for the anti-spam function | `submit-lead` Edge Function | `lead_submissions` | ⏳ run the migration |
+| Page views, time on page, scroll depth, reached-form | `track.js` | `page_views`, `page_engagement` | ✅ live since 2026-09-26 |
+| Rate-limit ledger for the anti-spam function | `submit-lead` Edge Function | `lead_submissions` | ✅ table ready (function not deployed — see below) |
 
 ## Setting it up
 
-Run **`supabase/migrations/20260926000000_site_backend.sql`** once
-(Supabase → SQL Editor → paste → Run). It is idempotent and does not touch
-`public_leads`. Until it runs, `track.js` gets a 404 on every page view.
+Applied to project `oqwbmtdrjxfbnitlzehe` on 2026-09-26 (Supabase migrations
+`site_backend` + `site_backend_pin_search_path`; same SQL as the two files in
+`supabase/migrations/`). Both are idempotent — safe to re-run on a new project.
+Neither touches the CRM's tables (`public_leads`, `crm_state`).
 
 Reading the numbers: Supabase → Table Editor → Views →
 `analytics_daily`, `analytics_top_pages`, `analytics_referrers`, `analytics_sources`.
