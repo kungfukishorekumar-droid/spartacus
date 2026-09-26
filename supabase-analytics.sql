@@ -1,3 +1,5 @@
+-- ⚠️ SUPERSEDED — do not run. Use supabase/migrations/20260926000000_site_backend.sql
+--    (see BACKEND.md). Kept for history only.
 -- ============================================================
 -- SPARTACUS — Visitor analytics (first-party, self-owned)
 -- Run this ONCE in Supabase → SQL Editor → New query → Run.

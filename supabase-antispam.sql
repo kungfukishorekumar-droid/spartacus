@@ -1,3 +1,5 @@
+-- ⚠️ SUPERSEDED — do not run. Use supabase/migrations/20260926000000_site_backend.sql
+--    (see BACKEND.md). Kept for history only.
 -- ============================================================
 -- SPARTACUS — anti-spam gateway (run AFTER supabase-setup.sql)
 --

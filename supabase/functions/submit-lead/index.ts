@@ -145,20 +145,35 @@ Deno.serve(async (req) => {
   }
 
   // 6. Insert -----------------------------------------------------------------
-  const { error } = await supabase.from("leads").insert({
-    full_name,
-    phone: rawPhone,
-    email,
-    age: ageRaw,
-    city: clean(body.location ?? body.city, 80),
-    program_interest: clean(body.program ?? body.program_interest, 80),
-    goal: clean(body.goal, 80),
-    role: clean(body.role, 80),
-    preferred_time: clean(body.time ?? body.preferred_time, 40),
-    message: clean(body.message, 1000),
-    source: "website",
-    website_source: "spartacus",
-    utm: (body.utm && typeof body.utm === "object") ? body.utm : null,
+  // Into the WarriorCRM inbox (public_leads), in the CRM's own field names —
+  // the same shape app.js saveLead() and warriorcrm.js send. There is no
+  // "leads" table in this project; the CRM de-duplicates on phone.
+  const roles: Record<string, string> = {
+    "parent (enrolling a child)": "Parent", "parent": "Parent",
+    "student": "Athlete", "adult": "Athlete",
+  };
+  const utm = (body.utm && typeof body.utm === "object") ? body.utm as Record<string, unknown> : {};
+  const { error } = await supabase.from("public_leads").insert({
+    payload: {
+      name: full_name,
+      phone: rawPhone,
+      email: email ?? "",
+      athleteAge: ageRaw ?? "",
+      leadType: roles[String(body.role ?? "").toLowerCase()] ?? "Athlete",
+      interestedProgram: clean(body.program ?? body.program_interest, 80) ?? "",
+      location: clean(body.location ?? body.city, 80) ?? "",
+      goal: clean(body.goal, 80) ?? "",
+      preferredTime: clean(body.time ?? body.preferred_time, 40) ?? "",
+      mainProblem: clean(body.message, 1000) ?? "",
+      source: "spartacusmartialarts.com",
+      campaign: String(utm.utm_campaign ?? utm.campaign ?? ""),
+      utmSource: String(utm.utm_source ?? ""),
+      landingPage: String(utm.page ?? ""),
+      captureMethod: "submit-lead edge function",
+      dateAdded: new Date().toISOString().slice(0, 10),
+      stage: "New Lead",
+      status: "Active",
+    },
   });
 
   if (error) {
