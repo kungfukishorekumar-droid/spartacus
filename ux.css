@@ -38,13 +38,7 @@ body{
   text-rendering:optimizeLegibility;
   -moz-osx-font-smoothing:grayscale;
 }
-h1,h2,h3,h4{text-wrap:balance}
-p,.section-sub,.page-sub,.post-excerpt{text-wrap:pretty}
 /* fluid display scale — no layout shift, scales 375 → 1440 */
-.page-title{font-size:clamp(2.1rem,6.4vw,4rem);line-height:.98;letter-spacing:.005em}
-.section-title{font-size:clamp(1.8rem,5vw,3.1rem);line-height:1;letter-spacing:.005em}
-.hero-copy h1{letter-spacing:.004em}
-.section-sub,.page-sub{line-height:1.7;max-width:66ch}
 /* gold gradient accent text */
 .gold-text{
   background:linear-gradient(100deg,var(--gold-2) 0%,#fff3cf 42%,var(--gold) 62%,var(--gold-deep) 100%);
@@ -62,6 +56,10 @@ p,.section-sub,.page-sub,.post-excerpt{text-wrap:pretty}
   transform:translateX(-120%);animation:sweep 5.5s var(--e-smooth) infinite;
 }
 @keyframes sweep{0%{transform:translateX(-120%)}55%,100%{transform:translateX(120%)}}
+
+/* NOTE: sizes, line-heights and text wrapping live in styles.css (render-blocking).
+   This file loads async; anything here that changes layout makes the page jump
+   when it arrives late. Keep this file to colour, motion and decoration. */
 
 /* ---------- 03 · ANIMATED BACKGROUND ---------- */
 /* Fixed, GPU-only (transform/opacity), sits behind all content. */
@@ -96,7 +94,6 @@ body::after{
   isolation:isolate;
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;      /* removes 300ms tap delay */
-  min-height:44px;                /* touch target floor */
 }
 /* light sweep across the face on hover */
 .btn::before{
@@ -137,7 +134,6 @@ body::after{
 @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -6px}}
 @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5)}70%,100%{box-shadow:0 0 0 18px rgba(37,211,102,0)}}
 /* mobile sticky bar buttons */
-.mobile-bar .btn{min-height:46px}
 .mobile-bar .btn:active{transform:scale(.955)}
 
 /* ---------- 05 · HEADER / NAV / DRAWER ---------- */
@@ -208,9 +204,8 @@ header#top.sp-hide{transform:translateY(-102%)}          /* hides scrolling down
 .blog-readmore{transition:gap var(--t-mid) var(--e-spring),color var(--t-fast)}
 .blog-card:hover .blog-readmore{gap:12px;color:var(--gold)}
 /* category chips */
-.blog-chip,.blog-subchip{transition:transform var(--t-fast) var(--e-spring),background var(--t-mid),color var(--t-mid),border-color var(--t-mid);touch-action:manipulation;min-height:38px}
+.blog-chip,.blog-subchip{transition:transform var(--t-fast) var(--e-spring),background var(--t-mid),color var(--t-mid),border-color var(--t-mid);touch-action:manipulation}
 /* touch devices get the full 44px target; mice keep the compact chip */
-@media (pointer:coarse){.blog-chip,.blog-subchip{min-height:44px}}
 .blog-chip:hover,.blog-subchip:hover{transform:translateY(-2px)}
 .blog-chip:active,.blog-subchip:active{transform:scale(.95)}
 .blog-chip.active{box-shadow:0 10px 24px -12px var(--red-glow)}
@@ -219,7 +214,7 @@ header#top.sp-hide{transform:translateY(-102%)}          /* hides scrolling down
 .benefit:hover{transform:translateY(-4px) scale(1.03);border-color:rgba(233,196,90,.45)}
 .hero-trust span:hover{transform:translateY(-2px);border-color:rgba(233,196,90,.4)}
 /* FAQ accordion */
-.faq-q{transition:color var(--t-mid) var(--e-out),background var(--t-mid) var(--e-out);min-height:48px}
+.faq-q{transition:color var(--t-mid) var(--e-out),background var(--t-mid) var(--e-out)}
 .faq-q:hover{color:var(--gold-2)}
 .faq-a{transition:max-height var(--t-slow) var(--e-out),opacity var(--t-mid) var(--e-out)}
 .faq-item:not(.open) .faq-a{opacity:0}
@@ -270,7 +265,6 @@ input,select,textarea{
    the page in on focus. Selectors mirror styles.css/blog.css so they win. */
 input,select,textarea,
 .blog-search input,
-.field input,.field select,.field textarea{font-size:16px}
 
 .field input:focus,.field select:focus,.field textarea:focus,
 input:focus,select:focus,textarea:focus{
@@ -352,7 +346,6 @@ textarea:focus-visible,[tabindex]:focus-visible{
 /* Small screens: calmer motion, bigger targets */
 @media (max-width:640px){
   .card:hover,.prog-card:hover,.blog-card:hover{transform:translateY(-3px)}
-  .btn{min-height:46px}
   body::before{filter:blur(38px);opacity:.85}
 }
 

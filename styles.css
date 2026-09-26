@@ -378,3 +378,29 @@ header#top{view-transition-name:site-header}
 ::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-track{background:var(--black)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-deep),var(--red-deep));border-radius:10px;border:2px solid var(--black)}
+
+/* ---------- LAYOUT RULES THAT MUST NOT ARRIVE LATE ----------
+   ux.css and fx.css load async, and the deferred scripts can run before
+   them. Anything that changes size, wrapping or position therefore lives
+   here: when it lived in the async files, the page reflowed whenever they
+   landed after first paint (measured 0.21 CLS on the home hero, 0.09 on
+   the contact page's bottom bar). Decoration and motion stay async. */
+h1,h2,h3,h4{text-wrap:balance}
+p,.section-sub,.page-sub,.post-excerpt{text-wrap:pretty}
+.page-title{font-size:clamp(2.1rem,6.4vw,4rem);line-height:.98;letter-spacing:.005em}
+.section-title{font-size:clamp(1.8rem,5vw,3.1rem);line-height:1;letter-spacing:.005em}
+.hero-copy h1{letter-spacing:.004em}
+.section-sub,.page-sub{line-height:1.7;max-width:66ch}
+.mobile-bar .btn{min-height:46px}
+@media (pointer:coarse){.blog-chip,.blog-subchip{min-height:44px}}
+.field input,.field select,.field textarea{font-size:16px}
+.btn{min-height:44px}
+.faq-q{min-height:48px}
+.blog-chip,.blog-subchip{min-height:38px}
+@media (max-width:640px){.btn{min-height:46px}}
+/* elements the scripts inject: out of the flow before their styles land */
+#fx-dust,#sp-progress,#sp-top{position:fixed}
+#fx-dust{inset:0;z-index:-1;pointer-events:none}
+.fx-arena,.fx-badges{position:absolute;pointer-events:none}
+.fx-badges{inset:0}
+.fx-words .w{display:inline-block;overflow:hidden;vertical-align:top}
