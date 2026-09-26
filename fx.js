@@ -10,6 +10,8 @@
      F  Cursor spotlight on cards
      G  Scroll parallax
      H  Reveal observer for fx elements
+     I  Hero 3D stage (portrait lean, floating badges, arena ring)
+     J  Kinetic marquee (answers scroll speed + direction)
 
    Design notes:
    - Everything is transform/opacity only, so it stays on the GPU.
@@ -38,7 +40,23 @@
     };
   }
 
-  /* ---------- B · GOLD DUST CANVAS ---------- */
+  /* ---------- B · GOLD DUST CANVAS (3D depth field) ---------- */
+  /* Each mote has a depth z (0.25 far … 1 near). Near motes are bigger,
+     brighter, drift faster and shift more with the pointer and the scroll —
+     that parallax is what makes a flat canvas read as a volume of air.
+     The glow is painted ONCE into two sprite canvases and stamped with
+     drawImage; building a radial gradient per mote per frame (the old way)
+     was the single most expensive thing on the page. */
+  function sprite(rgb) {
+    var s = document.createElement("canvas"), n = 64, c = s.getContext("2d");
+    s.width = s.height = n;
+    var g = c.createRadialGradient(n / 2, n / 2, 0, n / 2, n / 2, n / 2);
+    g.addColorStop(0, "rgba(255,246,216,1)");
+    g.addColorStop(0.3, "rgba(" + rgb + ",.75)");
+    g.addColorStop(1, "rgba(" + rgb + ",0)");
+    c.fillStyle = g; c.fillRect(0, 0, n, n);
+    return s;
+  }
   function dustField() {
     if (reduced) return;
     var cv = document.createElement("canvas");
@@ -47,7 +65,9 @@
     var ctx = cv.getContext("2d");
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var W = 0, H = 0, parts = [], raf = null;
-    var COUNT = small ? 26 : 54;      // deliberately low — this runs every frame
+    var COUNT = small ? 30 : 64;      // deliberately low — this runs every frame
+    var GOLD = sprite("233,196,90"), RED = sprite("225,29,42");
+    var px = 0, py = 0, tx = 0, ty = 0;   // eased pointer offset, -0.5…0.5
 
     function size() {
       W = cv.width = Math.floor(innerWidth * dpr);
@@ -58,40 +78,45 @@
     function seed() {
       parts = [];
       for (var i = 0; i < COUNT; i++) {
+        var z = 0.25 + Math.pow(Math.random(), 1.6) * 0.75;   // most motes far away
         parts.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          r: (Math.random() * 1.6 + 0.5) * dpr,
-          vy: -(Math.random() * 0.22 + 0.05) * dpr,   // drifts upward
+          z: z,
+          s: (3 + z * 9) * dpr,                        // sprite size
+          vy: -(0.05 + z * 0.3) * dpr,                 // near motes rise faster
           vx: (Math.random() - 0.5) * 0.16 * dpr,
-          a: Math.random() * Math.PI * 2,             // twinkle phase
+          a: Math.random() * Math.PI * 2,              // twinkle phase
           sp: Math.random() * 0.02 + 0.008,
-          gold: Math.random() > 0.22                  // a few red embers
+          gold: Math.random() > 0.22                   // a few red embers
         });
       }
     }
+    function wrap(v, m) { return ((v % m) + m) % m; }
     function draw() {
       ctx.clearRect(0, 0, W, H);
+      px += (tx - px) * 0.05; py += (ty - py) * 0.05;
+      var scrollShift = scrollY * dpr;
       for (var i = 0; i < parts.length; i++) {
         var p = parts[i];
         p.x += p.vx; p.y += p.vy; p.a += p.sp;
-        if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
-        if (p.x < -10) p.x = W + 10; else if (p.x > W + 10) p.x = -10;
+        if (p.y < -H) p.y += H;                        // keep numbers small
+        var x = wrap(p.x - px * 60 * p.z * dpr, W + 40) - 20;
+        var y = wrap(p.y - py * 40 * p.z * dpr - scrollShift * p.z * 0.35, H + 40) - 20;
         var tw = 0.35 + Math.abs(Math.sin(p.a)) * 0.65;   // twinkle
-        var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
-        var c = p.gold ? "233,196,90" : "225,29,42";
-        g.addColorStop(0, "rgba(255,246,216," + (tw * 0.95) + ")");
-        g.addColorStop(0.35, "rgba(" + c + "," + (tw * 0.7) + ")");
-        g.addColorStop(1, "rgba(" + c + ",0)");
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2); ctx.fill();
+        ctx.globalAlpha = tw * (0.35 + p.z * 0.65);
+        ctx.drawImage(p.gold ? GOLD : RED, x - p.s / 2, y - p.s / 2, p.s, p.s);
       }
+      ctx.globalAlpha = 1;
       raf = requestAnimationFrame(draw);
     }
     function start() { if (!raf) raf = requestAnimationFrame(draw); }
     function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
 
     size(); seed(); start();
+    if (fine) addEventListener("pointermove", function (e) {
+      tx = e.clientX / innerWidth - 0.5; ty = e.clientY / innerHeight - 0.5;
+    }, { passive: true });
     addEventListener("resize", onFrame(function () { size(); seed(); }), { passive: true });
     // never burn CPU on a tab nobody is looking at
     document.addEventListener("visibilitychange", function () {
@@ -135,6 +160,17 @@
     });
     $$(".eyebrow").forEach(function (el) { el.classList.add("twinkle"); });
     $$(".prog-card img,.g-item img").forEach(function (el) { el.classList.add("fx-wipe"); });
+    /* staggered groups: each child gets its index for the CSS delay */
+    [["#method .grid", "fx-steps"], ["#benefitGrid", "fx-strike"]].forEach(function (g) {
+      $$(g[0]).forEach(function (el) {
+        if (!el.children.length) return;           // benefitGrid is filled by app.js
+        el.classList.add(g[1]);
+        Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty("--i", i); });
+      });
+    });
+    $$(".auth-card .icon-tile").forEach(function (el, i) {
+      el.classList.add("fx-medal"); el.style.setProperty("--i", i % 3);
+    });
     observe();
   }
 
@@ -212,7 +248,8 @@
   /* ---------- H · REVEAL OBSERVER ---------- */
   var io = null;
   function observe() {
-    var targets = $$(".fx-sec:not(.in),.fx-shine:not(.in),.fx-words:not(.in),.fx-wipe:not(.in)");
+    var targets = $$(".fx-sec:not(.in),.fx-shine:not(.in),.fx-words:not(.in),.fx-wipe:not(.in)," +
+                     ".fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in)");
     if (reduced || !("IntersectionObserver" in window)) {
       targets.forEach(function (el) { el.classList.add("in"); });
       return;
@@ -229,6 +266,78 @@
     targets.forEach(function (el) { io.observe(el); });   // re-observing is a no-op
   }
 
+  /* ---------- I · HERO 3D STAGE ---------- */
+  /* The coach portrait becomes a small 3D set: it leans toward the pointer,
+     three credential badges float in front of it at different depths (so
+     they slide past each other as it turns), and a gold arena ring turns
+     beneath it. The badge text is read from the hero's own trust row, so it
+     can never drift from the verified credentials on the page. Everything
+     is added after the portrait has painted, and is absolutely positioned,
+     so neither LCP nor layout is touched. */
+  function heroStage() {
+    var stage = document.querySelector(".hero-portrait");
+    if (!stage || stage.querySelector(".fx-badges")) return;
+    stage.classList.add("fx-stage");
+
+    var ring = document.createElement("div");
+    ring.className = "fx-arena"; ring.setAttribute("aria-hidden", "true");
+    stage.appendChild(ring);
+
+    var creds = $$(".hero-trust span").slice(0, 3).map(function (s) { return s.textContent.trim(); });
+    if (creds.length) {
+      var box = document.createElement("div");
+      box.className = "fx-badges"; box.setAttribute("aria-hidden", "true");
+      creds.forEach(function (t, i) {
+        var b = document.createElement("span");
+        b.className = "fx-badge fx-badge-" + (i + 1);
+        b.textContent = t;
+        box.appendChild(b);
+      });
+      stage.appendChild(box);
+    }
+
+    if (!fine || reduced) return;
+    var hero = stage.closest(".hero") || stage;
+    var rx = 0, ry = 0, tx = 0, ty = 0, raf = null;
+    function step() {
+      rx += (tx - rx) * 0.08; ry += (ty - ry) * 0.08;
+      stage.style.setProperty("--rx", rx.toFixed(2) + "deg");
+      stage.style.setProperty("--ry", ry.toFixed(2) + "deg");
+      raf = (Math.abs(tx - rx) + Math.abs(ty - ry) > 0.01) ? requestAnimationFrame(step) : null;
+    }
+    function aim(x, y) { tx = x; ty = y; if (!raf) raf = requestAnimationFrame(step); }
+    hero.addEventListener("pointermove", function (e) {
+      var r = stage.getBoundingClientRect();
+      var nx = (e.clientX - (r.left + r.width / 2)) / innerWidth;    // -0.5…0.5
+      var ny = (e.clientY - (r.top + r.height / 2)) / innerHeight;
+      aim(-ny * 9, nx * 11);                                          // max ~5°
+    }, { passive: true });
+    hero.addEventListener("pointerleave", function () { aim(0, 0); });
+  }
+
+  /* ---------- J · KINETIC MARQUEE ---------- */
+  /* The disciplines strip answers the scroll: faster when the page moves
+     fast, and it runs backwards while you scroll up. It eases back to its
+     resting speed on its own, and the loop stops once it has settled. */
+  function kineticMarquee() {
+    if (reduced) return;
+    var m = document.querySelector(".marquee");
+    if (!m || !m.getAnimations) return;
+    var last = scrollY, rate = 1, target = 1, raf = null;
+    function step() {
+      target += (1 - target) * 0.04;                 // decay toward resting speed
+      rate += (target - rate) * 0.15;
+      m.getAnimations().forEach(function (a) { a.playbackRate = rate; });
+      raf = (Math.abs(rate - 1) > 0.01) ? requestAnimationFrame(step) : null;
+    }
+    addEventListener("scroll", function () {
+      var v = scrollY - last; last = scrollY;
+      var boost = Math.min(Math.abs(v) / 14, 4);
+      target = (v < 0 ? -1 : 1) * (1 + boost);
+      if (!raf) raf = requestAnimationFrame(step);
+    }, { passive: true });
+  }
+
   /* ---------- SAFETY NET ---------- */
   /* Word-reveal starts at opacity:0 and waits for IntersectionObserver.
      If IO is throttled, blocked, or never fires, a headline would stay
@@ -237,7 +346,7 @@
      their scroll animation. */
   function safetyNet() {
     setTimeout(function () {
-      $$(".fx-words:not(.in),.fx-shine:not(.in),.fx-wipe:not(.in)").forEach(function (el) {
+      $$(".fx-words:not(.in),.fx-shine:not(.in),.fx-wipe:not(.in),.fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in)").forEach(function (el) {
         if (el.getBoundingClientRect().top < innerHeight) el.classList.add("in");
       });
     }, 1600);
@@ -250,6 +359,8 @@
     tag();
     spotlight();
     parallax();
+    heroStage();
+    kineticMarquee();
     safetyNet();
     if ("MutationObserver" in window) {
       var t;
