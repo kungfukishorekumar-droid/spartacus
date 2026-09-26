@@ -182,6 +182,7 @@ section[id],[id]{scroll-margin-top:84px}
 .parent-points{display:grid;gap:12px}
 .split-media{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(233,196,90,.3);min-height:380px;background:radial-gradient(circle at 50% 30%,#23232a,#121214);display:flex;align-items:center;justify-content:center}
 .split-media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.split-media > picture{position:absolute;inset:0;display:block}   /* fills the frame even when fx.js tilts it */
 .split-media .ph{color:var(--muted);text-align:center;font-family:var(--font-head);letter-spacing:.05em;padding:24px;z-index:1}
 .split-media .ph svg{width:110px;height:110px;opacity:.5;margin-bottom:12px}
 .split-media .ph small{display:block;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-2);margin-top:6px}

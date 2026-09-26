@@ -10,7 +10,8 @@
      F  Cursor spotlight on cards
      G  Scroll parallax
      H  Reveal observer for fx elements
-     I  Hero 3D stage (portrait lean, floating badges, arena ring)
+     I  3D photo stage (lean, floating badges, arena ring) — home + about
+     I2 Page-header depth planes + arena ring (opt-in: data-fx="stage")
      J  Kinetic marquee (answers scroll speed + direction)
 
    Design notes:
@@ -168,6 +169,21 @@
         Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty("--i", i); });
       });
     });
+    $$("#coach .hl-row").forEach(function (el) {
+      el.classList.add("fx-strike");
+      Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty("--i", i); });
+    });
+    /* program cards swing in one by one as each reaches the viewport;
+       --c staggers the cards of one row on wide screens */
+    $$("#programGrid > .prog-card").forEach(function (el, i) {
+      el.classList.add("fx-deal"); el.style.setProperty("--c", i % 3);
+    });
+    if (document.querySelector('.page-hero[data-fx="stage"]')) {
+      $$(".fees-card,.final-cta").forEach(function (el) {
+        el.classList.add("fx-rise");
+        if (el.parentElement) el.parentElement.classList.add("fx-rise-host");
+      });
+    }
     $$(".auth-card .icon-tile").forEach(function (el, i) {
       el.classList.add("fx-medal"); el.style.setProperty("--i", i % 3);
     });
@@ -249,7 +265,7 @@
   var io = null;
   function observe() {
     var targets = $$(".fx-sec:not(.in),.fx-shine:not(.in),.fx-words:not(.in),.fx-wipe:not(.in)," +
-                     ".fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in)");
+                     ".fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in),.fx-deal:not(.in),.fx-rise:not(.in)");
     if (reduced || !("IntersectionObserver" in window)) {
       targets.forEach(function (el) { el.classList.add("in"); });
       return;
@@ -275,15 +291,19 @@
      is added after the portrait has painted, and is absolutely positioned,
      so neither LCP nor layout is touched. */
   function heroStage() {
-    var stage = document.querySelector(".hero-portrait");
-    if (!stage || stage.querySelector(".fx-badges")) return;
-    stage.classList.add("fx-stage");
+    // [photo block, where its credential text lives]
+    stage(document.querySelector(".hero-portrait"), ".hero-trust span");
+    stage(document.querySelector("#coach .split-media"), "#coach .hl-row span");
+  }
+  function stage(el, credSel) {
+    if (!el || !el.querySelector("picture") || el.querySelector(".fx-badges")) return;
+    el.classList.add("fx-stage");
 
     var ring = document.createElement("div");
     ring.className = "fx-arena"; ring.setAttribute("aria-hidden", "true");
-    stage.appendChild(ring);
+    el.appendChild(ring);
 
-    var creds = $$(".hero-trust span").slice(0, 3).map(function (s) { return s.textContent.trim(); });
+    var creds = $$(credSel).slice(0, 3).map(function (s) { return s.textContent.trim(); });
     if (creds.length) {
       var box = document.createElement("div");
       box.className = "fx-badges"; box.setAttribute("aria-hidden", "true");
@@ -293,26 +313,52 @@
         b.textContent = t;
         box.appendChild(b);
       });
-      stage.appendChild(box);
+      el.appendChild(box);
     }
 
     if (!fine || reduced) return;
-    var hero = stage.closest(".hero") || stage;
-    var rx = 0, ry = 0, tx = 0, ty = 0, raf = null;
+    var area = el.closest("section") || el;
+    follow(area, function (nx, ny) {
+      el.style.setProperty("--rx", (-ny * 9).toFixed(2) + "deg");          // max ~5°
+      el.style.setProperty("--ry", (nx * 11).toFixed(2) + "deg");
+    }, el);
+  }
+
+  /* Eased pointer-follow shared by the stages and the page-header depth.
+     Reports the pointer as -0.5…0.5 relative to `ref`'s centre (scaled by
+     the viewport), and eases back to 0 when the pointer leaves `area`. */
+  function follow(area, apply, ref) {
+    var x = 0, y = 0, tx = 0, ty = 0, raf = null;
     function step() {
-      rx += (tx - rx) * 0.08; ry += (ty - ry) * 0.08;
-      stage.style.setProperty("--rx", rx.toFixed(2) + "deg");
-      stage.style.setProperty("--ry", ry.toFixed(2) + "deg");
-      raf = (Math.abs(tx - rx) + Math.abs(ty - ry) > 0.01) ? requestAnimationFrame(step) : null;
+      x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+      apply(x, y);
+      raf = (Math.abs(tx - x) + Math.abs(ty - y) > 0.001) ? requestAnimationFrame(step) : null;
     }
-    function aim(x, y) { tx = x; ty = y; if (!raf) raf = requestAnimationFrame(step); }
-    hero.addEventListener("pointermove", function (e) {
-      var r = stage.getBoundingClientRect();
-      var nx = (e.clientX - (r.left + r.width / 2)) / innerWidth;    // -0.5…0.5
-      var ny = (e.clientY - (r.top + r.height / 2)) / innerHeight;
-      aim(-ny * 9, nx * 11);                                          // max ~5°
+    function aim(a, b) { tx = a; ty = b; if (!raf) raf = requestAnimationFrame(step); }
+    area.addEventListener("pointermove", function (e) {
+      var r = (ref || area).getBoundingClientRect();
+      aim((e.clientX - (r.left + r.width / 2)) / innerWidth,
+          (e.clientY - (r.top + r.height / 2)) / innerHeight);
     }, { passive: true });
-    hero.addEventListener("pointerleave", function () { aim(0, 0); });
+    area.addEventListener("pointerleave", function () { aim(0, 0); });
+  }
+
+  /* ---------- I2 · PAGE-HEADER DEPTH (pages that opt in) ---------- */
+  /* <section class="page-hero" data-fx="stage">: the arena ring turns
+     behind the title, and eyebrow / title / subtitle sit on separate depth
+     planes that drift by different amounts with the pointer. */
+  function pageStage() {
+    var ph = document.querySelector('.page-hero[data-fx="stage"]');
+    if (!ph || ph.classList.contains("fx-depth")) return;
+    ph.classList.add("fx-depth");
+    var ring = document.createElement("div");
+    ring.className = "fx-arena"; ring.setAttribute("aria-hidden", "true");
+    ph.insertBefore(ring, ph.firstChild);
+    if (!fine || reduced) return;
+    follow(ph, function (nx, ny) {
+      ph.style.setProperty("--dx", nx.toFixed(3));
+      ph.style.setProperty("--dy", ny.toFixed(3));
+    });
   }
 
   /* ---------- J · KINETIC MARQUEE ---------- */
@@ -346,7 +392,7 @@
      their scroll animation. */
   function safetyNet() {
     setTimeout(function () {
-      $$(".fx-words:not(.in),.fx-shine:not(.in),.fx-wipe:not(.in),.fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in)").forEach(function (el) {
+      $$(".fx-words:not(.in),.fx-shine:not(.in),.fx-wipe:not(.in),.fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in),.fx-deal:not(.in),.fx-rise:not(.in)").forEach(function (el) {
         if (el.getBoundingClientRect().top < innerHeight) el.classList.add("in");
       });
     }, 1600);
@@ -360,6 +406,7 @@
     spotlight();
     parallax();
     heroStage();
+    pageStage();
     kineticMarquee();
     safetyNet();
     if ("MutationObserver" in window) {
