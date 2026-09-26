@@ -310,10 +310,7 @@ input:hover:not(:focus),select:hover:not(:focus),textarea:hover:not(:focus){bord
 #sp-top svg{width:19px;height:19px}
 @media(min-width:861px){#sp-top{left:26px;bottom:30px}}   /* no sticky bar on desktop */
 /* custom scrollbar */
-*{scrollbar-width:thin;scrollbar-color:rgba(233,196,90,.42) transparent}
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:var(--black)}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-deep),var(--red-deep));border-radius:10px;border:2px solid var(--black)}
+/* (scrollbar styles moved to styles.css — see note there) */
 ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,var(--gold),var(--red))}
 /* generic link + footer polish */
 .foot-col a,.foot-social a{transition:color var(--t-mid) var(--e-out),transform var(--t-mid) var(--e-spring)}

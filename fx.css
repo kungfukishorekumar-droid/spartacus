@@ -16,7 +16,8 @@
      21  Credential medals: coin toss
      22  Page-header depth planes + arena ring (programs, about)
      23  Program cards: hinge deal + 3D icon pop
-     24  Fees / final CTA: rise from flat
+     24  Fees / final CTA / forms: rise from flat
+     25  3D pressable buttons (depth edge, press, tilt, moving highlight)
    ============================================================ */
 
 /* ---------- 11 · GLITTER + GOLD DUST ---------- */
@@ -132,9 +133,9 @@
 .btn-ghost:hover{background-size:100% 2px}
 /* nav "Book Trial" gets a permanent soft heartbeat so the CTA never disappears */
 .nav-cta .btn-primary{animation:gradShift 8s var(--e-smooth) infinite,ctaBeat 3.6s var(--e-smooth) infinite}
-@keyframes ctaBeat{
-  0%,100%{box-shadow:0 14px 30px -10px var(--red-glow),0 0 0 0 rgba(225,29,42,.45)}
-  55%    {box-shadow:0 18px 36px -10px var(--red-glow),0 0 0 12px rgba(225,29,42,0)}
+@keyframes ctaBeat{     /* keeps the 3D edge (section 25) while it pulses */
+  0%,100%{box-shadow:0 var(--edge,5px) 0 #7d0a14,0 14px 30px -10px var(--red-glow),0 0 0 0 rgba(225,29,42,.45)}
+  55%    {box-shadow:0 var(--edge,5px) 0 #7d0a14,0 18px 36px -10px var(--red-glow),0 0 0 12px rgba(225,29,42,0)}
 }
 
 /* ---------- 16 · IMAGE REVEALS ---------- */
@@ -336,7 +337,47 @@
 }
 .fx-rise:not(.in){opacity:0;rotate:x 28deg;translate:0 40px}
 
-/* ---------- phones + reduced motion for 18–24 ---------- */
+/* ---------- 25 · 3D PRESSABLE BUTTONS ---------- */
+/* Every button stands on a solid edge (a zero-blur shadow in a darker
+   shade of its own colour). Hover lifts the face and shows more edge; a
+   click or tap presses the face down into it, with the bottom of the edge
+   staying put, like a real key. fx.js tilts the face toward the pointer
+   (--btx/--bty) and moves the highlight with it (--bx/--by). */
+.btn:not(.burger){
+  --edge:5px;--lift:0px;--bs:1;
+  transform:perspective(560px) rotateX(var(--btx,0deg)) rotateY(var(--bty,0deg)) translateY(var(--lift)) scale(var(--bs));
+  text-shadow:0 1px 0 rgba(0,0,0,.22);
+}
+.btn:not(.burger):hover{--lift:-3px;--edge:7px;--bs:1.02}
+.btn:not(.burger):active{--lift:4px;--edge:1px;--bs:1}
+.btn-primary,.btn-primary:hover,.btn-primary:active{
+  box-shadow:0 var(--edge) 0 #7d0a14,0 calc(var(--edge) + 12px) 28px -10px var(--red-glow),
+             inset 0 1px 0 rgba(255,255,255,.28),inset 0 -2px 0 rgba(0,0,0,.18);
+}
+.btn-gold,.btn-gold:hover,.btn-gold:active{
+  box-shadow:0 var(--edge) 0 #8c6414,0 calc(var(--edge) + 12px) 28px -12px rgba(233,196,90,.5),
+             inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 rgba(0,0,0,.14);
+  text-shadow:0 1px 0 rgba(255,255,255,.3);
+}
+.btn-wa,.btn-wa:hover,.btn-wa:active{
+  box-shadow:0 var(--edge) 0 #0b6a4c,0 calc(var(--edge) + 12px) 28px -12px rgba(37,211,102,.45),
+             inset 0 1px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(0,0,0,.16);
+}
+.btn-ghost,.btn-ghost:hover,.btn-ghost:active{
+  box-shadow:0 var(--edge) 0 rgba(233,196,90,.2),0 calc(var(--edge) + 10px) 24px -14px rgba(0,0,0,.85);
+}
+/* the gloss becomes a highlight that follows the pointer (rests at the top) */
+.btn:not(.btn-ghost)::after{
+  top:0;height:100%;
+  background:radial-gradient(130% 100% at var(--bx,50%) var(--by,-12%),
+             rgba(255,255,255,.34),rgba(255,255,255,.07) 42%,transparent 64%);
+}
+.btn:focus-visible{outline:2px solid var(--gold-2);outline-offset:4px}
+/* WhatsApp float gets the same solid base */
+.wa-float{box-shadow:0 5px 0 #0b6a4c,0 16px 30px -10px rgba(37,211,102,.55),inset 0 1px 0 rgba(255,255,255,.3)}
+.wa-float:active{box-shadow:0 1px 0 #0b6a4c,0 8px 18px -10px rgba(37,211,102,.55)}
+
+/* ---------- phones + reduced motion for 18–25 ---------- */
 @media (max-width:900px){
   .fx-badge{font-size:.64rem;padding:6px 10px 6px 8px;gap:6px}
   .fx-badge-1{left:4%;top:60%}.fx-badge-2{right:7%;top:71%}.fx-badge-3{left:8%;top:82%}
@@ -352,4 +393,5 @@
   .fx-strike .chk,.fx-medal,.fx-medal svg{animation:none!important}
   .fx-depth .eyebrow,.fx-depth .page-title,.fx-depth .page-sub{translate:none!important}
   .fx-deal,.fx-rise{opacity:1!important;rotate:none!important;translate:none!important;transition:none}
+  .btn:not(.burger){--btx:0deg!important;--bty:0deg!important}
 }

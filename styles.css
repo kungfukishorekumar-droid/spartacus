@@ -353,3 +353,28 @@ footer{border-top:1px solid var(--line);background:rgba(0,0,0,.5);padding:clamp(
    ux.css arrived the link sat in the flow and pushed the page down ~26px. */
 .sp-skip{position:fixed;top:-60px;left:12px;z-index:10000}
 .sp-skip:focus{top:0}
+
+/* ---------- PAGE TRANSITIONS ----------
+   Cross-document View Transitions: moving between pages of this site
+   cross-fades with a small rise, while the header and the WhatsApp button
+   stay put instead of flashing. No JavaScript; browsers without support
+   simply navigate as before. Lives here (render-blocking) because both the
+   old and the new page must opt in before first paint. */
+@view-transition{navigation:auto}
+header#top{view-transition-name:site-header}
+.wa-float{view-transition-name:wa-float}
+::view-transition-old(root){animation:vtOut .26s cubic-bezier(.4,0,1,1) both}
+::view-transition-new(root){animation:vtIn .44s cubic-bezier(.22,1,.36,1) both}
+@keyframes vtOut{to{opacity:0;transform:translateY(-8px) scale(.99)}}
+@keyframes vtIn{from{opacity:0;transform:translateY(14px) scale(1.008)}}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+}
+
+/* Custom scrollbar lives here (render-blocking), not in the async ux.css:
+   the scrollbar's width is part of the page's width, so when ux.css arrived
+   late and narrowed it, the whole page reflowed — a layout shift on desktop. */
+*{scrollbar-width:thin;scrollbar-color:rgba(233,196,90,.42) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-deep),var(--red-deep));border-radius:10px;border:2px solid var(--black)}

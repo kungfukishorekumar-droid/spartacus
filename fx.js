@@ -13,6 +13,7 @@
      I  3D photo stage (lean, floating badges, arena ring) — home + about
      I2 Page-header depth planes + arena ring (opt-in: data-fx="stage")
      J  Kinetic marquee (answers scroll speed + direction)
+     K  3D buttons (tilt toward pointer, moving highlight)
 
    Design notes:
    - Everything is transform/opacity only, so it stays on the GPU.
@@ -22,6 +23,15 @@
    ============================================================ */
 (function () {
   "use strict";
+
+  /* Page transitions (styles.css) are skipped by the browser when a tab is
+     hidden or navigates mid-transition; unobserved, that surfaces as an
+     "Uncaught (in promise) AbortError" in the console. It's harmless, so
+     observe the promises and let it pass silently. */
+  addEventListener("pagereveal", function (e) {
+    var vt = e.viewTransition;
+    if (vt) { vt.ready["catch"](function () {}); vt.finished["catch"](function () {}); }
+  });
 
   /* ---------- A · GUARDS + HELPERS ---------- */
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -178,12 +188,20 @@
     $$("#programGrid > .prog-card").forEach(function (el, i) {
       el.classList.add("fx-deal"); el.style.setProperty("--c", i % 3);
     });
-    if (document.querySelector('.page-hero[data-fx="stage"]')) {
-      $$(".fees-card,.final-cta").forEach(function (el) {
-        el.classList.add("fx-rise");
-        if (el.parentElement) el.parentElement.classList.add("fx-rise-host");
-      });
-    }
+    $$(".fees-card,.final-cta").forEach(function (el) {     // not .form-card: the booking form stays instantly visible
+      el.classList.add("fx-rise");
+      if (el.parentElement) el.parentElement.classList.add("fx-rise-host");
+    });
+    /* other card grids deal in the same way as the program cards */
+    $$(".gallery-grid > .tile,.qa-grid > *").forEach(function (el, i) {
+      if (el.classList.contains("fx-deal")) return;
+      el.classList.add("fx-deal"); el.style.setProperty("--c", i % 3);
+      if (el.parentElement) el.parentElement.classList.add("fx-rise-host");
+    });
+    $$(".parent-points").forEach(function (el) {
+      el.classList.add("fx-strike");
+      Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty("--i", i); });
+    });
     $$(".auth-card .icon-tile").forEach(function (el, i) {
       el.classList.add("fx-medal"); el.style.setProperty("--i", i % 3);
     });
@@ -361,6 +379,32 @@
     });
   }
 
+  /* ---------- K · 3D BUTTONS ---------- */
+  /* Tilts each button toward the pointer and moves its highlight (fx.css
+     §25 turns those into a transform + a radial gloss). Buttons are bound
+     the first time the pointer reaches them, so buttons injected later
+     (header, drawer, blog) are covered without scanning the page. */
+  function buttons3d() {
+    if (!fine || reduced) return;
+    var seen = new WeakSet(), props = ["--btx", "--bty", "--bx", "--by"];
+    document.addEventListener("pointerover", function (e) {
+      var b = e.target.closest && e.target.closest(".btn:not(.burger)");
+      if (!b || seen.has(b)) return;
+      seen.add(b);
+      b.addEventListener("pointermove", function (ev) {
+        var r = b.getBoundingClientRect();
+        var x = (ev.clientX - r.left) / r.width, y = (ev.clientY - r.top) / r.height;
+        b.style.setProperty("--bty", ((x - 0.5) * 14).toFixed(1) + "deg");
+        b.style.setProperty("--btx", ((0.5 - y) * 18).toFixed(1) + "deg");
+        b.style.setProperty("--bx", (x * 100).toFixed(0) + "%");
+        b.style.setProperty("--by", (y * 100).toFixed(0) + "%");
+      }, { passive: true });
+      b.addEventListener("pointerleave", function () {
+        props.forEach(function (p) { b.style.removeProperty(p); });
+      });
+    }, { passive: true });
+  }
+
   /* ---------- J · KINETIC MARQUEE ---------- */
   /* The disciplines strip answers the scroll: faster when the page moves
      fast, and it runs backwards while you scroll up. It eases back to its
@@ -408,6 +452,7 @@
     heroStage();
     pageStage();
     kineticMarquee();
+    buttons3d();
     safetyNet();
     if ("MutationObserver" in window) {
       var t;
