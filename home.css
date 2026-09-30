@@ -1,0 +1,367 @@
+/* ============================================================
+   SPARTACUS — HOMEPAGE ("Ink & Iron")
+   Render-blocking on purpose: it sets layout. Everything is scoped under
+   .page-home so it cannot leak into other pages, and so it outranks the
+   async ux.css / fx.css (same selectors, later-loaded) without !important.
+
+     01 tokens + shared type        06 who can join
+     02 hero                        07 what students build (word wall)
+     03 disciplines ribbon          08 training method (scroll story)
+     04 coach / credentials         09 parents + belt stack
+     05 disciplines (pinned rail)   10 final call · 11 reduced motion
+   ============================================================ */
+
+/* ---------- 01 · TOKENS + SHARED TYPE ---------- */
+.page-home{
+  --bone:#f4efe6; --steel:#8d8b94; --hair:rgba(244,239,230,.1);
+  --ease:cubic-bezier(.22,1,.36,1); --hdr:74px;
+}
+.page-home .hx-eyebrow{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+  font-family:var(--font-head);font-weight:600;font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-2);
+}
+.page-home .hx-eyebrow::before{content:"";width:28px;height:2px;background:var(--red);flex:0 0 28px}
+.page-home .hx-h2{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(2.2rem,4.8vw,4rem);line-height:.94;letter-spacing:.003em;color:var(--bone);
+  max-width:17ch;text-wrap:balance;margin-bottom:18px;
+}
+.page-home .hx-sub{color:var(--mist);font-size:clamp(1rem,1.5vw,1.12rem);line-height:1.7;max-width:60ch}
+.page-home .hx-textlink{
+  display:inline-flex;align-items:center;gap:8px;margin-top:18px;
+  font-family:var(--font-head);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.9rem;color:var(--gold-2);
+  border-bottom:1px solid rgba(233,196,90,.35);padding-bottom:3px;transition:color .25s,border-color .25s,gap .25s var(--ease);
+}
+.page-home .hx-textlink:hover{color:#fff;border-color:#fff;gap:12px}
+.page-home .i-arrow{width:18px;height:18px;flex:0 0 18px}
+.page-home .btn svg:not(.i-arrow){width:20px;height:20px;flex:0 0 20px}
+.page-home .btn-lg{padding:18px 30px;font-size:1rem}
+.page-home .hx-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+.page-home .hx-alt{margin-top:16px;font-size:.92rem;color:var(--steel)}
+.page-home .hx-alt a{color:var(--gold-2);border-bottom:1px solid rgba(233,196,90,.3);transition:color .2s}
+.page-home .hx-alt a:hover{color:#fff}
+.page-home .pad{padding-block:clamp(72px,11vw,140px)}
+/* the tilted ribbon and the 武 glyph reach past the viewport edge on purpose;
+   clip (not hidden) keeps sticky/pinned sections working */
+.page-home main{overflow-x:clip}
+
+/* ---------- 02 · HERO ---------- */
+.page-home .hx-hero{
+  display:grid;grid-template-rows:1fr auto;align-items:center;
+  min-height:calc(100svh - var(--hdr));border-bottom:0;
+}
+.page-home .hx-hero .hero-portrait{width:46%}
+.page-home .hx-hero .hero-portrait::after{background:
+  linear-gradient(90deg,var(--black) 0%,rgba(8,8,9,.6) 10%,rgba(8,8,9,.1) 26%,rgba(8,8,9,0) 42%),
+  linear-gradient(0deg,var(--black) 0%,rgba(8,8,9,.5) 14%,rgba(8,8,9,0) 34%)}
+.page-home .hero-inner{padding-block:clamp(40px,6vw,72px) clamp(32px,4vw,48px)}
+.page-home .hero-copy{max-width:min(660px,54vw)}
+
+.page-home .hx-kicker{
+  display:flex;align-items:center;gap:14px;
+  font-family:var(--font-head);font-weight:600;font-size:.8rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-2);
+}
+.page-home .hx-kicker-bar{width:40px;height:2px;background:linear-gradient(90deg,var(--red),var(--gold));transform-origin:0 50%;animation:hxBar .8s var(--ease) .1s both}
+@keyframes hxBar{from{transform:scaleX(0)}}
+
+.page-home .hx-title{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;color:var(--bone);
+  font-size:clamp(2.75rem,6vw,5.7rem);line-height:.9;letter-spacing:.002em;margin:22px 0 24px;
+}
+/* each line rises out of its own mask — a curtain, not a fade */
+.page-home .hx-line{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.page-home .hx-line > span{display:inline-block;animation:hxRise 1s var(--ease) both}
+.page-home .hx-line:nth-child(1) > span{animation-delay:.12s}
+.page-home .hx-line:nth-child(2) > span{animation-delay:.22s}
+.page-home .hx-line:nth-child(3) > span{animation-delay:.32s}
+@keyframes hxRise{from{transform:translateY(108%) skewY(4deg)}}
+
+.page-home .hx-lede{color:var(--mist);font-size:clamp(1rem,1.45vw,1.14rem);line-height:1.7;max-width:56ch;animation:hxFade .9s var(--ease) .45s both}
+.page-home .hx-lede strong{display:block;color:var(--bone);font-family:var(--font-head);font-weight:500;font-size:1.18em;letter-spacing:.01em;margin-bottom:6px}
+.page-home .hx-lede b{color:var(--bone);font-weight:600}
+.page-home .hero-copy .hx-actions{animation:hxFade .9s var(--ease) .55s both}
+.page-home .hero-copy .hx-alt,.page-home .hx-tanglish{animation:hxFade .9s var(--ease) .65s both}
+.page-home .hx-tanglish{margin-top:10px;font-family:var(--font-head);font-style:italic;color:rgba(246,215,122,.72);letter-spacing:.02em}
+@keyframes hxFade{from{opacity:0;transform:translateY(14px)}}
+
+/* ink wipe: two panels sweep off the portrait on load (the photo is already
+   painted underneath, so LCP is not delayed) */
+.page-home .hx-ink{position:absolute;top:0;right:0;bottom:0;width:46%;z-index:1;pointer-events:none}
+.page-home .hx-ink::before,.page-home .hx-ink::after{content:"";position:absolute;inset:0;transform-origin:100% 50%;animation:hxWipe .95s var(--ease) both}
+.page-home .hx-ink::before{background:var(--red-deep);animation-delay:.28s}
+.page-home .hx-ink::after{background:var(--black);animation-delay:.08s}
+@keyframes hxWipe{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+/* credential bar along the bottom of the hero */
+.page-home .hx-trust-bar{position:relative;z-index:3;border-top:1px solid var(--hair);background:rgba(10,10,11,.74);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);animation:hxFade .9s var(--ease) .75s both}
+.page-home .hx-trust-bar .hero-trust{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:0;max-width:none}
+.page-home .hx-trust-bar .hero-trust span{
+  flex:1 1 0;justify-content:center;gap:10px;padding:18px 12px;border:0;border-radius:0;background:none;
+  font-family:var(--font-head);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mist);white-space:nowrap;
+}
+.page-home .hx-trust-bar .hero-trust span + span{border-left:1px solid var(--hair)}
+.page-home .hx-trust-bar .hero-trust span::before{content:"";width:6px;height:6px;flex:0 0 6px;transform:rotate(45deg);background:var(--gold)}
+
+/* ---------- 03 · DISCIPLINES RIBBON ---------- */
+.page-home .hx-ribbon{
+  position:relative;z-index:4;background:var(--red);border:0;
+  transform:rotate(-2deg) scale(1.04);margin-block:clamp(-8px,-1vw,-4px) 0;
+  box-shadow:0 18px 40px -18px rgba(225,29,42,.6);
+}
+.page-home .hx-ribbon .marquee{gap:34px;padding:14px 0}
+.page-home .hx-ribbon .marquee span{
+  font-family:var(--font-display);font-size:clamp(1.5rem,3.2vw,2.5rem);letter-spacing:.02em;text-transform:uppercase;
+  color:var(--black);gap:34px;
+}
+.page-home .hx-ribbon .marquee span.o{color:transparent;-webkit-text-stroke:1.4px var(--black)}
+.page-home .hx-ribbon .marquee span::after{content:"✦";color:var(--black);-webkit-text-stroke:0;font-size:.6em}
+
+/* ---------- 04 · COACH / CREDENTIALS ---------- */
+.page-home .hx-coach{position:relative;overflow:hidden}
+.page-home .hx-glyph{
+  position:absolute;right:-3vw;top:50%;z-index:0;pointer-events:none;user-select:none;
+  font-family:"Hiragino Mincho ProN","Songti SC","Noto Serif CJK SC","Noto Serif SC",serif;font-weight:700;
+  font-size:clamp(240px,40vw,600px);line-height:1;
+  color:rgba(225,29,42,.07);-webkit-text-stroke:1px rgba(233,196,90,.16);
+  transform:translate3d(0,calc(-50% + var(--gy,0px)),0);
+}
+.page-home .hx-coach-grid{position:relative;z-index:1;display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(40px,6vw,96px);align-items:start}
+.page-home .hx-coach-lede{position:sticky;top:calc(var(--hdr) + 40px)}
+.page-home .hx-quote{
+  margin-top:8px;padding-left:22px;border-left:2px solid var(--gold);
+  font-family:var(--font-head);font-weight:300;font-size:clamp(1.15rem,1.9vw,1.45rem);line-height:1.55;color:var(--bone);max-width:34ch;
+}
+.page-home .hx-record{list-style:none;border-bottom:1px solid var(--hair)}
+.page-home .hx-rec{
+  display:grid;grid-template-columns:56px 1fr;grid-template-rows:auto auto;column-gap:20px;align-items:center;
+  padding:22px 8px;border-top:1px solid var(--hair);position:relative;
+  transition:background .4s var(--ease),padding-left .4s var(--ease);
+}
+.page-home .hx-rec::after{content:"";position:absolute;left:0;top:-1px;height:1px;width:0;background:var(--gold);transition:width .6s var(--ease)}
+.page-home .hx-rec:hover{background:linear-gradient(90deg,rgba(233,196,90,.07),transparent 70%);padding-left:16px}
+.page-home .hx-rec:hover::after{width:100%}
+.page-home .hx-rec-ic{
+  grid-row:1 / span 2;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%,rgba(233,196,90,.22),rgba(225,29,42,.12) 60%,rgba(255,255,255,.02));
+  border:1px solid rgba(233,196,90,.3);transition:transform .8s var(--ease);
+}
+.page-home .hx-rec-ic svg{width:28px;height:28px}
+.page-home .hx-rec:hover .hx-rec-ic{transform:perspective(300px) rotateY(360deg)}
+.page-home .hx-rec b{font-family:var(--font-head);font-weight:600;font-size:clamp(1.05rem,1.7vw,1.3rem);letter-spacing:.03em;text-transform:uppercase;color:var(--bone)}
+.page-home .hx-rec span:last-child{color:var(--steel);font-size:.93rem}
+
+/* ---------- 05 · DISCIPLINES (pinned horizontal rail) ---------- */
+.page-home .hx-arts{position:relative;padding-block:clamp(72px,10vw,120px) clamp(40px,6vw,72px)}
+.page-home .hx-arts-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
+.page-home .hx-arts-head .hx-h2{margin-bottom:0}
+.page-home .hx-arts-sub{color:var(--mist);max-width:44ch;line-height:1.7}
+.page-home .hx-arts-sub .hx-textlink{margin-top:12px}
+/* default (phones, no JS, reduced motion): a native swipe rail */
+.page-home .hx-arts-track{
+  display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
+  padding:8px max(16px,calc((100vw - var(--maxw)) / 2 + 24px)) 28px;scrollbar-width:none;perspective:1400px;
+}
+.page-home .hx-arts-track::-webkit-scrollbar{display:none}
+.page-home .hx-art{
+  --glow:hsl(var(--hue) 72% 38% / .5);
+  position:relative;flex:0 0 min(80vw,360px);scroll-snap-align:center;min-height:470px;
+  display:flex;flex-direction:column;padding:26px;border-radius:24px;overflow:hidden;isolation:isolate;
+  background:radial-gradient(120% 70% at 50% 0%,var(--glow),transparent 62%),linear-gradient(180deg,#141418,#0e0e11);
+  border:1px solid var(--hair);
+  transform:rotateY(var(--ry,0deg)) scale(var(--sc,1));transform-origin:50% 50%;
+  transition:border-color .4s,box-shadow .4s;
+}
+.page-home .hx-art:hover,.page-home .hx-art:focus-within{border-color:rgba(233,196,90,.5);box-shadow:0 30px 60px -30px var(--glow)}
+.page-home .hx-art-tag{
+  align-self:flex-start;font-family:var(--font-head);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-2);padding:6px 11px;border-radius:99px;border:1px solid rgba(233,196,90,.3);background:rgba(0,0,0,.35);
+}
+.page-home .hx-art-fig{flex:1;display:grid;place-items:center;min-height:170px;perspective:500px}
+.page-home .hx-art-fig svg{
+  width:118px;height:118px;filter:drop-shadow(0 18px 24px rgba(0,0,0,.6));
+  transition:transform .7s var(--ease);
+}
+.page-home .hx-art:hover .hx-art-fig svg{transform:translateZ(40px) rotateY(-14deg) rotateX(8deg) scale(1.06)}
+.page-home .hx-art h3{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:clamp(2rem,3vw,2.6rem);line-height:1;color:var(--bone);margin-bottom:10px}
+.page-home .hx-art p{color:var(--mist);font-size:.95rem;line-height:1.6}
+.page-home .hx-art .hx-art-for{margin-top:12px;font-family:var(--font-head);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-2)}
+.page-home .hx-art-link{
+  display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding-top:16px;border-top:1px solid var(--hair);
+  font-family:var(--font-head);font-weight:600;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);
+}
+.page-home .hx-art-link::after{content:"";position:absolute;inset:0;border-radius:inherit}   /* whole card is the link */
+.page-home .hx-art-link:focus-visible{outline:none}
+.page-home .hx-art:focus-within{outline:2px solid var(--gold-2);outline-offset:3px}
+.page-home .hx-arts-meter{height:2px;background:var(--hair);border-radius:2px;overflow:hidden;margin-top:8px}
+.page-home .hx-arts-meter i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transform-origin:0 50%;transform:scaleX(var(--p,0))}
+
+/* pinned mode — home.js adds .is-pinned only on wide screens with a fine
+   pointer and motion allowed, and sets the section height (--dist) itself.
+   The section sits far below the fold, so that change never shifts anything
+   a visitor can see. */
+.page-home .hx-arts.is-pinned{height:calc(100vh + var(--dist,0px));padding:0}
+.page-home .hx-arts.is-pinned .hx-arts-pin{
+  position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));
+  display:flex;flex-direction:column;justify-content:center;overflow:hidden;
+}
+.page-home .hx-arts.is-pinned .hx-arts-track{overflow:visible;scroll-snap-type:none;will-change:transform;padding-bottom:20px}
+.page-home .hx-arts.is-pinned .hx-art{flex-basis:clamp(300px,26vw,370px);min-height:min(500px,58vh)}
+
+/* ---------- 06 · WHO CAN JOIN ---------- */
+.page-home .hx-who-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:clamp(24px,4vw,48px);margin-top:clamp(28px,4vw,48px);align-items:stretch}
+.page-home .hx-roll{list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:.2em .5em;align-content:center}
+.page-home .hx-roll li{
+  font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.6rem,3.3vw,2.75rem);line-height:1.15;color:var(--bone);
+  transition:color .3s;
+}
+.page-home .hx-roll li:nth-child(even){color:transparent;-webkit-text-stroke:1.4px rgba(244,239,230,.85)}
+.page-home .hx-roll li:not(:last-child)::after{content:"/";margin-left:.5em;color:var(--red);-webkit-text-stroke:0}
+.page-home .hx-roll li:hover{color:var(--gold-2);-webkit-text-stroke-color:var(--gold-2)}
+.page-home .hx-b2b{
+  position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:280px;padding:30px;border-radius:24px;overflow:hidden;
+  background:radial-gradient(90% 80% at 100% 0%,rgba(233,196,90,.2),transparent 60%),linear-gradient(160deg,#18181c,#0e0e11);
+  border:1px solid rgba(233,196,90,.3);transition:transform .5s var(--ease),border-color .4s;
+}
+.page-home .hx-b2b:hover{transform:translateY(-6px);border-color:var(--gold)}
+.page-home .hx-b2b-k{font-family:var(--font-head);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-2)}
+.page-home .hx-b2b b{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,2.4vw,2rem);line-height:1.05;color:var(--bone)}
+.page-home .hx-b2b > span:nth-child(3){color:var(--mist)}
+.page-home .hx-b2b-go{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-family:var(--font-head);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-2)}
+
+/* ---------- 07 · WHAT STUDENTS BUILD (word wall) ---------- */
+/* Words start dim and light up as the reader reaches them (home.js).
+   Without JS or with reduced motion every word is simply lit. */
+.page-home .hx-build{background:linear-gradient(180deg,transparent,rgba(0,0,0,.35) 30%,rgba(0,0,0,.35) 70%,transparent)}
+.page-home .hx-wall{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:.08em 0;margin-top:clamp(32px,5vw,56px)}
+/* a small red diamond between words, so neighbours in the same colour never run together */
+.page-home .hx-w:not(:last-child)::after{
+  content:"";display:inline-block;width:.16em;height:.16em;margin:0 .34em;vertical-align:.3em;
+  transform:rotate(45deg);background:var(--red);opacity:.85;
+}
+.page-home .hx-w{
+  font-family:var(--font-display);text-transform:uppercase;font-size:clamp(2rem,5.6vw,4.8rem);line-height:1.02;
+  color:var(--bone);transition:color .5s var(--ease),text-shadow .5s var(--ease);
+}
+.page-home .hx-w:nth-child(4n+2).lit,.page-home .hx-w:nth-child(4n+2){color:var(--gold-2)}
+:where(html.js) .page-home .hx-wall.is-live .hx-w:not(.lit){color:rgba(244,239,230,.1)}
+.page-home .hx-w.lit:nth-child(7n+3){color:var(--red);text-shadow:0 0 34px rgba(225,29,42,.35)}
+
+/* ---------- 08 · TRAINING METHOD (scroll story) ---------- */
+.page-home .hx-method-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,7vw,110px)}
+.page-home .hx-method-aside{position:sticky;top:calc(var(--hdr) + 36px);align-self:start}
+.page-home .hx-bignum{
+  display:flex;font-family:var(--font-display);font-size:clamp(8rem,15vw,14rem);line-height:.8;margin-top:clamp(20px,3vw,40px);
+  perspective:600px;
+}
+.page-home .hx-bignum span:first-child{color:transparent;-webkit-text-stroke:2px rgba(233,196,90,.55)}
+.page-home .hx-bignum-d{display:inline-block;background:linear-gradient(180deg,var(--gold-2),var(--red) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;transform-origin:50% 100%}
+.page-home .hx-bignum-d.flip{animation:hxFlip .6s var(--ease)}
+@keyframes hxFlip{from{transform:rotateX(-80deg) translateY(12%);opacity:0}}
+.page-home .hx-method-rail{height:3px;background:var(--hair);margin-top:26px;max-width:320px;border-radius:3px;overflow:hidden}
+.page-home .hx-method-rail i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transform-origin:0 50%;transform:scaleX(var(--mp,.25));transition:transform .6s var(--ease)}
+.page-home .hx-steps{list-style:none}
+.page-home .hx-step{
+  min-height:44vh;display:flex;flex-direction:column;justify-content:center;padding:36px 0;border-top:1px solid var(--hair);
+  opacity:.3;transition:opacity .6s var(--ease);
+}
+.page-home .hx-step.on{opacity:1}
+.page-home .hx-step-no{font-family:var(--font-head);font-weight:600;letter-spacing:.2em;color:var(--gold-2);font-size:.85rem}
+.page-home .hx-step h3{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:clamp(2rem,3.6vw,3rem);line-height:1;color:var(--bone);margin:10px 0 12px}
+.page-home .hx-step.on h3{color:var(--bone)}
+.page-home .hx-step p{color:var(--mist);font-size:1.08rem;line-height:1.7;max-width:44ch}
+
+/* ---------- 09 · PARENTS + BELT STACK ---------- */
+.page-home .hx-parents{background:linear-gradient(180deg,rgba(0,0,0,.3),transparent)}
+.page-home .hx-parents-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(40px,6vw,90px);align-items:center}
+.page-home .hx-parents .parent-points{margin-top:26px}
+.page-home .hx-belts{
+  position:relative;margin:0;padding:clamp(28px,4vw,44px);border-radius:28px;overflow:hidden;
+  background:radial-gradient(120% 80% at 0% 100%,rgba(225,29,42,.16),transparent 60%),linear-gradient(160deg,#17171b,#0d0d10);
+  border:1px solid var(--hair);
+}
+.page-home .hx-belt-stack{display:grid;gap:14px}
+.page-home .hx-belt{
+  position:relative;height:38px;border-radius:6px;background:
+    repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0 1px,transparent 1px 5px),var(--c);
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.2),0 6px 14px -8px rgba(0,0,0,.8);
+  width:calc(62% + var(--i) * 6%);
+  display:flex;align-items:center;padding-left:14px;
+}
+.page-home .hx-belt::after{   /* the knot */
+  content:"";position:absolute;right:-10px;top:50%;width:28px;height:28px;border-radius:5px;transform:translateY(-50%) rotate(8deg);
+  background:var(--c);box-shadow:0 4px 10px -4px rgba(0,0,0,.9),inset 0 0 0 1px rgba(0,0,0,.18);
+}
+.page-home .hx-belt em{font-style:normal;font-family:var(--font-head);font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.6)}
+.page-home .hx-belt:nth-child(n+5) em{color:rgba(255,255,255,.75)}
+.page-home .hx-belt:last-child{box-shadow:inset 0 -3px 0 rgba(0,0,0,.2),inset 0 0 0 1px rgba(233,196,90,.35),0 6px 14px -8px rgba(0,0,0,.8)}
+.page-home .hx-belt:last-child::before{content:"";position:absolute;right:26px;top:6px;bottom:6px;width:26px;background:var(--gold);border-radius:2px}
+.page-home .hx-belts figcaption{margin-top:24px;font-family:var(--font-head);letter-spacing:.14em;text-transform:uppercase;font-size:.82rem;color:var(--gold-2)}
+
+/* ---------- 10 · FINAL CALL ---------- */
+.page-home .hx-final-card{
+  position:relative;overflow:hidden;isolation:isolate;text-align:center;
+  padding:clamp(52px,8vw,110px) clamp(22px,5vw,72px);border-radius:32px;
+  background:radial-gradient(70% 60% at 50% 0%,rgba(225,29,42,.28),transparent 70%),linear-gradient(180deg,#141418,#0b0b0d);
+  border:1px solid rgba(233,196,90,.22);
+}
+.page-home .hx-final-card .hx-eyebrow{justify-content:center}
+.page-home .hx-final-card .hx-h2{margin-inline:auto;max-width:18ch}
+.page-home .hx-final-card .hx-sub{margin-inline:auto}
+.page-home .hx-final-card .hx-actions{justify-content:center}
+.page-home .hx-final-bg{
+  position:absolute;left:50%;bottom:-.2em;z-index:-1;white-space:nowrap;pointer-events:none;
+  font-family:var(--font-display);text-transform:uppercase;font-size:clamp(4.5rem,15vw,13rem);line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(233,196,90,.14);
+  transform:translate3d(calc(-50% + var(--fx,0px)),0,0);
+}
+
+/* ---------- reveal staggers (home.js adds .in) ---------- */
+:where(html.js) .page-home [data-stagger] > *{opacity:0;translate:0 18px;transition:opacity .7s var(--ease),translate .8s var(--ease),color .3s}
+:where(html.js) .page-home [data-stagger] > *{transition-delay:calc(var(--i,0) * 70ms)}
+:where(html.js) .page-home [data-stagger].in > *{opacity:1;translate:0 0}
+:where(html.js) .page-home .hx-belt-stack[data-stagger] > *{translate:-40px 0}
+:where(html.js) .page-home .hx-belt-stack[data-stagger].in > *{translate:0 0}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .page-home .hx-trust-bar .hero-trust span{font-size:.68rem;letter-spacing:.1em;padding-inline:8px}
+}
+@media (max-width:899px){
+  .page-home{--hdr:74px}
+  .page-home .hx-hero{display:block;min-height:0}
+  .page-home .hx-hero .hero-portrait{position:relative;width:100%;max-width:none;aspect-ratio:auto;height:min(60svh,560px);max-height:none;margin:0}
+  .page-home .hx-hero .hero-portrait img{object-position:50% 18%}
+  .page-home .hx-hero .hero-portrait::after{background:linear-gradient(0deg,var(--black) 4%,rgba(8,8,9,.75) 22%,rgba(8,8,9,0) 52%)}
+  .page-home .hx-ink{left:0;width:auto;bottom:auto;height:min(60svh,560px)}
+  .page-home .hx-hero .fx-badges,.page-home .hx-hero .fx-arena{display:none}   /* copy overlaps the photo here */
+  .page-home .hero-inner{margin-top:-128px;padding-top:0}
+  .page-home .hero-copy{max-width:none;text-align:left;margin:0}
+  .page-home .hx-title{margin:16px 0 18px}
+  .page-home .hx-actions .btn{flex:1 1 100%}
+  .page-home .hx-trust-bar .hero-trust{overflow-x:auto;scrollbar-width:none;padding:0;-webkit-mask:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 24px),transparent);mask:linear-gradient(90deg,transparent,#000 16px,#000 calc(100% - 24px),transparent)}
+  .page-home .hx-trust-bar .hero-trust::-webkit-scrollbar{display:none}
+  .page-home .hx-trust-bar .hero-trust span{flex:0 0 auto;padding:15px 18px}
+  .page-home .hx-coach-grid,.page-home .hx-who-grid,.page-home .hx-method-grid,.page-home .hx-parents-grid{grid-template-columns:1fr}
+  .page-home .hx-coach-lede,.page-home .hx-method-aside{position:static}
+  .page-home .hx-glyph{top:14%;right:-18vw;font-size:78vw}
+  .page-home .hx-bignum,.page-home .hx-method-rail{display:none}
+  .page-home .hx-step{min-height:0;opacity:1;padding:26px 0}
+  .page-home .hx-b2b{min-height:220px}
+}
+@media (max-width:520px){
+  .page-home .hx-ribbon .marquee{padding:10px 0}
+  .page-home .hx-rec{grid-template-columns:46px 1fr;column-gap:14px;padding:18px 4px}
+  .page-home .hx-rec-ic{width:46px;height:46px}
+  .page-home .hx-belt{width:calc(70% + var(--i) * 4%)}
+}
+
+/* ---------- 11 · REDUCED MOTION ---------- */
+@media (prefers-reduced-motion:reduce){
+  .page-home .hx-line > span,.page-home .hx-lede,.page-home .hero-copy .hx-actions,.page-home .hero-copy .hx-alt,
+  .page-home .hx-tanglish,.page-home .hx-trust-bar,.page-home .hx-kicker-bar{animation:none}
+  .page-home .hx-ink{display:none}
+  .page-home [data-stagger] > *{opacity:1!important;translate:0 0!important}
+  .page-home .hx-wall .hx-w{color:var(--bone)!important}
+  .page-home .hx-step{opacity:1}
+  .page-home .hx-art{transform:none!important}
+}

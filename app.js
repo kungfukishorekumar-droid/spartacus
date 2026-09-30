@@ -129,8 +129,8 @@ function injectChrome(){
           '<a href="#" class="js-wa" data-program="Martial Arts Training" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="#25D366">' + WA_PATH + '</svg></a>' +
         '</div>' +
       '</div>' +
-      '<div class="foot-col"><h4>Quick Links</h4>' + PAGES.map(p=>`<a href="${pageHref(p[0])}">${p[1]}</a>`).join("") + '</div>' +
-      '<div class="foot-col"><h4>Contact</h4>' +
+      '<div class="foot-col"><h2 class="foot-h">Quick Links</h2>' + PAGES.map(p=>`<a href="${pageHref(p[0])}">${p[1]}</a>`).join("") + '</div>' +
+      '<div class="foot-col"><h2 class="foot-h">Contact</h2>' +
         '<p>📍 Chennai, Tamil Nadu</p>' +
         '<a href="#" class="js-wa" data-program="Martial Arts Training">📱 WhatsApp: 9884599939</a>' +
         '<a href="' + CONFIG.instagram + '" target="_blank" rel="noopener">📸 @kishorekumar.coach</a>' +
@@ -447,7 +447,7 @@ const EDIT_TEXT_SEL = [
   '.qa h3','.qa p','.faq-q','.faq-a p',
   '.fees-card .price-ph','.fees-card p',
   '.final-cta h2','.final-cta p',
-  '.foot-col h4','.foot-tag','.foot-brand p','.foot-areas','.hero-trust span'
+  '.foot-col .foot-h','.foot-tag','.foot-brand p','.foot-areas','.hero-trust span'
 ].join(',');
 function _editKey(el, counts){
   const sec = el.closest('section[id], footer, header');

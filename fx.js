@@ -6,7 +6,7 @@
      B  Gold dust canvas field
      C  Sparkle burst on click
      D  Auto-tagging (no HTML edits needed)
-     E  Heading animation (shine / word reveal)
+     E  Heading animation (word reveal)
      F  Cursor spotlight on cards
      G  Scroll parallax
      H  Reveal observer for fx elements
@@ -14,6 +14,7 @@
      I2 Page-header depth planes + arena ring (opt-in: data-fx="stage")
      J  Kinetic marquee (answers scroll speed + direction)
      K  3D buttons (tilt toward pointer, moving highlight)
+     L  Belt-rank scroll progress
 
    Design notes:
    - Everything is transform/opacity only, so it stays on the GPU.
@@ -166,10 +167,9 @@
     if (fine) $$(".card,.prog-card,.blog-card,.auth-card,.join-card,.fees-card,.review")
       .forEach(function (el) { el.classList.add("fx-spot"); });
     $$(".section-title,.page-title,.hero-copy h1").forEach(function (el) {
-      el.classList.add("fx-shine");
+      if (el.hasAttribute("data-nosplit")) return;   // runs its own reveal (home.css)
       splitWords(el);
     });
-    $$(".eyebrow").forEach(function (el) { el.classList.add("twinkle"); });
     $$(".prog-card img,.g-item img").forEach(function (el) { el.classList.add("fx-wipe"); });
     /* staggered groups: each child gets its index for the CSS delay */
     [["#method .grid", "fx-steps"], ["#benefitGrid", "fx-strike"]].forEach(function (g) {
@@ -282,7 +282,7 @@
   /* ---------- H · REVEAL OBSERVER ---------- */
   var io = null;
   function observe() {
-    var targets = $$(".fx-sec:not(.in),.fx-shine:not(.in),.fx-words:not(.in),.fx-wipe:not(.in)," +
+    var targets = $$(".fx-sec:not(.in),.fx-words:not(.in),.fx-wipe:not(.in)," +
                      ".fx-steps:not(.in),.fx-strike:not(.in),.fx-medal:not(.in),.fx-deal:not(.in),.fx-rise:not(.in)");
     if (reduced || !("IntersectionObserver" in window)) {
       targets.forEach(function (el) { el.classList.add("in"); });
@@ -428,6 +428,23 @@
     }, { passive: true });
   }
 
+  /* ---------- L · BELT-RANK PROGRESS ---------- */
+  /* The scroll-progress bar (ux.js #sp-progress) wears the belt the reader
+     has earned: white at the top of the page, black belt at the end. */
+  function beltProgress() {
+    var ranks = ["white", "yellow", "orange", "green", "blue", "brown", "black"];
+    var bar = null, last = -1;
+    var paint = onFrame(function () {
+      bar = bar || document.getElementById("sp-progress");
+      if (!bar) return;
+      var h = document.documentElement.scrollHeight - innerHeight;
+      var r = Math.min(ranks.length - 1, Math.floor((h > 0 ? scrollY / h : 0) * ranks.length));
+      if (r !== last) { last = r; bar.setAttribute("data-belt", ranks[r]); }
+    });
+    addEventListener("scroll", paint, { passive: true });
+    setTimeout(paint, 300);
+  }
+
   /* ---------- SAFETY NET ---------- */
   /* Word-reveal starts at opacity:0 and waits for IntersectionObserver.
      If IO is throttled, blocked, or never fires, a headline would stay
@@ -453,6 +470,7 @@
     pageStage();
     kineticMarquee();
     buttons3d();
+    beltProgress();
     safetyNet();
     if ("MutationObserver" in window) {
       var t;

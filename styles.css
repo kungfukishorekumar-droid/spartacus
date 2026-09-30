@@ -267,7 +267,7 @@ footer{border-top:1px solid var(--line);background:rgba(0,0,0,.5);padding:clamp(
 .foot-brand .logo-img{height:88px;width:auto;margin-bottom:14px}
 .foot-brand .foot-tag{font-family:var(--font-display);letter-spacing:.16em;color:var(--gold-2);font-size:.9rem;margin-bottom:12px}
 .foot-brand p{color:var(--muted);font-size:.92rem;max-width:360px}
-.foot-col h4{font-family:var(--font-head);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.82rem;color:var(--gold-2);margin-bottom:16px}
+.foot-col .foot-h{font-family:var(--font-head);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.82rem;color:var(--gold-2);margin-bottom:16px}
 .foot-col a,.foot-col p{display:block;color:var(--mist);font-size:.92rem;margin-bottom:10px;transition:color .2s}
 .foot-col a:hover{color:var(--gold-2)}
 .foot-social{display:flex;gap:12px;margin-top:6px}

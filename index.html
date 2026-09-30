@@ -25,16 +25,18 @@
 <link rel="preload" href="fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="fonts/oswald.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" as="image" href="assets/kishore.webp?v=5" type="image/webp" fetchpriority="high" />
-<link rel="stylesheet" href="styles.css?v=f5bea501ac" />
+<link rel="stylesheet" href="styles.css?v=01dc627f71" />
 <link rel="preload" as="style" href="ux.css?v=16e290feeb" onload="this.onload=null;this.rel='stylesheet'" />
-<link rel="preload" as="style" href="fx.css?v=5210b61438" onload="this.onload=null;this.rel='stylesheet'" />
-<noscript><link rel="stylesheet" href="ux.css?v=16e290feeb" /><link rel="stylesheet" href="fx.css?v=5210b61438" /></noscript>
+<link rel="preload" as="style" href="fx.css?v=64e4077400" onload="this.onload=null;this.rel='stylesheet'" />
+<link rel="stylesheet" href="home.css?v=d4fa57491e" />
+<noscript><link rel="stylesheet" href="ux.css?v=16e290feeb" /><link rel="stylesheet" href="fx.css?v=64e4077400" /></noscript>
 <script src="site-base.js?v=77c6f0a5fa" defer></script>
-<script src="app.js?v=e940abc2bd" defer></script>
+<script src="app.js?v=1e8743077f" defer></script>
 <script src="analytics.js?v=25bf09a0ac" defer></script>
 <script src="track.js?v=0dae56120c" defer></script>
 <script src="ux.js?v=db34725392" defer></script>
-<script src="fx.js?v=26db4cb94b" defer></script>
+<script src="home.js?v=e0c5967eb2" defer></script>
+<script src="fx.js?v=3c159fb389" defer></script>
 <!-- WarriorCRM: visitor tracking + lead backup. See CRM repo CONNECT-WEBSITES.md -->
 <script src="https://crm.spartacusmartialarts.com/warriorcrm.js" data-site="spartacusmartialarts.com" defer></script>
 <script type="application/ld+json">
@@ -113,164 +115,253 @@
 }
 </script>
 </head>
-<body>
+<body class="page-home">
 <main>
 <!-- ============================ HERO ============================ -->
-<section class="hero">
+<section class="hero hx-hero" id="hero">
   <div class="hero-portrait">
     <picture>
       <source srcset="assets/kishore.webp?v=5" type="image/webp" />
       <img src="assets/kishore.jpg?v=5" alt="Coach Kishore Kumar — National Wushu Medalist and martial arts trainer in Chennai" width="1000" height="1250" fetchpriority="high" decoding="async" />
     </picture>
   </div>
+  <div class="hx-ink" aria-hidden="true"></div>
   <div class="wrap hero-inner">
     <div class="hero-copy">
-      <p class="brandline reveal"><img src="assets/logo.webp?v=5" width="512" height="512" alt="Spartacus Martial Arts Academy logo" decoding="async" onerror="this.style.display='none'" /> We Born to Win</p>
-      <h1 class="reveal d1">Build Discipline, Confidence &amp; <span class="gold-text">Fighting Skills</span></h1>
-      <h2 class="subhead reveal d1">Train Your Body. Build Discipline. <span class="gold-text">Develop Fighting Confidence.</span></h2>
-      <p class="hero-support reveal d2">Learn <b>Wushu, Kung Fu, Karate, Judo, Kick Boxing &amp; Boxing</b> in Chennai under Kishore Kumar — National Wushu Medalist, Kungfu Black Belt, Wushu Coach &amp; Judge.</p>
-      <p class="hero-tanglish tanglish reveal d2">Vaanga, unga warrior journey inga start aagattum. 🔥</p>
-      <div class="hero-actions reveal d3">
-        <a href="contact.html#contact" class="btn btn-primary" data-track="hero_book_trial">Book Free Trial Class</a>
-        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="hero_whatsapp">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.7 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>
-          WhatsApp Coach Kishore
-        </a>
-        <a href="tel:+919884599939" class="btn btn-gold" data-track="hero_call">📞 Call Now</a>
+      <p class="hx-kicker"><span class="hx-kicker-bar" aria-hidden="true"></span>We Born to Win · Chennai</p>
+      <h1 class="hx-title" data-nosplit><span class="hx-line"><span>Build Discipline,</span></span> <span class="hx-line"><span>Confidence &amp;</span></span> <span class="hx-line"><span class="gold-text">Fighting Skills</span></span></h1>
+      <p class="hx-lede"><strong>Train your body. Build discipline. Develop fighting confidence.</strong> Learn <b>Wushu, Kung Fu, Karate, Judo, Kick Boxing &amp; Boxing</b> in Chennai under Kishore Kumar — National Wushu Medalist, Kungfu Black Belt, Wushu Coach &amp; Judge.</p>
+      <div class="hx-actions">
+        <a href="contact.html#contact" class="btn btn-primary btn-lg" data-track="hero_book_trial">Book Free Trial Class <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="btn btn-ghost js-wa" data-program="Martial Arts Training" data-track="hero_whatsapp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.7 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg> WhatsApp Coach Kishore</a>
       </div>
-      <p class="hero-mini reveal d3"><a href="programs.html#fees">🕐 View Class Timings</a> &nbsp;·&nbsp; <a href="programs.html">View Programs</a></p>
-      <div class="hero-trust reveal d4">
-        <span><i class="dot"></i> National Wushu Medalist</span>
-        <span><i class="dot"></i> Kungfu Black Belt</span>
-        <span><i class="dot"></i> Wushu Coach &amp; Judge</span>
-        <span><i class="dot"></i> Kids &amp; Beginners Friendly</span>
-        <span><i class="dot"></i> Chennai Martial Arts Academy</span>
-      </div>
+      <p class="hx-alt">Prefer to talk? <a href="tel:+919884599939" data-track="hero_call">Call 98845 99939</a><span aria-hidden="true"> · </span><a href="programs.html#fees">Class timings</a></p>
+      <p class="hx-tanglish">Vaanga, unga warrior journey inga start aagattum.</p>
+    </div>
+  </div>
+  <div class="hx-trust-bar">
+    <div class="wrap hero-trust">
+      <span>National Wushu Medalist</span>
+      <span>Kungfu Black Belt</span>
+      <span>Wushu Coach &amp; Judge</span>
+      <span>Kids &amp; Beginners Friendly</span>
+      <span>Chennai Martial Arts Academy</span>
     </div>
   </div>
 </section>
 
-<!-- ============================ MARQUEE ============================ -->
-<div class="strip" aria-hidden="true">
+<!-- ============================ DISCIPLINES RIBBON ============================ -->
+<div class="strip hx-ribbon" aria-hidden="true">
   <div class="marquee">
-    <span>WUSHU</span><span>KUNG FU</span><span>KARATE</span><span>JUDO</span><span>KICK BOXING</span><span>BOXING</span><span>SELF-DEFENSE</span><span>FITNESS</span>
-    <span>WUSHU</span><span>KUNG FU</span><span>KARATE</span><span>JUDO</span><span>KICK BOXING</span><span>BOXING</span><span>SELF-DEFENSE</span><span>FITNESS</span>
+    <span>Wushu</span><span class="o">Kung Fu</span><span>Karate</span><span class="o">Judo</span><span>Kick Boxing</span><span class="o">Boxing</span><span>Self-Defense</span><span class="o">Fitness</span>
+    <span>Wushu</span><span class="o">Kung Fu</span><span>Karate</span><span class="o">Judo</span><span>Kick Boxing</span><span class="o">Boxing</span><span>Self-Defense</span><span class="o">Fitness</span>
   </div>
 </div>
 
-<!-- ============================ AUTHORITY ============================ -->
-<section class="pad" id="authority">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow reveal">Authority You Can Trust</span>
-      <h2 class="section-title reveal d1">Train Under An <span class="gold-text">Experienced Martial Artist</span></h2>
+<!-- ============================ COACH / AUTHORITY ============================ -->
+<section class="pad hx-coach" id="authority">
+  <span class="hx-glyph" aria-hidden="true">武</span>
+  <div class="wrap hx-coach-grid">
+    <div class="hx-coach-lede">
+      <p class="hx-eyebrow reveal">Authority you can trust</p>
+      <h2 class="hx-h2 reveal d1">Train under an <span class="gold-text">experienced martial artist</span></h2>
+      <p class="hx-quote reveal d2">Coach Kishore combines martial arts discipline, combat training, and sports psychology-based mindset coaching to help students build confidence, focus, fitness, and self-control.</p>
+      <a class="hx-textlink" href="about.html">Meet Coach Kishore <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-    <div class="grid cols-3">
-      <div class="card auth-card reveal"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5" fill="#f6d77a"/><path d="M9 13l-1.5 8 4.5-3 4.5 3L15 13" fill="#e11d2a"/></svg></div><b>National Wushu Medalist</b><span>Proven on the national stage</span></div>
-      <div class="card auth-card reveal d1"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="6" rx="1.5" fill="#e11d2a"/><rect x="9.5" y="9" width="5" height="6" fill="#0a0a0b"/></svg></div><b>Kungfu Black Belt</b><span>Years of disciplined mastery</span></div>
-      <div class="card auth-card reveal d2"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v4a7 7 0 01-14 0z" fill="#f6d77a"/><path d="M9 13h6v3H9z" fill="#e11d2a"/><rect x="7" y="18" width="10" height="2.5" rx="1" fill="#b6892b"/></svg></div><b>Wushu Coach &amp; Judge</b><span>Certified to coach &amp; officiate</span></div>
-      <div class="card auth-card reveal d1"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l9 4-9 4-9-4z" fill="#f6d77a"/><path d="M5 9v5c0 2 3 4 7 4s7-2 7-4V9" stroke="#e11d2a" stroke-width="2" fill="none"/></svg></div><b>Martial Arts Trainer</b><span>Coaching across Chennai</span></div>
-      <div class="card auth-card reveal d2"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 016 6c0 2.5-1.5 4-3 5.5V18H9v-3.5C7.5 13 6 11.5 6 9a6 6 0 016-6z" fill="#f6d77a"/><rect x="9" y="19" width="6" height="2" rx="1" fill="#e11d2a"/></svg></div><b>Sports Psychology Mindset Coach</b><span>Athlete mindset advantage</span></div>
-      <div class="card auth-card reveal d3"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="11" rx="2" fill="#e11d2a"/><path d="M8 9V6a4 4 0 018 0v3" stroke="#f6d77a" stroke-width="2" fill="none"/></svg></div><b>Chennai-based Academy Founder</b><span>Spartacus Martial Arts Academy</span></div>
+    <ul class="hx-record" data-stagger aria-label="Coach Kishore's credentials">
+        <li class="hx-rec"><span class="hx-rec-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="5" fill="#f6d77a"/><path d="M9 13l-1.5 8 4.5-3 4.5 3L15 13" fill="#e11d2a"/></svg></span><b>National Wushu Medalist</b><span>Proven on the national stage</span></li>
+        <li class="hx-rec"><span class="hx-rec-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="6" rx="1.5" fill="#e11d2a"/><rect x="9.5" y="9" width="5" height="6" fill="#0a0a0b"/></svg></span><b>Kungfu Black Belt</b><span>Years of disciplined mastery</span></li>
+        <li class="hx-rec"><span class="hx-rec-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v4a7 7 0 01-14 0z" fill="#f6d77a"/><path d="M9 13h6v3H9z" fill="#e11d2a"/><rect x="7" y="18" width="10" height="2.5" rx="1" fill="#b6892b"/></svg></span><b>Wushu Coach &amp; Judge</b><span>Certified to coach &amp; officiate</span></li>
+        <li class="hx-rec"><span class="hx-rec-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l9 4-9 4-9-4z" fill="#f6d77a"/><path d="M5 9v5c0 2 3 4 7 4s7-2 7-4V9" stroke="#e11d2a" stroke-width="2" fill="none"/></svg></span><b>Martial Arts Trainer</b><span>Coaching across Chennai</span></li>
+        <li class="hx-rec"><span class="hx-rec-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 016 6c0 2.5-1.5 4-3 5.5V18H9v-3.5C7.5 13 6 11.5 6 9a6 6 0 016-6z" fill="#f6d77a"/><rect x="9" y="19" width="6" height="2" rx="1" fill="#e11d2a"/></svg></span><b>Sports Psychology Mindset Coach</b><span>Athlete mindset advantage</span></li>
+        <li class="hx-rec"><span class="hx-rec-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="11" rx="2" fill="#e11d2a"/><path d="M8 9V6a4 4 0 018 0v3" stroke="#f6d77a" stroke-width="2" fill="none"/></svg></span><b>Chennai-based Academy Founder</b><span>Spartacus Martial Arts Academy</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ DISCIPLINES (pinned horizontal) ============================ -->
+<section class="hx-arts" id="arts" aria-labelledby="arts-title">
+  <div class="hx-arts-pin">
+    <div class="wrap hx-arts-head">
+      <div>
+        <p class="hx-eyebrow reveal">Six disciplines, one academy</p>
+        <h2 class="hx-h2 reveal d1" id="arts-title">Choose your <span class="gold-text">martial art</span></h2>
+      </div>
+      <p class="hx-arts-sub reveal d2">Each program is taught with structured progression, safe technique, and a real martial arts foundation. <a class="hx-textlink" href="programs.html">All programs <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
     </div>
-    <p class="auth-copy reveal">Coach Kishore combines martial arts discipline, combat training, and sports psychology-based mindset coaching to help students build confidence, focus, fitness, and self-control.</p>
+    <div class="hx-arts-track" tabindex="-1">
+      <article class="hx-art" style="--hue:350">
+        <span class="hx-art-tag">Speed • Forms</span>
+        <div class="hx-art-fig" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M10 50L46 14l4 4L14 54z" fill="#e9c45a"/><path d="M46 14l6-6 4 4-6 6z" fill="#e11d2a"/><circle cx="16" cy="50" r="4" fill="#fff"/></svg></div>
+        <h3>Wushu</h3>
+        <p>For agility, flexibility, forms, speed, combat movement, and competition foundation.</p>
+        <p class="hx-art-for">For Kids • Students • Athletes</p>
+        <a class="hx-art-link" href="programs.html#programs" aria-label="Wushu program details">Program details <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+      <article class="hx-art" style="--hue:20">
+        <span class="hx-art-tag">Tradition • Control</span>
+        <div class="hx-art-fig" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="20" r="9" fill="#e9c45a"/><path d="M20 54c0-8 5-13 12-13s12 5 12 13" fill="#e11d2a"/><path d="M14 34c4 2 8 2 12 0M38 34c4 2 8 2 12 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <h3>Kung Fu</h3>
+        <p>For traditional discipline, body control, respect, focus, and self-mastery.</p>
+        <p class="hx-art-for">For Kids • Students • Adults</p>
+        <a class="hx-art-link" href="programs.html#programs" aria-label="Kung Fu program details">Program details <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+      <article class="hx-art" style="--hue:230">
+        <span class="hx-art-tag">Belts • Discipline</span>
+        <div class="hx-art-fig" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><rect x="8" y="26" width="48" height="12" rx="2" fill="#fff"/><rect x="26" y="26" width="12" height="12" fill="#e11d2a"/><path d="M20 38l-6 14 12-8M44 38l6 14-12-8" fill="#e9c45a"/></svg></div>
+        <h3>Karate</h3>
+        <p>For punches, kicks, blocks, stance, confidence, discipline, and belt-based learning.</p>
+        <p class="hx-art-for">For Kids • Beginners • Adults</p>
+        <a class="hx-art-link" href="programs.html#programs" aria-label="Karate program details">Program details <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+      <article class="hx-art" style="--hue:200">
+        <span class="hx-art-tag">Throws • Balance</span>
+        <div class="hx-art-fig" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><circle cx="24" cy="16" r="6" fill="#e9c45a"/><path d="M18 24l-8 10 8 6 8-8 12 6 8-10" stroke="#e11d2a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="44" r="5" fill="#fff"/></svg></div>
+        <h3>Judo</h3>
+        <p>For balance, throws, grips, falling safety, body control, and discipline.</p>
+        <p class="hx-art-for">For Students • Athletes • Adults</p>
+        <a class="hx-art-link" href="programs.html#programs" aria-label="Judo program details">Program details <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+      <article class="hx-art" style="--hue:355">
+        <span class="hx-art-tag">Power • Fat Loss</span>
+        <div class="hx-art-fig" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M16 20c0-4 4-6 10-6s10 2 10 8v8c0 4-3 7-8 7h-4c-5 0-8-3-8-7z" fill="#e11d2a"/><path d="M36 24h6c3 0 4 2 4 5s-1 5-4 5h-6" fill="#a30f1a"/><path d="M44 50l8 8M52 50l-8 8" stroke="#e9c45a" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <h3>Kick Boxing</h3>
+        <p>For striking, stamina, power, speed, fat loss, confidence, and fitness.</p>
+        <p class="hx-art-for">For Teens • Adults • Fitness learners</p>
+        <a class="hx-art-link" href="programs.html#programs" aria-label="Kick Boxing program details">Program details <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+      <article class="hx-art" style="--hue:35">
+        <span class="hx-art-tag">Footwork • Timing</span>
+        <div class="hx-art-fig" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M18 22c0-5 4-8 11-8s11 3 11 9v7c0 5-4 8-9 8h-5c-5 0-8-3-8-8z" fill="#e9c45a"/><path d="M40 26h5c3 0 5 2 5 5s-2 5-5 5h-5" fill="#b6892b"/><circle cx="26" cy="26" r="2.5" fill="#0a0a0b"/></svg></div>
+        <h3>Boxing</h3>
+        <p>For footwork, punching technique, defense, timing, stamina, and fighting confidence.</p>
+        <p class="hx-art-for">For Teens • Adults • Athletes</p>
+        <a class="hx-art-link" href="programs.html#programs" aria-label="Boxing program details">Program details <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </article>
+    </div>
+    <div class="wrap hx-arts-meter" aria-hidden="true"><i></i></div>
   </div>
 </section>
 
 <!-- ============================ WHO CAN JOIN ============================ -->
-<section class="pad" id="whojoin">
+<section class="pad hx-who" id="whojoin">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow reveal">Open To Everyone</span>
-      <h2 class="section-title reveal d1">Who Can Join <span class="gold-text">Spartacus Martial Arts Academy?</span></h2>
-      <p class="section-sub reveal d2">Whether you are starting from zero or already training in sports, Spartacus helps you build discipline, confidence, fitness, and fighting basics step by step.</p>
-    </div>
-    <div class="grid cols-4">
-      <div class="card join-card reveal"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="3.5" fill="#f6d77a"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6" fill="#e11d2a"/></svg></div><b>Kids</b></div>
-      <div class="card join-card reveal d1"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l9 4-9 4-9-4z" fill="#f6d77a"/><path d="M7 10v4c0 1.5 2.2 3 5 3s5-1.5 5-3v-4" stroke="#e11d2a" stroke-width="2" fill="none"/></svg></div><b>School Students</b></div>
-      <div class="card join-card reveal d2"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l9 4-9 4-9-4z" fill="#f6d77a"/><path d="M19 8v5" stroke="#e9c45a" stroke-width="2"/><path d="M7 10v4c0 1.5 2.2 3 5 3s5-1.5 5-3v-4" stroke="#e11d2a" stroke-width="2" fill="none"/></svg></div><b>College Students</b></div>
-      <div class="card join-card reveal d3"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.5 5L20 8l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1z" fill="#f6d77a"/></svg></div><b>Beginners</b></div>
-      <div class="card join-card reveal"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13l4-4 3 3 5-6 4 4" stroke="#e11d2a" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19" cy="6" r="2" fill="#f6d77a"/></svg></div><b>Fitness Learners</b></div>
-      <div class="card join-card reveal d1"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5z" fill="#f6d77a"/><path d="M9 12l2 2 4-4" stroke="#e11d2a" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div><b>Self-Defense Learners</b></div>
-      <div class="card join-card reveal d2"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#f6d77a"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7" fill="#e11d2a"/></svg></div><b>Athletes</b></div>
-      <div class="card join-card reveal d3"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a4 4 0 014 4c0 3-4 5-4 5s-4-2-4-5a4 4 0 014-4z" fill="#f6d77a"/><rect x="7" y="14" width="10" height="6" rx="2" fill="#e11d2a"/></svg></div><b>Adults</b></div>
-      <div class="card join-card reveal"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" fill="#f6d77a"/><circle cx="16" cy="9" r="2.4" fill="#e9c45a"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5" fill="#e11d2a"/></svg></div><b>Parents (for children)</b></div>
-      <div class="card join-card reveal d1"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="9" width="18" height="11" rx="2" fill="#e11d2a"/><path d="M8 9V6a4 4 0 018 0v3" stroke="#f6d77a" stroke-width="2" fill="none"/></svg></div><b>Schools &amp; Colleges</b></div>
-      <div class="card join-card reveal d2"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V8l8-5 8 5v12" stroke="#f6d77a" stroke-width="2" fill="none"/><rect x="9" y="13" width="6" height="7" fill="#e11d2a"/></svg></div><b>Academies &amp; Gyms</b></div>
-      <div class="card join-card reveal d3"><div class="icon-tile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21c-5-3-8-6-8-11V5l8-3 8 3v5c0 5-3 8-8 11z" fill="#f6d77a"/><path d="M9 11l2 2 4-4" stroke="#e11d2a" stroke-width="2" fill="none" stroke-linecap="round"/></svg></div><b>Workshops &amp; Tie-ups</b></div>
+    <p class="hx-eyebrow reveal">Open to everyone</p>
+    <h2 class="hx-h2 reveal d1">Who can join <span class="gold-text">Spartacus?</span></h2>
+    <p class="hx-sub reveal d2">Whether you are starting from zero or already training in sports, Spartacus helps you build discipline, confidence, fitness, and fighting basics step by step.</p>
+    <div class="hx-who-grid">
+      <ul class="hx-roll" data-stagger aria-label="Who trains at Spartacus">
+          <li>Kids</li>
+          <li>School Students</li>
+          <li>College Students</li>
+          <li>Beginners</li>
+          <li>Fitness Learners</li>
+          <li>Self-Defense Learners</li>
+          <li>Athletes</li>
+          <li>Adults</li>
+          <li>Parents (for children)</li>
+      </ul>
+      <a class="hx-b2b reveal d2" href="contact.html#contact" data-track="home_b2b">
+        <span class="hx-b2b-k">For institutions</span>
+        <b>Schools &amp; Colleges · Academies &amp; Gyms</b>
+        <span>Workshops &amp; tie-ups with Coach Kishore</span>
+        <span class="hx-b2b-go">Enquire <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ============================ BENEFITS ============================ -->
-<section class="pad" id="benefits" style="background:rgba(0,0,0,.25);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<!-- ============================ WHAT STUDENTS BUILD ============================ -->
+<section class="pad hx-build" id="benefits">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow reveal">Why Train With Us</span>
-      <h2 class="section-title reveal d1">What Students Build <span class="gold-text">Through Martial Arts</span></h2>
-      <p class="section-sub reveal d2">Martial arts is more than fighting. It shapes the body, sharpens the mind, and builds character that lasts a lifetime.</p>
-    </div>
-    <div class="grid cols-4" id="benefitGrid"></div>
+    <p class="hx-eyebrow reveal">Why train with us</p>
+    <h2 class="hx-h2 reveal d1">What students build <span class="gold-text">through martial arts</span></h2>
+    <p class="hx-sub reveal d2">Martial arts is more than fighting. It shapes the body, sharpens the mind, and builds character that lasts a lifetime.</p>
+    <ul class="hx-wall reveal d2">
+        <li class="hx-w">Discipline</li>
+        <li class="hx-w">Confidence</li>
+        <li class="hx-w">Fitness</li>
+        <li class="hx-w">Strength</li>
+        <li class="hx-w">Focus</li>
+        <li class="hx-w">Flexibility</li>
+        <li class="hx-w">Self-Defense</li>
+        <li class="hx-w">Emotional Control</li>
+        <li class="hx-w">Respect</li>
+        <li class="hx-w">Routine</li>
+        <li class="hx-w">Stamina</li>
+        <li class="hx-w">Fighting Spirit</li>
+        <li class="hx-w">Competition Mindset</li>
+        <li class="hx-w">Speed &amp; Agility</li>
+        <li class="hx-w">Real Fighting Skills</li>
+        <li class="hx-w">Mental Toughness</li>
+    </ul>
   </div>
 </section>
 
-<!-- ============================ TRAINING METHOD ============================ -->
-<section class="pad" id="method">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow reveal">The Spartacus Method</span>
-      <h2 class="section-title reveal d1">The Spartacus <span class="gold-text">Training Method</span></h2>
-      <p class="section-sub reveal d2">A clear, proven 4-step pathway — so every student progresses safely from day one.</p>
+<!-- ============================ TRAINING METHOD (scroll story) ============================ -->
+<section class="pad hx-method" id="method">
+  <div class="wrap hx-method-grid">
+    <div class="hx-method-aside">
+      <p class="hx-eyebrow reveal">The Spartacus Method</p>
+      <h2 class="hx-h2 reveal d1">The Spartacus <span class="gold-text">training method</span></h2>
+      <p class="hx-sub reveal d2">A clear, proven 4-step pathway — so every student progresses safely from day one.</p>
+      <div class="hx-bignum" aria-hidden="true"><span>0</span><span class="hx-bignum-d" data-d="1">1</span></div>
+      <div class="hx-method-rail" aria-hidden="true"><i></i></div>
     </div>
-    <div class="grid cols-4">
-      <div class="step card reveal"><div class="num">01</div><h3>Assessment</h3><p>We understand age, fitness level, experience, goal, and comfort level.</p></div>
-      <div class="step card reveal d1"><div class="num">02</div><h3>Foundation</h3><p>Students learn stance, movement, balance, discipline, warm-up, and basic fitness.</p></div>
-      <div class="step card reveal d2"><div class="num">03</div><h3>Skill Training</h3><p>Students train in their selected martial art with proper technique and safety.</p></div>
-      <div class="step card reveal d3"><div class="num">04</div><h3>Progress Tracking</h3><p>Students improve confidence, fitness, consistency, focus, and performance step by step.</p></div>
-    </div>
+    <ol class="hx-steps">
+        <li class="hx-step" data-step="1"><span class="hx-step-no">01</span><h3>Assessment</h3><p>We understand age, fitness level, experience, goal, and comfort level.</p></li>
+        <li class="hx-step" data-step="2"><span class="hx-step-no">02</span><h3>Foundation</h3><p>Students learn stance, movement, balance, discipline, warm-up, and basic fitness.</p></li>
+        <li class="hx-step" data-step="3"><span class="hx-step-no">03</span><h3>Skill Training</h3><p>Students train in their selected martial art with proper technique and safety.</p></li>
+        <li class="hx-step" data-step="4"><span class="hx-step-no">04</span><h3>Progress Tracking</h3><p>Students improve confidence, fitness, consistency, focus, and performance step by step.</p></li>
+    </ol>
   </div>
 </section>
 
-<!-- ============================ PARENT TRUST ============================ -->
-<section class="pad" id="parents" style="background:rgba(0,0,0,.25);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap split">
-    <div class="reveal">
-      <span class="eyebrow">For Parents</span>
-      <h2 class="section-title">Safe, Structured Martial Arts Training for <span class="gold-text">Kids &amp; Students</span></h2>
-      <p class="section-sub" style="margin-bottom:22px">Parents want their children to become confident, disciplined, active, and focused. At Spartacus Martial Arts Academy, training is beginner-friendly, structured, and guided with care. Unga pillai safe-aa, strong-aa valaranum — that's our promise.</p>
+<!-- ============================ PARENTS ============================ -->
+<section class="pad hx-parents" id="parents">
+  <div class="wrap hx-parents-grid">
+    <div>
+      <p class="hx-eyebrow reveal">For parents</p>
+      <h2 class="hx-h2 reveal d1">Safe, structured training for <span class="gold-text">kids &amp; students</span></h2>
+      <p class="hx-sub reveal d2">Parents want their children to become confident, disciplined, active, and focused. At Spartacus Martial Arts Academy, training is beginner-friendly, structured, and guided with care. Unga pillai safe-aa, strong-aa valaranum — that's our promise.</p>
       <div class="parent-points">
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Beginner-friendly coaching</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Respect-based training</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Discipline without fear</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Safe progression &amp; fitness building</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Clear guidance from Coach Kishore</b></div>
-        <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Parents can enquire before joining</b></div>
+          <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Beginner-friendly coaching</b></div>
+          <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Respect-based training</b></div>
+          <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Discipline without fear</b></div>
+          <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Safe progression &amp; fitness building</b></div>
+          <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Clear guidance from Coach Kishore</b></div>
+          <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Parents can enquire before joining</b></div>
       </div>
-      <div class="hero-actions" style="margin-top:26px"><a href="contact.html#contact" class="btn btn-primary">Book a Trial Class for Your Child</a></div>
+      <div class="hx-actions"><a href="contact.html#contact" class="btn btn-primary" data-track="parents_book_trial">Book a Trial Class for Your Child <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
     </div>
-    <div class="split-media reveal d2">
-      <img src="assets/parents.jpg" alt="Kids martial arts class in Chennai at Spartacus Martial Arts Academy" loading="lazy" decoding="async" onerror="this.style.display='none';this.nextElementSibling.style.display='block';" />
-      <div class="ph" style="display:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#e9c45a" stroke-width="1"><path d="M12 21c-5-3-8-6-8-11V5l8-3 8 3v5c0 5-3 8-8 11z"/><path d="M9 12l2 2 4-4" stroke-width="1.4"/></svg>
-        SAFE &amp; STRUCTURED
+    <figure class="hx-belts reveal d2" aria-label="Belt progression, white to black">
+      <div class="hx-belt-stack" data-stagger>
+          <span class="hx-belt" style="--c:#f3f1ea;--i:0"><em>White</em></span>
+          <span class="hx-belt" style="--c:#f2c230;--i:1"><em>Yellow</em></span>
+          <span class="hx-belt" style="--c:#f08a24;--i:2"><em>Orange</em></span>
+          <span class="hx-belt" style="--c:#2fa15a;--i:3"><em>Green</em></span>
+          <span class="hx-belt" style="--c:#2b6fd6;--i:4"><em>Blue</em></span>
+          <span class="hx-belt" style="--c:#7a4a2a;--i:5"><em>Brown</em></span>
+          <span class="hx-belt" style="--c:#141416;--i:6"><em>Black</em></span>
       </div>
-    </div>
+      <figcaption>Step by step, at your child&rsquo;s pace</figcaption>
+    </figure>
   </div>
 </section>
 
 <!-- ============================ FINAL CTA ============================ -->
-<section class="pad">
+<section class="pad hx-final">
   <div class="wrap">
-    <div class="final-cta reveal">
-      <svg class="spartan-watermark" viewBox="0 0 200 200" fill="#e9c45a" aria-hidden="true"><path d="M100 20c-30 0-46 16-46 50 0 24 12 40 24 50l6-12c-10-8-16-18-16-34 0-22 12-32 32-32s32 10 32 32c0 16-6 26-16 34l6 12c12-10 24-26 24-50 0-34-16-50-46-50z"/><path d="M100 45c10 0 16 6 16 18v40l-16 16-16-16V63c0-12 6-18 16-18z" fill="#e11d2a"/></svg>
-      <span class="eyebrow red">Your First Step</span>
-      <h2>Start Your Martial Arts Journey With <span class="gold-text">Spartacus</span></h2>
-      <p>One decision can build discipline, confidence, fitness, self-defense skills, and fighting spirit. Indha oru step thaan — let's begin.</p>
-      <div class="hero-actions">
-        <a href="contact.html#contact" class="btn btn-primary" data-track="final_book_trial">Book Free Trial Class</a>
-        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="final_whatsapp">WhatsApp Coach Kishore</a>
-        <a href="tel:+919884599939" class="btn btn-gold" data-track="final_call">📞 Call Now</a>
+    <div class="hx-final-card">
+      <span class="hx-final-bg" aria-hidden="true">We Born to Win</span>
+      <p class="hx-eyebrow reveal">Your first step</p>
+      <h2 class="hx-h2 reveal d1">Start your martial arts journey with <span class="gold-text">Spartacus</span></h2>
+      <p class="hx-sub reveal d2">One decision can build discipline, confidence, fitness, self-defense skills, and fighting spirit. Indha oru step thaan — let&rsquo;s begin.</p>
+      <div class="hx-actions">
+        <a href="contact.html#contact" class="btn btn-primary btn-lg" data-track="final_book_trial">Book Free Trial Class <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="final_whatsapp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.7 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg> WhatsApp Coach Kishore</a>
       </div>
+      <p class="hx-alt">Or call <a href="tel:+919884599939" data-track="final_call">98845 99939</a></p>
     </div>
   </div>
 </section>
