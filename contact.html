@@ -18,6 +18,7 @@
 <link rel="preload" href="fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="fonts/oswald.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="styles.css?v=01dc627f71" />
+<link rel="stylesheet" href="ink.css?v=73b92f86af" />
 <link rel="preload" as="style" href="ux.css?v=16e290feeb" onload="this.onload=null;this.rel='stylesheet'" />
 <link rel="preload" as="style" href="fx.css?v=64e4077400" onload="this.onload=null;this.rel='stylesheet'" />
 <noscript><link rel="stylesheet" href="ux.css?v=16e290feeb" /><link rel="stylesheet" href="fx.css?v=64e4077400" /></noscript>
@@ -26,6 +27,7 @@
 <script src="analytics.js?v=25bf09a0ac" defer></script>
 <script src="track.js?v=0dae56120c" defer></script>
 <script src="ux.js?v=db34725392" defer></script>
+<script src="ink.js?v=d10468d126" defer></script>
 <script src="fx.js?v=3c159fb389" defer></script>
 <!-- WarriorCRM: visitor tracking + lead backup. See CRM repo CONNECT-WEBSITES.md -->
 <script src="https://crm.spartacusmartialarts.com/warriorcrm.js" data-site="spartacusmartialarts.com" defer></script>
@@ -48,23 +50,30 @@
 }
 </script>
 </head>
-<body>
+<body class="ink page-contact">
 <main>
 <!-- ============================ LEAD CAPTURE ============================ -->
-<section class="pad" id="contact">
-  <div class="wrap lead">
-    <div class="lead-copy reveal">
-      <span class="eyebrow red">Free Trial Class</span>
-      <h1 class="section-title">Your child leaves more confident &mdash; <span class="gold-text">not more aggressive</span></h1>
-      <p class="section-sub" style="margin-bottom:22px">That is the difference a sports psychologist makes. Coach Kishore is a National Wushu medalist <em>and</em> a qualified sports psychologist, so the discipline your child builds on the mat shows up in their studies too.</p>
+<section class="ink-contact" id="contact">
+  <div class="wrap ink-contact-grid">
+    <div class="ink-contact-copy">
+      <p class="hx-eyebrow">Free trial class</p>
+      <h1 class="ink-h1 ink-h1-sm" data-nosplit><span class="hx-line"><span>Your child leaves more confident &mdash;</span></span> <span class="hx-line"><span class="gold-text">not more aggressive</span></span></h1>
+      <p class="ink-lede">That is the difference a sports psychologist makes. Coach Kishore is a National Wushu medalist <em>and</em> a qualified sports psychologist, so the discipline your child builds on the mat shows up in their studies too.</p>
       <div class="parent-points">
         <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Free trial first &mdash; decide after you have seen a class</b></div>
         <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Beginners and shy children welcome &mdash; no experience needed</b></div>
         <div class="benefit"><span class="chk"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Batch timings that work around school and exams</b></div>
       </div>
+      <div class="ink-reach" aria-label="Other ways to reach Coach Kishore">
+        <a href="#" class="js-wa" data-program="Martial Arts Training" data-track="contact_whatsapp">WhatsApp<b>98845 99939</b></a>
+        <a href="tel:+919884599939" data-track="contact_call">Call<b>98845 99939</b></a>
+        <a href="https://www.instagram.com/kishorekumar.coach/" target="_blank" rel="noopener">Instagram<b>@kishorekumar.coach</b></a>
+      </div>
+      <p class="ink-where">📍 Chennai, Tamil Nadu</p>
     </div>
 
-    <div class="form-card reveal d1">
+    <div class="form-card ink-form">
+      <div class="ink-form-k"><b>Book a free trial</b><span>Takes 30 seconds</span></div>
       <form id="leadForm" novalidate>
         <!-- Name and phone are the only required fields. Everything below is
              optional on purpose: Coach Kishore rings every enquiry anyway, and
@@ -121,26 +130,26 @@
 <!-- ============================ QUICK ANSWERS (AEO) ============================ -->
 <section class="pad" id="quick-answers">
   <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow reveal">Quick Answers</span>
-      <h2 class="section-title reveal d1">Quick Answers About <span class="gold-text">Spartacus Martial Arts Academy</span></h2>
-      <p class="section-sub reveal d2">Short, direct answers for parents, students, and anyone searching for martial arts classes in Chennai.</p>
+    <div class="ink-head">
+      <p class="hx-eyebrow reveal">Quick answers</p>
+      <h2 class="hx-h2 reveal d1">Quick answers about <span class="gold-text">Spartacus Martial Arts Academy</span></h2>
+      <p class="hx-sub reveal d2">Short, direct answers for parents, students, and anyone searching for martial arts classes in Chennai.</p>
     </div>
-    <div class="qa-grid">
-      <div class="qa reveal"><h3>What is Spartacus Martial Arts Academy?</h3><p>Spartacus Martial Arts Academy is a Chennai-based martial arts academy by Kishore Kumar offering Wushu, Kung Fu, Karate, Judo, Kick Boxing, Boxing, self-defense, fitness, and discipline-based training.</p></div>
-      <div class="qa reveal d1"><h3>Who is Coach Kishore Kumar?</h3><p>Kishore Kumar is a National Wushu Medalist, Kungfu Black Belt, Wushu Coach &amp; Judge, Martial Artist, and Sports Psychology-based Athlete Mindset Coach.</p></div>
-      <div class="qa reveal"><h3>What martial arts are taught?</h3><p>The academy offers Wushu, Kung Fu, Karate, Judo, Kick Boxing, and Boxing training in Chennai.</p></div>
-      <div class="qa reveal d1"><h3>Can kids join?</h3><p>Yes, kids and students can join beginner-friendly martial arts classes with safe and structured coaching.</p></div>
-      <div class="qa reveal"><h3>Is this suitable for beginners?</h3><p>Yes, beginners can start with foundation training, basic fitness, stance, movement, discipline, and simple techniques.</p></div>
-      <div class="qa reveal d1"><h3>How can I book a trial class?</h3><p>You can book a free trial class by filling the website form or sending a WhatsApp message to Coach Kishore at 9884599939.</p></div>
+    <div class="ink-qa-grid" data-stagger>
+      <article class="ink-qa-item"><h3>What is Spartacus Martial Arts Academy?</h3><p>Spartacus Martial Arts Academy is a Chennai-based martial arts academy by Kishore Kumar offering Wushu, Kung Fu, Karate, Judo, Kick Boxing, Boxing, self-defense, fitness, and discipline-based training.</p></article>
+      <article class="ink-qa-item"><h3>Who is Coach Kishore Kumar?</h3><p>Kishore Kumar is a National Wushu Medalist, Kungfu Black Belt, Wushu Coach &amp; Judge, Martial Artist, and Sports Psychology-based Athlete Mindset Coach.</p></article>
+      <article class="ink-qa-item"><h3>What martial arts are taught?</h3><p>The academy offers Wushu, Kung Fu, Karate, Judo, Kick Boxing, and Boxing training in Chennai.</p></article>
+      <article class="ink-qa-item"><h3>Can kids join?</h3><p>Yes, kids and students can join beginner-friendly martial arts classes with safe and structured coaching.</p></article>
+      <article class="ink-qa-item"><h3>Is this suitable for beginners?</h3><p>Yes, beginners can start with foundation training, basic fitness, stance, movement, discipline, and simple techniques.</p></article>
+      <article class="ink-qa-item"><h3>How can I book a trial class?</h3><p>You can book a free trial class by filling the website form or sending a WhatsApp message to Coach Kishore at 9884599939.</p></article>
     </div>
   </div>
 </section>
 
 <!-- ============================ FAQ ============================ -->
-<section class="pad" id="faq" style="background:rgba(0,0,0,.25);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<section class="pad ink-faq" id="faq">
   <div class="wrap">
-    <div class="section-head"><span class="eyebrow reveal">Questions</span><h2 class="section-title reveal d1">Frequently <span class="gold-text">Asked</span></h2></div>
+    <div class="ink-head"><p class="hx-eyebrow reveal">Questions</p><h2 class="hx-h2 reveal d1">Frequently <span class="gold-text">asked</span></h2></div>
     <div class="faq-list reveal">
       <div class="faq-item"><button class="faq-q">Can beginners join Spartacus Martial Arts Academy?<span class="pm"></span></button><div class="faq-a"><p>Yes. Beginners start with foundation training — basic fitness, stance, movement, discipline and simple techniques — and progress safely at their own pace.</p></div></div>
       <div class="faq-item"><button class="faq-q">What age group can join?<span class="pm"></span></button><div class="faq-a"><p>Kids, school and college students, youth and adults can join. Batches are grouped by age and level so everyone trains comfortably.</p></div></div>
@@ -157,20 +166,21 @@
 </section>
 
 <!-- ============================ FINAL CTA ============================ -->
-<section class="pad">
+<section class="pad hx-final">
   <div class="wrap">
-    <div class="final-cta reveal">
-      <svg class="spartan-watermark" viewBox="0 0 200 200" fill="#e9c45a" aria-hidden="true"><path d="M100 20c-30 0-46 16-46 50 0 24 12 40 24 50l6-12c-10-8-16-18-16-34 0-22 12-32 32-32s32 10 32 32c0 16-6 26-16 34l6 12c12-10 24-26 24-50 0-34-16-50-46-50z"/><path d="M100 45c10 0 16 6 16 18v40l-16 16-16-16V63c0-12 6-18 16-18z" fill="#e11d2a"/></svg>
-      <span class="eyebrow red">Your First Step</span>
-      <h2>Start Your Martial Arts Journey With <span class="gold-text">Spartacus</span></h2>
-      <p>One decision can build discipline, confidence, fitness, self-defense skills, and fighting spirit. Indha oru step thaan — let's begin.</p>
-      <div class="hero-actions">
-        <a href="contact.html#contact" class="btn btn-primary" data-track="final_book_trial">Book Free Trial Class</a>
-        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="final_whatsapp">WhatsApp Coach Kishore</a>
-        <a href="tel:+919884599939" class="btn btn-gold" data-track="final_call">📞 Call Now</a>
+    <div class="hx-final-card">
+      <span class="hx-final-bg" aria-hidden="true">We Born to Win</span>
+      <p class="hx-eyebrow reveal">Your first step</p>
+      <h2 class="hx-h2 reveal d1">Start your martial arts journey with <span class="gold-text">Spartacus</span></h2>
+      <p class="hx-sub reveal d2">One decision can build discipline, confidence, fitness, self-defense skills, and fighting spirit. Indha oru step thaan — let&rsquo;s begin.</p>
+      <div class="hx-actions">
+        <a href="#contact" class="btn btn-primary btn-lg" data-track="final_book_trial">Book Free Trial Class <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="final_whatsapp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.7 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg> WhatsApp Coach Kishore</a>
       </div>
+      <p class="hx-alt">Or call <a href="tel:+919884599939" data-track="final_call">98845 99939</a></p>
     </div>
   </div>
 </section>
+
 
 </main></body></html>

@@ -18,6 +18,7 @@
 <link rel="preload" href="fonts/anton-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="fonts/oswald.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="styles.css?v=01dc627f71" />
+<link rel="stylesheet" href="ink.css?v=73b92f86af" />
 <link rel="preload" as="style" href="ux.css?v=16e290feeb" onload="this.onload=null;this.rel='stylesheet'" />
 <link rel="preload" as="style" href="fx.css?v=64e4077400" onload="this.onload=null;this.rel='stylesheet'" />
 <noscript><link rel="stylesheet" href="ux.css?v=16e290feeb" /><link rel="stylesheet" href="fx.css?v=64e4077400" /></noscript>
@@ -26,53 +27,70 @@
 <script src="analytics.js?v=25bf09a0ac" defer></script>
 <script src="track.js?v=0dae56120c" defer></script>
 <script src="ux.js?v=db34725392" defer></script>
+<script src="ink.js?v=d10468d126" defer></script>
 <script src="fx.js?v=3c159fb389" defer></script>
 <!-- WarriorCRM: visitor tracking + lead backup. See CRM repo CONNECT-WEBSITES.md -->
 <script src="https://crm.spartacusmartialarts.com/warriorcrm.js" data-site="spartacusmartialarts.com" defer></script>
 </head>
-<body>
+<body class="ink page-gallery">
 <main>
-<section class="page-hero" data-fx="stage"><div class="wrap">
-  <span class="eyebrow reveal">Proof &amp; Moments</span>
-  <h1 class="page-title reveal d1">Inside The <span class="gold-text">Academy</span></h1>
-  <p class="page-sub reveal d2">Training, students, medals and academy moments. Real coaching, real progress.</p>
-</div></section>
-<!-- ============================ GALLERY / PROOF ============================ -->
-<section class="pad" id="gallery" style="background:rgba(0,0,0,.25);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow reveal">Proof &amp; Moments</span>
-      <h2 class="section-title reveal d1">Training, Students, Medals &amp; <span class="gold-text">Academy Moments</span></h2>
-      <p class="section-sub reveal d2">Real training, real students, real results.</p>
-    </div>
-    <div class="gallery-grid reveal">
-      <div class="tile wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M5 17l5-4 4 3 3-2 2 2"/></svg>Class Training Photo</div>
-      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="9" r="4"/><path d="M9 13l-1.5 8L12 18l4.5 3L15 13"/></svg>Competition</div>
-      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="5"/><path d="M9 13l-1 8 4-2 4 2-1-8"/></svg>Medal Photo</div>
-      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="7" r="3.2"/><path d="M5 20c0-4 3.2-7 7-7s7 3 7 7"/></svg>Coach Kishore</div>
-      <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M5 17l5-4 4 3 3-2 2 2"/></svg>Student Progress</div>
-      <div class="tile wide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1.2"/></svg>Instagram Reel</div>
-    </div>
-    <div class="ig-note">📸 More training clips on Instagram: <a href="https://www.instagram.com/kishorekumar.coach/" target="_blank" rel="noopener" class="gold-text"><b>@kishorekumar.coach</b></a></div>
+<section class="ink-hero">
+  <span class="ink-hero-word" aria-hidden="true">Inside</span>
+  <div class="wrap ink-hero-in">
+    <p class="hx-eyebrow">Proof &amp; moments</p>
+    <h1 class="ink-h1" data-nosplit><span class="hx-line"><span>Inside The</span></span> <span class="hx-line"><span class="gold-text">Academy</span></span></h1>
+    <p class="ink-lede">Training, students, medals and academy moments. Real coaching, real progress.</p>
+  </div>
+  <div class="ink-belt-rule" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</section>
 
+<!-- ============================ GALLERY / PROOF ============================ -->
+<section class="pad" id="gallery">
+  <div class="wrap">
+    <div class="ink-head">
+      <p class="hx-eyebrow reveal">Proof &amp; moments</p>
+      <h2 class="hx-h2 reveal d1">Training, students, medals &amp; <span class="gold-text">academy moments</span></h2>
+      <p class="hx-sub reveal d2">Real training, real students, real results.</p>
+    </div>
+    <div class="ink-gal-grid" data-stagger>
+      <figure class="ink-g ink-g-portrait">
+        <picture>
+          <source srcset="assets/kishore.webp?v=5" type="image/webp" />
+          <img src="assets/kishore.jpg?v=5" alt="Coach Kishore Kumar, founder of Spartacus Martial Arts Academy" width="1000" height="1250" loading="lazy" decoding="async" />
+        </picture>
+        <figcaption>Coach Kishore Kumar · Founder</figcaption>
+      </figure>
+      <a class="ink-g ink-g-ig" href="https://www.instagram.com/kishorekumar.coach/" target="_blank" rel="noopener">
+        <span>Training clips &amp; reels</span>
+        <b>@kishorekumar.coach</b>
+        <em>Watch on Instagram <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></em>
+      </a>
+      <a class="ink-g ink-g-art" href="programs.html#wushu" style="--hue:350"><svg viewBox="0 0 64 64" fill="none"><path d="M10 50L46 14l4 4L14 54z" fill="#e9c45a"/><path d="M46 14l6-6 4 4-6 6z" fill="#e11d2a"/><circle cx="16" cy="50" r="4" fill="#fff"/></svg><span><b>Wushu</b><small>Speed • Forms</small></span></a>
+      <a class="ink-g ink-g-art" href="programs.html#kung-fu" style="--hue:20"><svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="20" r="9" fill="#e9c45a"/><path d="M20 54c0-8 5-13 12-13s12 5 12 13" fill="#e11d2a"/><path d="M14 34c4 2 8 2 12 0M38 34c4 2 8 2 12 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><span><b>Kung Fu</b><small>Tradition • Control</small></span></a>
+      <a class="ink-g ink-g-art" href="programs.html#karate" style="--hue:230"><svg viewBox="0 0 64 64" fill="none"><rect x="8" y="26" width="48" height="12" rx="2" fill="#fff"/><rect x="26" y="26" width="12" height="12" fill="#e11d2a"/><path d="M20 38l-6 14 12-8M44 38l6 14-12-8" fill="#e9c45a"/></svg><span><b>Karate</b><small>Belts • Discipline</small></span></a>
+      <a class="ink-g ink-g-art" href="programs.html#judo" style="--hue:200"><svg viewBox="0 0 64 64" fill="none"><circle cx="24" cy="16" r="6" fill="#e9c45a"/><path d="M18 24l-8 10 8 6 8-8 12 6 8-10" stroke="#e11d2a" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="46" cy="44" r="5" fill="#fff"/></svg><span><b>Judo</b><small>Throws • Balance</small></span></a>
+      <a class="ink-g ink-g-art" href="programs.html#kick-boxing" style="--hue:355"><svg viewBox="0 0 64 64" fill="none"><path d="M16 20c0-4 4-6 10-6s10 2 10 8v8c0 4-3 7-8 7h-4c-5 0-8-3-8-7z" fill="#e11d2a"/><path d="M36 24h6c3 0 4 2 4 5s-1 5-4 5h-6" fill="#a30f1a"/><path d="M44 50l8 8M52 50l-8 8" stroke="#e9c45a" stroke-width="4" stroke-linecap="round"/></svg><span><b>Kick Boxing</b><small>Power • Fat Loss</small></span></a>
+      <a class="ink-g ink-g-art" href="programs.html#boxing" style="--hue:35"><svg viewBox="0 0 64 64" fill="none"><path d="M18 22c0-5 4-8 11-8s11 3 11 9v7c0 5-4 8-9 8h-5c-5 0-8-3-8-8z" fill="#e9c45a"/><path d="M40 26h5c3 0 5 2 5 5s-2 5-5 5h-5" fill="#b6892b"/><circle cx="26" cy="26" r="2.5" fill="#0a0a0b"/></svg><span><b>Boxing</b><small>Footwork • Timing</small></span></a>
+    </div>
   </div>
 </section>
 
 <!-- ============================ FINAL CTA ============================ -->
-<section class="pad">
+<section class="pad hx-final">
   <div class="wrap">
-    <div class="final-cta reveal">
-      <svg class="spartan-watermark" viewBox="0 0 200 200" fill="#e9c45a" aria-hidden="true"><path d="M100 20c-30 0-46 16-46 50 0 24 12 40 24 50l6-12c-10-8-16-18-16-34 0-22 12-32 32-32s32 10 32 32c0 16-6 26-16 34l6 12c12-10 24-26 24-50 0-34-16-50-46-50z"/><path d="M100 45c10 0 16 6 16 18v40l-16 16-16-16V63c0-12 6-18 16-18z" fill="#e11d2a"/></svg>
-      <span class="eyebrow red">Your First Step</span>
-      <h2>Start Your Martial Arts Journey With <span class="gold-text">Spartacus</span></h2>
-      <p>One decision can build discipline, confidence, fitness, self-defense skills, and fighting spirit. Indha oru step thaan — let's begin.</p>
-      <div class="hero-actions">
-        <a href="contact.html#contact" class="btn btn-primary" data-track="final_book_trial">Book Free Trial Class</a>
-        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="final_whatsapp">WhatsApp Coach Kishore</a>
-        <a href="tel:+919884599939" class="btn btn-gold" data-track="final_call">📞 Call Now</a>
+    <div class="hx-final-card">
+      <span class="hx-final-bg" aria-hidden="true">We Born to Win</span>
+      <p class="hx-eyebrow reveal">Your first step</p>
+      <h2 class="hx-h2 reveal d1">Start your martial arts journey with <span class="gold-text">Spartacus</span></h2>
+      <p class="hx-sub reveal d2">One decision can build discipline, confidence, fitness, self-defense skills, and fighting spirit. Indha oru step thaan — let&rsquo;s begin.</p>
+      <div class="hx-actions">
+        <a href="contact.html#contact" class="btn btn-primary btn-lg" data-track="final_book_trial">Book Free Trial Class <svg class="i-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="btn btn-wa js-wa" data-program="Martial Arts Training" data-track="final_whatsapp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.9-2.9-1.6-4-3.5-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.2 4.6 2 .8 2.7.9 3.7.8.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 14.7 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg> WhatsApp Coach Kishore</a>
       </div>
+      <p class="hx-alt">Or call <a href="tel:+919884599939" data-track="final_call">98845 99939</a></p>
     </div>
   </div>
 </section>
+
 
 </main></body></html>

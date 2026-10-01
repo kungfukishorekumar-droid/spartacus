@@ -16,7 +16,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ASSETS = ["styles.css", "blog.css", "ux.css", "fx.css", "app.js", "blog.js",
-                "blog-lead.js", "ux.js", "fx.js", "analytics.js", "track.js", "site-base.js", "home.css", "home.js"];
+                "blog-lead.js", "ux.js", "fx.js", "analytics.js", "track.js", "site-base.js", "ink.css", "home.css", "ink.js"];
 
 const vers = {};
 for (const a of ASSETS) {

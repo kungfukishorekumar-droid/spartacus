@@ -1,13 +1,14 @@
 /* ============================================================
-   SPARTACUS — HOMEPAGE MOTION ("Ink & Iron")
-   Pairs with home.css. Deferred; does nothing on other pages.
+   SPARTACUS — "INK & IRON" MOTION (every main-site page)
+   Pairs with ink.css + home.css. Deferred. Each feature checks that its
+   elements exist, so pages only run what they contain.
 
      A  Disciplines rail — pinned horizontal scroll on wide screens,
         3D carousel tilt on every screen
      B  Word wall — words light up as the reader reaches them
      C  Training method — big numeral follows the step in view
      D  Staggered reveals ([data-stagger])
-     E  Ambient parallax — 武 glyph, final-call outline type
+     E  Ambient parallax — 武 glyph, final-call + page-header outline type
 
    All scroll-linked work shares one rAF-throttled handler and skips
    sections that are off screen. Reduced motion: nothing moves; every
@@ -15,7 +16,7 @@
    ============================================================ */
 (function () {
   "use strict";
-  if (!document.body.classList.contains("page-home")) return;
+  if (!document.body.classList.contains("ink")) return;
 
   var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -154,6 +155,11 @@
       if (!near(coach, 0)) return;
       var r = coach.getBoundingClientRect();
       glyph.style.setProperty("--gy", (((r.top + r.height / 2) - innerHeight / 2) * -0.18).toFixed(1) + "px");
+    });
+    var word = $(".ink-hero-word"), hero = $(".ink-hero");
+    if (word && hero) jobs.push(function () {
+      if (!near(hero, 0)) return;
+      word.style.setProperty("--wx", (scrollY * -0.25).toFixed(1) + "px");
     });
     if (fin && finCard) jobs.push(function () {
       if (!near(finCard, 0)) return;
