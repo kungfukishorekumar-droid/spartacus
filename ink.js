@@ -9,6 +9,7 @@
      C  Training method — big numeral follows the step in view
      D  Staggered reveals ([data-stagger])
      E  Ambient parallax — 武 glyph, final-call + page-header outline type
+     F  Ink brush strokes under the gold phrase of each heading
 
    All scroll-linked work shares one rAF-throttled handler and skips
    sections that are off screen. Reduced motion: nothing moves; every
@@ -166,6 +167,50 @@
       var r = finCard.getBoundingClientRect();
       fin.style.setProperty("--fx", (((r.top + r.height / 2) - innerHeight / 2) * 0.35).toFixed(1) + "px");
     });
+  }
+
+  /* ---------- F · INK BRUSH STROKES ---------- */
+  /* A red brush stroke paints itself under the gold phrase of each heading
+     as it arrives. Measured against the phrase's LAST line box, so a phrase
+     that wraps gets its stroke under the line where it ends — not stretched
+     across the whole heading. */
+  var BRUSH = '<svg class="ink-brush" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true" focusable="false">' +
+    '<path d="M4 18C40 9 92 6 150 8S252 10 297 5L295 13C262 18 214 20 156 20C100 20 54 23 9 27Q1 25 4 18Z"/>' +
+    '<path class="b2" d="M22 21C80 17 170 15 282 12L281 15C170 19 82 21 24 24Z"/></svg>';
+  var heads = $$(".hx-h2, .ink-h1, .hx-title").filter(function (h) { return h.querySelector(".gold-text"); });
+  function placeBrushes() {
+    heads.forEach(function (h) {
+      var g = h.querySelector(".gold-text"), svg = h.__brush;
+      if (!svg) {
+        h.insertAdjacentHTML("beforeend", BRUSH);
+        svg = h.__brush = h.lastElementChild;
+        h.classList.add("has-brush");
+      }
+      var rs = g.getClientRects(); if (!rs.length) return;
+      var last = rs[rs.length - 1], hb = h.getBoundingClientRect(), ht = last.height * 0.34;
+      svg.style.left = (last.left - hb.left - 6) + "px";
+      svg.style.top = (last.bottom - hb.top - ht * 0.92) + "px";
+      svg.style.width = (last.width + 12) + "px";
+      svg.style.height = ht + "px";
+    });
+  }
+  if (heads.length) {
+    placeBrushes();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeBrushes);
+    var rt; addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(placeBrushes, 120); }, { passive: true });
+    if ("IntersectionObserver" in window && !reduced) {
+      var bio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          placeBrushes();                                  // the heading may have reflowed since load
+          en.target.__brush.classList.add("drawn");
+          bio.unobserve(en.target);
+        });
+      }, { threshold: 0.6 });
+      heads.forEach(function (h) { bio.observe(h); });
+    } else {
+      heads.forEach(function (h) { h.__brush.classList.add("drawn"); });
+    }
   }
 
   addEventListener("scroll", onScroll, { passive: true });

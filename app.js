@@ -111,18 +111,36 @@ function injectChrome(){
       '</div>' +
     '</div></header>';
 
+  const belt7 = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
   const drawer =
-    '<div class="drawer" id="drawer" role="dialog" aria-label="Menu">' +
+    '<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Menu">' +
       '<button class="close" id="drawerClose" aria-label="Close menu">&times;</button>' +
-      navLinks +
-      '<a href="contact.html" class="btn btn-primary">Book Free Trial Class</a>' +
+      '<span class="drawer-glyph" aria-hidden="true">武</span>' +
+      '<nav class="drawer-nav" aria-label="Menu">' + navLinks + '</nav>' +
+      '<div class="drawer-foot">' +
+        '<a href="contact.html" class="btn btn-primary" data-track="drawer_book_trial">Book Free Trial Class</a>' +
+        '<div class="drawer-reach">' +
+          '<a href="#" class="js-wa" data-program="Martial Arts Training" data-track="drawer_whatsapp">WhatsApp</a>' +
+          '<a href="tel:+919884599939" data-track="drawer_call">Call</a>' +
+        '</div>' +
+      '</div>' +
+      '<div class="drawer-belt" aria-hidden="true">' + belt7 + '</div>' +
     '</div>';
 
   const footer =
-    '<footer><div class="wrap"><div class="foot-grid">' +
+    '<footer>' +
+    '<div class="ft-belt" aria-hidden="true">' + belt7 + '</div>' +
+    '<div class="wrap">' +
+    '<div class="ft-cta">' +
+      '<div><p class="ft-k">Free trial class</p><h2 class="ft-h">Ready to train?</h2></div>' +
+      '<div class="ft-cta-actions">' +
+        '<a href="contact.html" class="btn btn-primary" data-track="footer_book_trial">Book Free Trial Class</a>' +
+        '<a href="#" class="btn btn-ghost js-wa" data-program="Martial Arts Training" data-track="footer_whatsapp">WhatsApp Coach Kishore</a>' +
+      '</div>' +
+    '</div>' +
+    '<div class="foot-grid">' +
       '<div class="foot-brand">' +
         '<img class="logo-img" src="assets/logo.webp?v=5" width="512" height="512" alt="Spartacus Martial Arts Academy logo" loading="lazy" decoding="async" onerror="this.style.display=\'none\'" />' +
-        '<div class="foot-tag">WE BORN TO WIN</div>' +
         '<p>By Kishore Kumar — National Wushu Medalist, Kungfu Black Belt, Wushu Coach &amp; Judge. Building discipline, confidence and real martial arts skill in Chennai.</p>' +
         '<div class="foot-social">' +
           '<a href="' + CONFIG.instagram + '" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#e9c45a" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="#e9c45a" stroke="none"/></svg></a>' +
@@ -137,6 +155,7 @@ function injectChrome(){
       '</div>' +
     '</div>' +
     '<div class="foot-areas">Serving Chennai &amp; nearby areas — Otteri · Ayanavaram · Perambur · Kilpauk · Anna Nagar · and surrounding localities. Martial arts classes, self-defense, and kids martial arts training in Chennai.</div>' +
+    '<div class="ft-word" aria-hidden="true">We Born to Win</div>' +
     '<div class="foot-bottom"><span>© <span id="year"></span> Spartacus Martial Arts Academy · By Kishore Kumar · Chennai · We Born to Win</span><span>Wushu • Kung Fu • Karate • Judo • Kick Boxing • Boxing</span></div>' +
     '</div></footer>';
 
@@ -167,10 +186,24 @@ function boot(){
   }
 
   /* mobile drawer */
-  const drawer = $("#drawer");
-  $("#burger").addEventListener("click", () => { drawer.classList.add("open"); $("#burger").setAttribute("aria-expanded","true"); });
-  $("#drawerClose").addEventListener("click", () => { drawer.classList.remove("open"); $("#burger").setAttribute("aria-expanded","false"); });
-  $$(".drawer a").forEach(a => a.addEventListener("click", () => drawer.classList.remove("open")));
+  const drawer = $("#drawer"), burger = $("#burger");
+  // Full-screen menu: lock the page behind it, close on Escape / link tap,
+  // and move focus in and back out so keyboard users are never stranded.
+  const openDrawer = () => {
+    drawer.classList.add("open"); burger.setAttribute("aria-expanded","true");
+    document.documentElement.classList.add("drawer-open");
+    setTimeout(() => { const f = drawer.querySelector(".drawer-nav a"); if (f) f.focus({ preventScroll: true }); }, 350);
+  };
+  const closeDrawer = () => {
+    if (!drawer.classList.contains("open")) return;
+    drawer.classList.remove("open"); burger.setAttribute("aria-expanded","false");
+    document.documentElement.classList.remove("drawer-open");
+    burger.focus({ preventScroll: true });
+  };
+  burger.addEventListener("click", openDrawer);
+  $("#drawerClose").addEventListener("click", closeDrawer);
+  $$(".drawer a").forEach(a => a.addEventListener("click", closeDrawer));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
 
   /* WhatsApp links */
   $$(".js-wa").forEach(el => el.addEventListener("click", (e) => {

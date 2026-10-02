@@ -354,31 +354,6 @@ footer{border-top:1px solid var(--line);background:rgba(0,0,0,.5);padding:clamp(
 .sp-skip{position:fixed;top:-60px;left:12px;z-index:10000}
 .sp-skip:focus{top:0}
 
-/* ---------- PAGE TRANSITIONS ----------
-   Cross-document View Transitions: moving between pages of this site
-   cross-fades with a small rise, while the header and the WhatsApp button
-   stay put instead of flashing. No JavaScript; browsers without support
-   simply navigate as before. Lives here (render-blocking) because both the
-   old and the new page must opt in before first paint. */
-@view-transition{navigation:auto}
-header#top{view-transition-name:site-header}
-.wa-float{view-transition-name:wa-float}
-::view-transition-old(root){animation:vtOut .26s cubic-bezier(.4,0,1,1) both}
-::view-transition-new(root){animation:vtIn .44s cubic-bezier(.22,1,.36,1) both}
-@keyframes vtOut{to{opacity:0;transform:translateY(-8px) scale(.99)}}
-@keyframes vtIn{from{opacity:0;transform:translateY(14px) scale(1.008)}}
-@media (prefers-reduced-motion:reduce){
-  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
-}
-
-/* Custom scrollbar lives here (render-blocking), not in the async ux.css:
-   the scrollbar's width is part of the page's width, so when ux.css arrived
-   late and narrowed it, the whole page reflowed — a layout shift on desktop. */
-*{scrollbar-width:thin;scrollbar-color:rgba(233,196,90,.42) transparent}
-::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:var(--black)}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold-deep),var(--red-deep));border-radius:10px;border:2px solid var(--black)}
-
 /* ---------- LAYOUT RULES THAT MUST NOT ARRIVE LATE ----------
    ux.css and fx.css load async, and the deferred scripts can run before
    them. Anything that changes size, wrapping or position therefore lives
@@ -404,3 +379,123 @@ p,.section-sub,.page-sub,.post-excerpt{text-wrap:pretty}
 .fx-arena,.fx-badges{position:absolute;pointer-events:none}
 .fx-badges{inset:0}
 .fx-words .w{display:inline-block;overflow:hidden;vertical-align:top}
+
+/* ============================================================
+   CHROME v2 — header, menu, mobile bar, floats, footer, cursor,
+   page transitions. Lives here (render-blocking, all pages incl. the blog)
+   because app.js injects this chrome on every page. The old versions of
+   these rules were removed from ux.css so nothing overrides them late.
+   ============================================================ */
+
+/* ---- header: condenses on scroll; gold "magic line" under the nav ---- */
+header#top .nav{transition:height .45s cubic-bezier(.22,1,.36,1)}
+header#top .brand .logo-img{transition:height .45s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.34,1.56,.64,1),filter .6s}
+header#top.sp-scrolled{background:rgba(8,8,9,.82)}
+header#top.sp-scrolled .nav{height:62px}
+header#top.sp-scrolled .brand .logo-img{height:46px}
+.nav-links{position:relative}
+.nav-links a{position:relative;padding-block:8px}
+.nav-links a:hover{color:#fff}
+.nav-line{
+  position:absolute;left:0;bottom:0;height:2px;width:var(--w,0);border-radius:2px;pointer-events:none;
+  background:linear-gradient(90deg,var(--gold-2),var(--red));box-shadow:0 0 12px rgba(233,196,90,.45);
+  transform:translateX(var(--x,0));opacity:var(--o,0);
+  transition:transform .5s cubic-bezier(.22,1,.36,1),width .5s cubic-bezier(.22,1,.36,1),opacity .3s;
+}
+
+/* ---- full-screen menu ---- */
+.drawer{
+  display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:96px 28px calc(28px + env(safe-area-inset-bottom));
+  background:radial-gradient(90% 60% at 100% 0%,rgba(225,29,42,.22),transparent 60%),#08080a;overflow:hidden auto;
+  clip-path:circle(0% at calc(100% - 44px) 37px);transform:none;visibility:hidden;
+  transition:clip-path .7s cubic-bezier(.7,0,.2,1),visibility 0s linear .7s;
+}
+.drawer.open{clip-path:circle(150% at calc(100% - 44px) 37px);visibility:visible;transition:clip-path .7s cubic-bezier(.7,0,.2,1),visibility 0s}
+.drawer-glyph{position:absolute;right:-12vw;bottom:6vh;font-family:"Hiragino Mincho ProN","Songti SC","Noto Serif SC",serif;font-weight:700;font-size:80vw;line-height:1;color:rgba(225,29,42,.07);-webkit-text-stroke:1px rgba(233,196,90,.12);pointer-events:none;z-index:0}
+.drawer-nav{position:relative;z-index:1;display:flex;flex-direction:column}
+.drawer .drawer-nav a{
+  font-family:var(--font-display);font-size:clamp(2.4rem,11vw,3.6rem);line-height:1.05;text-transform:uppercase;letter-spacing:.01em;
+  padding:6px 0;border:0;color:var(--white);display:flex;align-items:center;gap:14px;
+  opacity:0;transform:translateY(40%);transition:opacity .5s,transform .7s cubic-bezier(.22,1,.36,1),color .25s;
+}
+.drawer .drawer-nav a::after{content:"";height:3px;flex:0 0 0;background:var(--red);transition:flex-basis .45s cubic-bezier(.22,1,.36,1)}
+.drawer .drawer-nav a:hover::after,.drawer .drawer-nav a.active::after{flex-basis:40px}
+.drawer .drawer-nav a.active{color:var(--gold-2)}
+.drawer.open .drawer-nav a{opacity:1;transform:none}
+.drawer.open .drawer-nav a:nth-child(1){transition-delay:.18s}.drawer.open .drawer-nav a:nth-child(2){transition-delay:.23s}
+.drawer.open .drawer-nav a:nth-child(3){transition-delay:.28s}.drawer.open .drawer-nav a:nth-child(4){transition-delay:.33s}
+.drawer.open .drawer-nav a:nth-child(5){transition-delay:.38s}.drawer.open .drawer-nav a:nth-child(6){transition-delay:.43s}
+.drawer-foot{position:relative;z-index:1;display:grid;gap:14px;opacity:0;transform:translateY(16px);transition:opacity .5s .2s,transform .7s cubic-bezier(.22,1,.36,1) .2s}
+.drawer.open .drawer-foot{opacity:1;transform:none;transition-delay:.5s}
+.drawer .drawer-foot .btn{margin:0;width:100%}
+.drawer-reach{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drawer .drawer-reach a{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:14px;border:1px solid var(--line);font-family:var(--font-head);font-weight:600;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+.drawer-belt{position:absolute;left:0;right:0;bottom:0;height:4px;display:flex}
+.drawer-belt i,.ft-belt i{flex:1}
+.drawer-belt i:nth-child(1),.ft-belt i:nth-child(1){background:#f3f1ea}.drawer-belt i:nth-child(2),.ft-belt i:nth-child(2){background:#f2c230}
+.drawer-belt i:nth-child(3),.ft-belt i:nth-child(3){background:#f08a24}.drawer-belt i:nth-child(4),.ft-belt i:nth-child(4){background:#2fa15a}
+.drawer-belt i:nth-child(5),.ft-belt i:nth-child(5){background:#2b6fd6}.drawer-belt i:nth-child(6),.ft-belt i:nth-child(6){background:#8a5530}
+.drawer-belt i:nth-child(7),.ft-belt i:nth-child(7){background:#0c0c0e;box-shadow:inset 0 1px 0 var(--gold)}
+.drawer .close{z-index:2;top:16px;right:16px;border-radius:50%;transition:transform .5s cubic-bezier(.34,1.56,.64,1),border-color .3s}
+.drawer .close:hover{transform:rotate(90deg);border-color:var(--gold)}
+html.drawer-open,html.drawer-open body{overflow:hidden}
+
+/* ---- phones: one conversion bar, nothing floating over the content ---- */
+@media (max-width:620px){
+  .mobile-bar{background:rgba(10,10,11,.74);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);border-top:1px solid rgba(233,196,90,.18)}
+  .wa-float{display:none}                       /* the bar already has WhatsApp */
+}
+#sp-top{width:42px;height:42px}
+@media (max-width:620px){html #sp-top{left:auto;right:14px;bottom:calc(82px + env(safe-area-inset-bottom));width:40px;height:40px}}   /* html: outranks ux.css, which loads later */
+.wa-float{transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .4s}
+.wa-float:hover{transform:scale(1.1) rotate(-8deg)}
+
+/* ---- footer ---- */
+footer{position:relative;overflow:hidden;padding:0 0 26px;background:radial-gradient(70% 60% at 50% 120%,rgba(225,29,42,.16),transparent 70%),#060607;border-top:1px solid var(--line)}
+.ft-belt{position:absolute;left:0;right:0;top:0;height:4px;display:flex}
+.ft-cta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;padding:clamp(48px,7vw,80px) 0 clamp(36px,5vw,56px);border-bottom:1px solid var(--line);margin-bottom:clamp(36px,5vw,56px)}
+.ft-k{display:flex;align-items:center;gap:12px;font-family:var(--font-head);font-weight:600;font-size:.76rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-2);margin-bottom:10px}
+.ft-k::before{content:"";width:28px;height:2px;background:var(--red)}
+.ft-h{font-family:var(--font-display);font-weight:400;text-transform:uppercase;font-size:clamp(2.4rem,5.4vw,4.4rem);line-height:.92;color:#f4efe6}
+.ft-cta-actions{display:flex;flex-wrap:wrap;gap:12px}
+/* pages that already end on a call to action don't need a second one */
+body:has(.hx-final-card) .ft-cta{display:none}
+body:has(.hx-final-card) footer .foot-grid{margin-top:clamp(48px,7vw,80px)}
+.ft-word{
+  margin:clamp(30px,5vw,56px) 0 clamp(18px,3vw,28px);text-align:center;white-space:nowrap;
+  font-family:var(--font-display);text-transform:uppercase;font-size:clamp(3.2rem,13.2vw,12.4rem);line-height:.84;
+  color:transparent;-webkit-text-stroke:1px rgba(233,196,90,.24);
+  background:linear-gradient(90deg,var(--gold-2),var(--red)) 0 0/0% 100% no-repeat;-webkit-background-clip:text;background-clip:text;
+  transition:background-size 1.8s cubic-bezier(.22,1,.36,1);
+}
+.ft-word.in{background-size:100% 100%}
+@media (max-width:620px){.ft-cta-actions .btn{flex:1 1 100%}}
+
+/* ---- cursor ring (fx.js; fine pointers only, never with reduced motion) ---- */
+#sp-cursor{
+  position:fixed;left:0;top:0;z-index:9997;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;pointer-events:none;
+  border:1.5px solid rgba(233,196,90,.7);mix-blend-mode:screen;opacity:0;
+  transition:width .35s cubic-bezier(.22,1,.36,1),height .35s cubic-bezier(.22,1,.36,1),margin .35s cubic-bezier(.22,1,.36,1),opacity .25s,background .3s,border-color .3s;
+}
+#sp-cursor.on{opacity:1}
+#sp-cursor.big{width:64px;height:64px;margin:-32px 0 0 -32px;background:rgba(233,196,90,.12);border-color:var(--gold-2)}
+#sp-cursor.off{opacity:0}
+
+/* ---- page transitions: an ink blade sweeps the new page in ----
+   Cross-document View Transitions (no JS). The old page is clipped away a
+   moment before the new one sweeps in, and the red gap between them is the
+   blade. Header and WhatsApp button keep their own names and stay put. */
+@view-transition{navigation:auto}
+header#top{view-transition-name:site-header}
+.wa-float{view-transition-name:wa-float}
+::view-transition-image-pair(root){background:linear-gradient(100deg,#a30f1a,#e11d2a 55%,#f6d77a)}
+::view-transition-old(root),::view-transition-new(root){mix-blend-mode:normal;animation-timing-function:cubic-bezier(.7,0,.2,1)}
+::view-transition-old(root){animation:vtOldWipe .55s both}
+::view-transition-new(root){animation:vtNewWipe .62s .1s both}
+@keyframes vtOldWipe{from{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}to{clip-path:polygon(0 0,0 0,-12% 100%,0 100%)}}
+@keyframes vtNewWipe{from{clip-path:polygon(112% 0,112% 0,100% 100%,100% 100%)}to{clip-path:polygon(-12% 0,100% 0,100% 100%,-24% 100%)}}
+@media (prefers-reduced-motion:reduce){
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+  .drawer{transition:none}.drawer .drawer-nav a,.drawer-foot{transition:none}
+  #sp-cursor{display:none}
+}

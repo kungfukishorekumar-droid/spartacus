@@ -57,6 +57,22 @@
 .page-home .hx-ink::after{background:var(--black);animation-delay:.08s}
 @keyframes hxWipe{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 
+/* the strike: a bristled red blade slashes in behind the headline on load,
+   then settles to a faint mark (screen blend, so it lights rather than covers) */
+.page-home .hx-strike{
+  position:absolute;z-index:1;left:-8%;top:30%;width:70%;height:clamp(70px,11vw,170px);pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(225,29,42,.55) 28%,rgba(255,64,76,.65) 58%,rgba(163,15,26,.45) 86%,transparent);
+  -webkit-mask:repeating-linear-gradient(-9deg,#000 0 2px,rgba(0,0,0,.55) 2px 4px);
+          mask:repeating-linear-gradient(-9deg,#000 0 2px,rgba(0,0,0,.55) 2px 4px);
+  clip-path:polygon(0 70%,100% 0,100% 22%,0 100%);mix-blend-mode:screen;opacity:.34;
+  animation:hxStrike 1.15s cubic-bezier(.7,0,.2,1) .05s both;
+}
+@keyframes hxStrike{
+  0%  {clip-path:polygon(0 70%,0 70%,0 100%,0 100%);opacity:1}
+  55% {opacity:1}
+  100%{clip-path:polygon(0 70%,100% 0,100% 22%,0 100%);opacity:.34}
+}
+
 /* credential bar along the bottom of the hero */
 .page-home .hx-trust-bar{position:relative;z-index:3;border-top:1px solid var(--hair);background:rgba(10,10,11,.74);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);animation:hxFade .9s var(--ease) .75s both}
 .page-home .hx-trust-bar .hero-trust{display:flex;flex-wrap:nowrap;justify-content:space-between;gap:0;max-width:none}
@@ -243,7 +259,8 @@
   .page-home .hx-hero .hero-portrait img{object-position:50% 18%}
   .page-home .hx-hero .hero-portrait::after{background:linear-gradient(0deg,var(--black) 4%,rgba(8,8,9,.75) 22%,rgba(8,8,9,0) 52%)}
   .page-home .hx-ink{left:0;width:auto;bottom:auto;height:min(60svh,560px)}
-  .page-home .hx-hero .fx-badges,.page-home .hx-hero .fx-arena{display:none}   /* copy overlaps the photo here */
+  .page-home .hx-hero .fx-badges,.page-home .hx-hero .fx-arena{display:none}
+  .page-home .hx-strike{top:calc(min(60svh,560px) - 120px);left:-10%;width:120%;height:96px}   /* copy overlaps the photo here */
   .page-home .hero-inner{margin-top:-128px;padding-top:0}
   .page-home .hero-copy{max-width:none;text-align:left;margin:0}
   .page-home .hx-title{margin:16px 0 18px}
@@ -267,6 +284,7 @@
   .page-home .hx-line > span,.page-home .hx-lede,.page-home .hero-copy .hx-actions,.page-home .hero-copy .hx-alt,
   .page-home .hx-tanglish,.page-home .hx-trust-bar,.page-home .hx-kicker-bar{animation:none}
   .page-home .hx-ink{display:none}
+  .page-home .hx-strike{animation:none}
   .page-home .hx-wall .hx-w{color:var(--bone)!important}
   .page-home .hx-step{opacity:1}
   .page-home .hx-art{transform:none!important}

@@ -15,6 +15,7 @@
      J  Kinetic marquee (answers scroll speed + direction)
      K  3D buttons (tilt toward pointer, moving highlight)
      L  Belt-rank scroll progress
+     M  Nav magic line · N  Cursor ring · O  Footer wordmark ink fill
 
    Design notes:
    - Everything is transform/opacity only, so it stays on the GPU.
@@ -445,6 +446,71 @@
     setTimeout(paint, 300);
   }
 
+  /* ---------- M · NAV MAGIC LINE ---------- */
+  /* One gold line under the desktop nav glides to whichever link the pointer
+     is on, and settles back under the current page's link. */
+  function navLine() {
+    var nav = document.querySelector(".nav-links");
+    if (!nav || nav.querySelector(".nav-line")) return;
+    var line = document.createElement("span");
+    line.className = "nav-line"; line.setAttribute("aria-hidden", "true");
+    nav.appendChild(line);
+    function to(a) {
+      if (!a) { line.style.setProperty("--o", 0); return; }
+      line.style.setProperty("--x", a.offsetLeft + "px");
+      line.style.setProperty("--w", a.offsetWidth + "px");
+      line.style.setProperty("--o", 1);
+    }
+    var home = function () { to(nav.querySelector("a.active")); };
+    $$("a", nav).forEach(function (a) {
+      a.addEventListener("mouseenter", function () { to(a); });
+      a.addEventListener("focus", function () { to(a); });
+    });
+    nav.addEventListener("mouseleave", home);
+    addEventListener("resize", onFrame(home), { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(home);
+    home();
+  }
+
+  /* ---------- N · CURSOR RING ---------- */
+  /* A gold ring trails the pointer and swells over anything clickable. The
+     native cursor stays visible — this adds to it, never replaces it. Mouse
+     and trackpad only; off with reduced motion; idle when the pointer is. */
+  function cursorRing() {
+    if (!fine || reduced) return;
+    var ring = document.createElement("div");
+    ring.id = "sp-cursor"; ring.setAttribute("aria-hidden", "true");
+    document.body.appendChild(ring);
+    var x = -100, y = -100, tx = -100, ty = -100, raf = null;
+    function step() {
+      x += (tx - x) * 0.2; y += (ty - y) * 0.2;
+      ring.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+      raf = (Math.abs(tx - x) + Math.abs(ty - y) > 0.3) ? requestAnimationFrame(step) : null;
+    }
+    document.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      tx = e.clientX; ty = e.clientY;
+      ring.classList.add("on");
+      var t = e.target.closest ? e.target : null;
+      ring.classList.toggle("big", !!(t && t.closest("a,button,.btn,[role='button'],label[for],summary")));
+      ring.classList.toggle("off", !!(t && t.closest("input,textarea,select,[contenteditable]")));
+      if (!raf) raf = requestAnimationFrame(step);
+    }, { passive: true });
+    document.addEventListener("mouseleave", function () { ring.classList.remove("on"); });
+  }
+
+  /* ---------- O · FOOTER WORDMARK ---------- */
+  /* "We Born to Win" fills with gold-to-red ink when the footer arrives. */
+  function footerWord() {
+    var w = document.querySelector(".ft-word");
+    if (!w) return;
+    if (reduced || !("IntersectionObserver" in window)) { w.classList.add("in"); return; }
+    var io2 = new IntersectionObserver(function (en) {
+      if (en[0].isIntersecting) { w.classList.add("in"); io2.disconnect(); }
+    }, { threshold: 0.5 });
+    io2.observe(w);
+  }
+
   /* ---------- SAFETY NET ---------- */
   /* Word-reveal starts at opacity:0 and waits for IntersectionObserver.
      If IO is throttled, blocked, or never fires, a headline would stay
@@ -471,6 +537,9 @@
     kineticMarquee();
     buttons3d();
     beltProgress();
+    navLine();
+    cursorRing();
+    footerWord();
     safetyNet();
     if ("MutationObserver" in window) {
       var t;
