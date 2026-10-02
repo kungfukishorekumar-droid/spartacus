@@ -1,0 +1,371 @@
+/* ============================================================
+   SPARTACUS — FX LAYER (showpiece effects)
+   Loads AFTER ux.css. Adds the "premium" flourishes:
+   gold glitter, animated text, section transitions, spotlights.
+
+     11  Gold dust + belt-rank progress
+     12  Animated headings (word reveal)
+     13  Section transitions + dividers
+     14  Cursor spotlight on cards
+     15  Advanced button variants
+     16  Image reveals
+     17  Reduced-motion overrides
+     18  Hero 3D stage (portrait lean, badges, arena ring, scroll exit)
+     19  Training Method: domino flip + connecting line
+     20  Benefits: staggered "strike" entrance
+     21  Credential medals: coin toss
+     22  Page-header depth planes + arena ring (programs, about)
+     23  Program cards: hinge deal + 3D icon pop
+     24  Fees / final CTA / forms: rise from flat
+     25  3D pressable buttons (depth edge, press, tilt, moving highlight)
+   ============================================================ */
+
+/* ---------- 11 · GLITTER + GOLD DUST ---------- */
+/* Canvas field painted by fx.js — fixed, behind content, above the aurora. */
+#fx-dust{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  opacity:.55;mix-blend-mode:screen;
+}
+/* Sparkle burst particles (spawned on click / on CTA hover) */
+.sprk{
+  position:fixed;width:6px;height:6px;pointer-events:none;z-index:9998;
+  background:radial-gradient(circle,#fff6d8 0%,var(--gold-2) 35%,rgba(233,196,90,0) 70%);
+  border-radius:50%;
+  animation:sprkFly var(--sd,.7s) cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes sprkFly{
+  0%  {transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(var(--dx,0),var(--dy,0)) scale(.2);opacity:0}
+}
+/* ---------- 12 · ANIMATED HEADINGS ---------- */
+/* Word-by-word rise. fx.js wraps words in <span class="w"><i>word</i></span>. */
+/* NOTE: .fx-words is applied to the heading itself — never set `display`
+   here or a block <h1> turns inline and collapses into the line above it. */
+/* Each word flips up from behind the line, hinged on its baseline, like a
+   board being raised — perspective on the word gives it real depth. */
+.fx-words .w{display:inline-block;overflow:hidden;vertical-align:top;perspective:520px}
+.fx-words .w > i{
+  display:inline-block;font-style:inherit;
+  transform:translateY(38%) rotateX(-86deg);transform-origin:50% 100%;opacity:0;
+  transition:transform .9s var(--e-out),opacity .6s var(--e-out);
+  transition-delay:calc(var(--i,0) * 65ms);
+}
+.fx-words.in .w > i{transform:none;opacity:1}
+
+/* Gold underline that draws itself under section titles */
+.section-title.in::after,.page-title.in::after{
+  content:"";display:block;height:3px;width:0;margin-top:14px;border-radius:3px;
+  background:linear-gradient(90deg,var(--red),var(--gold-2),transparent);
+  animation:drawLine 1s var(--e-out) .3s forwards;
+}
+@keyframes drawLine{to{width:190px}}
+
+/* ---------- 13 · SECTION TRANSITIONS + DIVIDERS ---------- */
+/* Whole-section entrance: content lifts + a soft glow passes through. */
+.fx-sec{position:relative}
+.fx-sec::before{
+  content:"";position:absolute;left:0;right:0;top:-1px;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(233,196,90,.55),transparent);
+  transform:scaleX(0);transform-origin:50% 50%;
+  transition:transform 1.1s var(--e-out);
+}
+.fx-sec.in::before{transform:scaleX(1)}
+/* Scroll-linked parallax (fx.js sets --py) */
+.fx-par{transform:translate3d(0,var(--py,0),0);will-change:transform}
+
+/* ---------- 14 · CURSOR SPOTLIGHT ---------- */
+/* fx.js sets --mx/--my on hovered cards; a soft gold light follows the pointer. */
+.fx-spot{position:relative;isolation:isolate}
+.fx-spot::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;border-radius:inherit;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),
+             rgba(233,196,90,.16),rgba(225,29,42,.08) 38%,transparent 62%);
+  transition:opacity var(--t-slow) var(--e-out);
+}
+.fx-spot:hover::before{opacity:1}
+.fx-spot > *{position:relative;z-index:1}
+
+/* ---------- 15 · ADVANCED BUTTON VARIANTS ---------- */
+/* Animated gradient border that traces the CTA */
+.btn-gold,.btn-primary{background-size:180% 180%;animation:gradShift 8s var(--e-smooth) infinite}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+/* glow ring that expands on hover */
+.btn-primary::after,.btn-gold::after{transition:opacity var(--t-mid) var(--e-out)}
+.btn-primary:hover,.btn-gold:hover{filter:saturate(1.12) brightness(1.06)}
+/* ghost buttons draw a gold border on hover */
+.btn-ghost{background-image:linear-gradient(90deg,var(--gold),var(--red));background-size:0% 2px;
+  background-position:0 100%;background-repeat:no-repeat;transition:background-size var(--t-slow) var(--e-out),transform var(--t-mid) var(--e-spring),border-color var(--t-mid),color var(--t-mid)}
+.btn-ghost:hover{background-size:100% 2px}
+/* nav "Book Trial" gets a permanent soft heartbeat so the CTA never disappears */
+.nav-cta .btn-primary{animation:gradShift 8s var(--e-smooth) infinite,ctaBeat 3.6s var(--e-smooth) infinite}
+@keyframes ctaBeat{     /* keeps the 3D edge (section 25) while it pulses */
+  0%,100%{box-shadow:0 var(--edge,5px) 0 #7d0a14,0 14px 30px -10px var(--red-glow),0 0 0 0 rgba(225,29,42,.45)}
+  55%    {box-shadow:0 var(--edge,5px) 0 #7d0a14,0 18px 36px -10px var(--red-glow),0 0 0 12px rgba(225,29,42,0)}
+}
+
+/* ---------- 16 · IMAGE REVEALS ---------- */
+/* Images wipe in behind a gold edge instead of just fading. */
+.fx-wipe{clip-path:inset(0 100% 0 0);transition:clip-path 1s var(--e-out)}
+.fx-wipe.in{clip-path:inset(0 0 0 0)}
+
+/* ---------- 17 · REDUCED MOTION ---------- */
+@media (prefers-reduced-motion:reduce){
+  #fx-dust{display:none}
+  .sprk{display:none}
+  .fx-words .w > i{transform:none!important;opacity:1!important;transition:none}
+  .section-title.in::after,.page-title.in::after{animation:none;width:190px}
+  .fx-sec::before{transform:scaleX(1)}
+  .fx-par{transform:none!important}
+  .fx-wipe{clip-path:none!important;transition:none}
+  .btn-gold,.btn-primary,.nav-cta .btn-primary{animation:none}
+}
+
+/* Phones: drop the heaviest effects to protect scroll performance */
+@media (max-width:640px){
+  #fx-dust{opacity:.35}
+  .fx-spot::before{display:none}      /* no cursor on touch anyway */
+}
+
+/* ---------- 18 · HERO 3D STAGE ---------- */
+/* fx.js adds .fx-stage to .hero-portrait, sets --rx/--ry from the pointer,
+   and appends .fx-arena + .fx-badges. Nothing here changes layout. */
+.fx-stage{perspective:1100px;overflow:clip}   /* the scaled, tilted photo must not spill past the edge fade */
+.fx-stage > picture{
+  display:block;height:100%;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) scale(1.045);
+  transform-origin:50% 60%;
+}
+.fx-badges{
+  position:absolute;inset:0;z-index:2;pointer-events:none;transform-style:preserve-3d;
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+}
+.fx-badge{
+  position:absolute;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  padding:8px 13px 8px 10px;border-radius:999px;
+  font-family:var(--font-head);font-size:.74rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg,rgba(18,18,21,.82),rgba(10,10,11,.66));
+  border:1px solid rgba(233,196,90,.45);
+  box-shadow:0 18px 34px -16px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.08);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  animation:badgeIn .9s var(--e-out) both,badgeBob 6s var(--e-smooth) infinite;
+}
+.fx-badge::before{
+  content:"";width:8px;height:8px;border-radius:50%;flex:0 0 8px;
+  background:radial-gradient(circle at 35% 35%,#fff6d8,var(--gold) 55%,var(--gold-deep));
+  box-shadow:0 0 10px rgba(233,196,90,.8);
+}
+/* different depths → they slide past each other as the stage turns */
+.fx-badge-1{left:5%;top:57%;transform:translateZ(70px);animation-delay:.5s,0s}
+.fx-badge-2{right:9%;top:69%;transform:translateZ(120px);animation-delay:.68s,-2s}
+.fx-badge-3{left:11%;top:81%;transform:translateZ(45px);animation-delay:.86s,-4s}
+@keyframes badgeIn{from{opacity:0;scale:.7}to{opacity:1;scale:1}}
+@keyframes badgeBob{0%,100%{translate:0 0}50%{translate:0 -7px}}
+
+/* Gold arena ring turning beneath the coach — a competition floor seen in
+   perspective. A conic light travels round a faint static rim. */
+.fx-arena{
+  position:absolute;left:7%;right:7%;bottom:-16%;aspect-ratio:1;z-index:1;pointer-events:none;
+  border-radius:50%;border:1px solid rgba(233,196,90,.28);
+  transform:rotateX(78deg);mix-blend-mode:screen;
+}
+.fx-arena::before{
+  content:"";position:absolute;inset:-2px;border-radius:50%;
+  background:conic-gradient(from 0deg,transparent 0 62%,rgba(225,29,42,.55) 78%,rgba(246,215,122,.95) 92%,transparent 100%);
+  -webkit-mask:radial-gradient(closest-side,transparent 93%,#000 95%);
+          mask:radial-gradient(closest-side,transparent 93%,#000 95%);
+  animation:arenaSpin 7s linear infinite;
+}
+.fx-arena::after{
+  content:"";position:absolute;inset:18%;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(233,196,90,.16),transparent 70%);
+}
+@keyframes arenaSpin{to{rotate:360deg}}
+
+/* Scrolling away: the portrait leans back and recedes into the page.
+   Pure CSS scroll-timeline, so it costs nothing where unsupported. */
+@supports (animation-timeline: view()){
+  .fx-stage{
+    animation:stageExit linear both;
+    animation-timeline:view();animation-range:exit 0% exit 90%;
+    transform-origin:50% 0;
+  }
+  @keyframes stageExit{
+    to{transform:perspective(1000px) rotateX(14deg) scale(.88);opacity:.25}
+  }
+}
+
+/* ---------- 19 · TRAINING METHOD: DOMINO FLIP ---------- */
+/* Each step card swings in on its left hinge, one after another, and a gold
+   line draws across the row to join the four steps into one pathway.
+   Uses the individual `rotate`/`translate` properties so it never fights
+   the hover tilt, which drives `transform`. */
+.fx-steps{position:relative;perspective:1400px}
+.fx-steps > *{
+  transform-origin:0% 50%;
+  transition:rotate 1s var(--e-out) calc(var(--i,0) * 150ms),
+             translate 1s var(--e-out) calc(var(--i,0) * 150ms),
+             opacity .7s var(--e-out) calc(var(--i,0) * 150ms),
+             transform var(--t-mid) var(--e-spring),box-shadow var(--t-mid) var(--e-out),border-color var(--t-mid);
+}
+.fx-steps:not(.in) > *{opacity:0;rotate:y -72deg;translate:-30px 0}
+@media (min-width:1000px){
+  .fx-steps::before{
+    content:"";position:absolute;left:2%;right:2%;top:-22px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,var(--red),var(--gold-2) 50%,var(--red));
+    box-shadow:0 0 14px rgba(233,196,90,.45);
+    transform:scaleX(0);transform-origin:0 50%;
+    transition:transform 1.4s var(--e-out) .15s;
+  }
+  .fx-steps.in::before{transform:scaleX(1)}
+}
+
+/* ---------- 20 · BENEFITS: STAGGERED STRIKE ---------- */
+.fx-strike > *{
+  transition:opacity .5s var(--e-out) calc(var(--i,0) * 45ms),
+             scale .65s var(--e-spring) calc(var(--i,0) * 45ms),
+             translate .65s var(--e-out) calc(var(--i,0) * 45ms),
+             transform .3s var(--e-spring),border-color .3s,background .3s;
+}
+.fx-strike:not(.in) > *{opacity:0;scale:.84;translate:0 16px}
+.fx-strike.in .chk{animation:punch .55s var(--e-spring) calc(var(--i,0) * 45ms + .22s) both}
+@keyframes punch{
+  0%  {scale:.35;rotate:-24deg}
+  65% {scale:1.22;rotate:6deg}
+  100%{scale:1;rotate:0deg}
+}
+
+/* ---------- 21 · CREDENTIAL MEDALS: COIN TOSS ---------- */
+/* The credential icons turn over once like a medal as they arrive, and
+   again on hover. Entrance lives on the tile and hover on the icon, so
+   leaving hover never replays the entrance. */
+.fx-medal{box-shadow:0 0 0 0 rgba(233,196,90,0);transition:box-shadow var(--t-mid) var(--e-out)}
+.fx-medal.in{animation:medalToss 1.1s var(--e-out) calc(var(--i,0) * 120ms + .2s) both}
+.auth-card:hover .fx-medal{box-shadow:0 0 22px -2px rgba(233,196,90,.45)}
+.auth-card:hover .fx-medal svg{animation:medalSpin .9s var(--e-out)}
+@keyframes medalToss{
+  from{transform:perspective(320px) rotateY(-540deg) translateY(-10px);opacity:0}
+  60% {opacity:1}
+  to  {transform:perspective(320px) rotateY(0deg) translateY(0);opacity:1}
+}
+@keyframes medalSpin{
+  from{transform:perspective(260px) rotateY(0deg)}
+  to  {transform:perspective(260px) rotateY(360deg)}
+}
+
+/* ---------- 22 · PAGE-HEADER DEPTH ---------- */
+/* fx.js adds .fx-depth to a page-hero with data-fx="stage", inserts an
+   .fx-arena and sets --dx/--dy (-0.5…0.5) from the pointer. Each text layer
+   drifts by a different amount, so the header reads as stacked planes.
+   `translate` is used so it never fights the reveal's `transform`. */
+.fx-depth{position:relative;overflow:clip;perspective:900px;isolation:isolate}
+.fx-depth > .wrap{position:relative;z-index:1}
+.fx-depth .fx-arena{
+  left:50%;right:auto;bottom:auto;width:min(680px,92%);translate:-50% 0;z-index:0;
+  top:calc(100% - min(340px,46vw) + 28px);    /* ellipse sits on the header's floor, below the text */
+}
+.fx-depth .eyebrow  {translate:calc(var(--dx,0) * -12px) calc(var(--dy,0) * -8px)}
+.fx-depth .page-title{translate:calc(var(--dx,0) * 28px) calc(var(--dy,0) * 16px)}
+.fx-depth .page-sub {translate:calc(var(--dx,0) * 12px) calc(var(--dy,0) * 8px)}
+
+/* ---------- 23 · PROGRAM CARDS: HINGE DEAL + ICON POP ---------- */
+/* Each card swings in on its left edge as it reaches the viewport; on wide
+   screens the three cards of a row follow each other (--c = column). */
+#programGrid{perspective:1400px}
+.fx-deal{
+  transform-origin:0% 50%;
+  transition:rotate .95s var(--e-out) calc(var(--c,0) * 140ms),
+             translate .95s var(--e-out) calc(var(--c,0) * 140ms),
+             opacity .6s var(--e-out) calc(var(--c,0) * 140ms),
+             transform var(--t-mid) var(--e-spring),box-shadow var(--t-mid) var(--e-out),border-color var(--t-mid);
+}
+.fx-deal:not(.in){opacity:0;rotate:y -65deg;translate:-24px 0}
+@media (max-width:900px){ .fx-deal{--c:0} }
+/* the discipline icon lifts out of its panel toward the viewer */
+@media (hover:hover) and (pointer:fine){
+  .fx-deal .prog-art{perspective:420px}
+  .fx-deal .prog-art svg{transition:transform .55s var(--e-spring),filter .55s var(--e-out)}
+  .prog-card.fx-deal:hover .prog-art svg{
+    transform:translateZ(46px) rotateY(-16deg) rotateX(8deg);
+    filter:drop-shadow(0 18px 22px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(233,196,90,.25));
+  }
+}
+
+/* ---------- 24 · FEES / FINAL CTA: RISE FROM FLAT ---------- */
+/* The card starts tipped back like a board lying on the mat and stands up. */
+.fx-rise-host{perspective:1300px}
+.fx-rise{
+  transform-origin:50% 100%;
+  transition:rotate 1.1s var(--e-out),translate 1.1s var(--e-out),opacity .8s var(--e-out),
+             transform var(--t-mid) var(--e-spring),box-shadow var(--t-mid) var(--e-out),border-color var(--t-mid);
+}
+.fx-rise:not(.in){opacity:0;rotate:x 28deg;translate:0 40px}
+
+/* ---------- 25 · 3D PRESSABLE BUTTONS ---------- */
+/* Every button stands on a solid edge (a zero-blur shadow in a darker
+   shade of its own colour). Hover lifts the face and shows more edge; a
+   click or tap presses the face down into it, with the bottom of the edge
+   staying put, like a real key. fx.js tilts the face toward the pointer
+   (--btx/--bty) and moves the highlight with it (--bx/--by). */
+.btn:not(.burger){
+  --edge:5px;--lift:0px;--bs:1;
+  transform:perspective(560px) rotateX(var(--btx,0deg)) rotateY(var(--bty,0deg)) translateY(var(--lift)) scale(var(--bs));
+  text-shadow:0 1px 0 rgba(0,0,0,.22);
+}
+.btn:not(.burger):hover{--lift:-3px;--edge:7px;--bs:1.02}
+.btn:not(.burger):active{--lift:4px;--edge:1px;--bs:1}
+.btn-primary,.btn-primary:hover,.btn-primary:active{
+  box-shadow:0 var(--edge) 0 #7d0a14,0 calc(var(--edge) + 12px) 28px -10px var(--red-glow),
+             inset 0 1px 0 rgba(255,255,255,.28),inset 0 -2px 0 rgba(0,0,0,.18);
+}
+.btn-gold,.btn-gold:hover,.btn-gold:active{
+  box-shadow:0 var(--edge) 0 #8c6414,0 calc(var(--edge) + 12px) 28px -12px rgba(233,196,90,.5),
+             inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 rgba(0,0,0,.14);
+  text-shadow:0 1px 0 rgba(255,255,255,.3);
+}
+.btn-wa,.btn-wa:hover,.btn-wa:active{
+  box-shadow:0 var(--edge) 0 #0b6a4c,0 calc(var(--edge) + 12px) 28px -12px rgba(37,211,102,.45),
+             inset 0 1px 0 rgba(255,255,255,.3),inset 0 -2px 0 rgba(0,0,0,.16);
+}
+.btn-ghost,.btn-ghost:hover,.btn-ghost:active{
+  box-shadow:0 var(--edge) 0 rgba(233,196,90,.2),0 calc(var(--edge) + 10px) 24px -14px rgba(0,0,0,.85);
+}
+/* the gloss becomes a highlight that follows the pointer (rests at the top) */
+.btn:not(.btn-ghost)::after{
+  top:0;height:100%;
+  background:radial-gradient(130% 100% at var(--bx,50%) var(--by,-12%),
+             rgba(255,255,255,.34),rgba(255,255,255,.07) 42%,transparent 64%);
+}
+.btn:focus-visible{outline:2px solid var(--gold-2);outline-offset:4px}
+/* WhatsApp float gets the same solid base */
+.wa-float{box-shadow:0 5px 0 #0b6a4c,0 16px 30px -10px rgba(37,211,102,.55),inset 0 1px 0 rgba(255,255,255,.3)}
+.wa-float:active{box-shadow:0 1px 0 #0b6a4c,0 8px 18px -10px rgba(37,211,102,.55)}
+
+/* ---------- phones + reduced motion for 18–25 ---------- */
+@media (max-width:900px){
+  .fx-badge{font-size:.64rem;padding:6px 10px 6px 8px;gap:6px}
+  .fx-badge-1{left:4%;top:60%}.fx-badge-2{right:7%;top:71%}.fx-badge-3{left:8%;top:82%}
+  .fx-arena{bottom:-22%}
+}
+@media (prefers-reduced-motion:reduce){
+  .fx-stage > picture,.fx-badges{transform:none!important}
+  .fx-stage{animation:none!important;transform:none!important;opacity:1!important}
+  .fx-badge{animation:none!important}
+  .fx-arena::before{animation:none}
+  .fx-steps > *,.fx-strike > *{opacity:1!important;rotate:none!important;translate:none!important;scale:none!important;transition:none}
+  .fx-steps::before{transform:scaleX(1)!important;transition:none}
+  .fx-strike .chk,.fx-medal,.fx-medal svg{animation:none!important}
+  .fx-depth .eyebrow,.fx-depth .page-title,.fx-depth .page-sub{translate:none!important}
+  .fx-deal,.fx-rise{opacity:1!important;rotate:none!important;translate:none!important;transition:none}
+  .btn:not(.burger){--btx:0deg!important;--bty:0deg!important}
+}
+
+/* ---------- 26 · BELT-RANK SCROLL PROGRESS ---------- */
+/* fx.js sets data-belt on ux.js's #sp-progress as the reader moves down the
+   page: white → yellow → orange → green → blue → brown → black. */
+#sp-progress{height:4px;transition:width .1s linear,background-color .5s ease,box-shadow .5s ease;background-image:none;background-color:#f3f1ea;box-shadow:0 0 12px rgba(243,241,234,.4)}
+#sp-progress[data-belt="yellow"]{background-color:#f2c230;box-shadow:0 0 12px rgba(242,194,48,.55)}
+#sp-progress[data-belt="orange"]{background-color:#f08a24;box-shadow:0 0 12px rgba(240,138,36,.55)}
+#sp-progress[data-belt="green"] {background-color:#2fa15a;box-shadow:0 0 12px rgba(47,161,90,.55)}
+#sp-progress[data-belt="blue"]  {background-color:#2b6fd6;box-shadow:0 0 12px rgba(43,111,214,.6)}
+#sp-progress[data-belt="brown"] {background-color:#8a5530;box-shadow:0 0 12px rgba(138,85,48,.6)}
+#sp-progress[data-belt="black"] {background-color:#0c0c0e;box-shadow:inset 0 -1px 0 var(--gold),0 0 14px rgba(233,196,90,.5)}
