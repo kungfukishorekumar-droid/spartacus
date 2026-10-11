@@ -23,7 +23,7 @@ const FILES = [
   "site-base.js", "app.js", "analytics.js", "track.js",
   "blog.js", "blog-lead.js", "ux.js", "fx.js",
   "styles.css", "blog.css", "ux.css", "fx.css",
-  "content.json", "llms.txt"
+  "content.json", "llms.txt", "favicon.ico"
 ];
 const DIRS = ["data", "fonts", "assets", "images"];
 

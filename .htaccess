@@ -73,6 +73,14 @@ RewriteRule (^|/)node_modules/ - [F,L]
   Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
 </IfModule>
 
+# ---- 2b. ONE ADDRESS: www → bare domain ---------------------
+# www.spartacusmartialarts.com served a full duplicate of the site (200).
+# One permanent redirect, straight to https, path and query kept.
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP_HOST} ^www\.(spartacusmartialarts\.com)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+</IfModule>
+
 # ---- 3. FORCE HTTPS (Hostinger provides a free SSL cert) -----
 <IfModule mod_rewrite.c>
   RewriteCond %{HTTPS} off

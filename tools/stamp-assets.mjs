@@ -13,6 +13,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ASSETS = ["styles.css", "blog.css", "ux.css", "fx.css", "app.js", "blog.js",
@@ -39,3 +40,23 @@ for (const page of pages) {
   if (html !== before) { fs.writeFileSync(p, html); changed++; }
 }
 console.log(`asset stamps: ${Object.keys(vers).length} files hashed, ${changed} page(s) updated`);
+
+/* ---------- sitemap.xml lastmod ----------
+   Each page's <lastmod> is when that page last changed: today if it has
+   uncommitted edits (this script runs before a commit), otherwise the date
+   of its last commit. It was hand-typed before and went stale. */
+const smPath = path.join(ROOT, "sitemap.xml");
+if (fs.existsSync(smPath)) {
+  const git = (...a) => { try { return execFileSync("git", a, { cwd: ROOT, encoding: "utf8" }).trim(); } catch { return ""; } };
+  const today = new Date().toISOString().slice(0, 10);
+  const dirty = new Set(git("status", "--porcelain").split("\n").map(l => l.slice(3).trim()).filter(Boolean));
+  let sm = fs.readFileSync(smPath, "utf8"), n = 0;
+  sm = sm.replace(/<loc>https:\/\/spartacusmartialarts\.com\/([^<]*)<\/loc><lastmod>[^<]*<\/lastmod>/g, (m, rel) => {
+    const file = rel === "" ? "index.html" : rel;
+    const d = dirty.has(file) ? today : (git("log", "-1", "--format=%cs", "--", file) || today);
+    n++;
+    return `<loc>https://spartacusmartialarts.com/${rel}</loc><lastmod>${d}</lastmod>`;
+  });
+  fs.writeFileSync(smPath, sm);
+  console.log(`sitemap lastmod: ${n} page(s) dated`);
+}
