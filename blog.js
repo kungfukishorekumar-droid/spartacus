@@ -3,19 +3,10 @@
    from window.BLOG_POSTS. Adds SEO meta + JSON-LD on detail pages.
    ============================================================ */
 (function () {
-  // Sort newest first. publishedTime is part of the key: several posts now
-  // share a publishedDate, and sorting on the date alone left same-day posts
-  // in arbitrary order (so "Featured" was not reliably the newest article).
-  function postStamp(p) {
-    var t = 0, m = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(p.publishedTime || "");
-    if (m) {
-      var h = parseInt(m[1], 10) % 12;
-      if (/PM/i.test(m[3])) h += 12;
-      t = h * 60 + parseInt(m[2], 10);
-    }
-    return new Date(p.publishedDate).getTime() + t * 60000;
-  }
-  var POSTS = (window.BLOG_POSTS || []).slice().sort(function (a, b) { return postStamp(b) - postStamp(a); });
+  // Every HTML builder lives in blog-render.js (pure functions), shared with
+  // the build's pre-renderer so the two can never drift.
+  var R = window.SPBlogRender;
+  var POSTS = R.sortPosts(window.BLOG_POSTS || []);
   var CATS = window.BLOG_CATEGORIES || [];
   var WA = window.BLOG_WHATSAPP || "https://wa.me/919884599939";
   // Which host is serving this page? The blog lives on its own subdomain, so
@@ -23,49 +14,13 @@
   var SITE = window.BLOG_SITE_BASE ||
     (/^https?:$/.test(location.protocol) ? location.origin : "https://spartacusmartialarts.com");
   var MAIN_SITE = window.SPARTACUS_MAIN_SITE || "https://spartacusmartialarts.com";
-
-  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-  function stripTags(h) { var d = document.createElement("div"); d.innerHTML = h || ""; return (d.textContent || "").trim(); }
-  function slugifyId(t) { return String(t).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
-  function postUrl(slug) { return "blog-post.html?slug=" + encodeURIComponent(slug); }
-
-  /* --- reusable BlogImage (with graceful fallback) --- */
-  function blogImage(img, opts) {
-    opts = opts || {};
-    img = img || {};
-    var cls = "bimg" + (opts.rounded === false ? "" : " rounded") + (opts.className ? " " + opts.className : "");
-    var ph = '<span class="bimg-ph" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M5 17l5-4 4 3 3-2 2 2"/></svg><small>' + esc(img.title || opts.label || "Spartacus Martial Arts") + "</small></span>";
-    var fb = (window.BLOG_FALLBACK_IMG || "images/fallback/blog-placeholder.webp");
-    var el = '<img src="' + esc(img.src) + '" alt="' + esc(img.alt || "") + '" title="' + esc(img.title || "") + '" loading="' + (opts.eager ? "eager" : "lazy") + '" decoding="async"' +
-      ' onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=\'' + fb + '\';}else{this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';}">';
-    return '<span class="' + cls + '"' + (opts.style ? ' style="' + opts.style + '"' : "") + ">" + el + ph + "</span>";
-  }
-
-  function when(p) { return esc(fmtDate(p.publishedDate)) + (p.publishedTime ? " · " + esc(p.publishedTime) : ""); }
-  function metaLine(p) {
-    return '<span class="blog-meta"><span>' + when(p) + '</span><i class="dot"></i><span>' + esc(p.readingTime || "") + "</span></span>";
-  }
-  function badges(p) {
-    return '<div class="blog-badges"><span class="badge badge-cat">' + esc(p.category) + "</span>" +
-      (p.subcategory ? '<span class="badge badge-sub">' + esc(p.subcategory) + "</span>" : "") + "</div>";
-  }
-  function fmtDate(d) { try { return new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }); } catch (e) { return d || ""; } }
-
-  function card(p) {
-    return '<article class="blog-card">' +
-      '<a href="' + postUrl(p.slug) + '" aria-label="' + esc(p.title) + '">' + blogImage(p.thumbnailImage || p.featuredImage, { className: "" }) + "</a>" +
-      '<div class="blog-card-body">' +
-        badges(p) +
-        "<h3><a href=\"" + postUrl(p.slug) + "\">" + esc(p.title) + "</a></h3>" +
-        "<p>" + esc(p.excerpt) + "</p>" +
-        metaLine(p) +
-        '<a class="blog-readmore" href="' + postUrl(p.slug) + '">Read Guide →</a>' +
-      "</div></article>";
-  }
-  function featMini(p) {
-    return '<a class="feat-mini" href="' + postUrl(p.slug) + '">' + blogImage(p.thumbnailImage || p.featuredImage, { className: "" }) +
-      '<div class="fm-body"><span class="badge badge-cat" style="align-self:flex-start">' + esc(p.category) + "</span><h4>" + esc(p.title) + "</h4>" + metaLine(p) + "</div></a>";
-  }
+  var FB = window.BLOG_FALLBACK_IMG || "images/fallback/blog-placeholder.webp";
+  var esc = R.esc, postUrl = R.postUrl, when = R.when, metaLine = R.metaLine, badges = R.badges, fmtDate = R.fmtDate;
+  function stripTags(h) { return R.textOf(h).trim(); }
+  function slugifyId(t) { return R.slugifyId(t); }
+  function blogImage(img, opts) { return R.blogImage(img, opts, FB); }
+  function card(p) { return R.card(p, FB); }
+  function featMini(p) { return R.featMini(p, FB); }
 
   /* ======================= LISTING PAGE ======================= */
   function renderListing(root) {
@@ -195,111 +150,44 @@
     s.textContent = JSON.stringify(obj); document.head.appendChild(s);
   }
 
-  function injectSEO(p) {
-    var url = SITE + "/" + postUrl(p.slug);
-    var img = (p.featuredImage && p.featuredImage.src) ? SITE + "/" + p.featuredImage.src : SITE + "/assets/og-cover.jpg";
-    document.title = p.seoTitle || (p.title + " | Spartacus Martial Arts Academy");
-    setMeta("description", p.seoDescription || p.excerpt);
-    setMeta("keywords", (p.seoKeywords || []).concat(p.geoKeywords || []).join(", "));
-    setMeta("author", p.author);
-    setLink("canonical", url);
-    setMeta("og:type", "article", true); setMeta("og:title", p.seoTitle || p.title, true);
-    setMeta("og:description", p.seoDescription || p.excerpt, true); setMeta("og:image", img, true);
-    setMeta("og:url", url, true); setMeta("og:site_name", "Spartacus Martial Arts Academy", true);
-    setMeta("twitter:card", "summary_large_image"); setMeta("twitter:title", p.seoTitle || p.title);
-    setMeta("twitter:description", p.seoDescription || p.excerpt); setMeta("twitter:image", img);
-
-    addJsonLd({
-      "@context": "https://schema.org", "@type": "BlogPosting", headline: p.title, description: p.excerpt,
-      image: img, datePublished: p.publishedDate, dateModified: p.publishedDate, mainEntityOfPage: url,
-      articleSection: p.category, keywords: (p.seoKeywords || []).join(", "),
-      author: { "@type": "Person", name: p.author, jobTitle: p.authorRole },
-      publisher: { "@type": "Organization", name: "Spartacus Martial Arts Academy", logo: { "@type": "ImageObject", url: SITE + "/assets/logo.png" } }
-    });
-    if (p.faqs && p.faqs.length) addJsonLd({
-      "@context": "https://schema.org", "@type": "FAQPage",
-      mainEntity: p.faqs.map(function (f) { return { "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } }; })
-    });
-    addJsonLd({
-      "@context": "https://schema.org", "@type": "BreadcrumbList",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: MAIN_SITE + "/index.html" },
-        { "@type": "ListItem", position: 2, name: "Blog", item: SITE + "/blog.html" },
-        { "@type": "ListItem", position: 3, name: p.title, item: url }
-      ]
-    });
-    addJsonLd({
-      "@context": "https://schema.org", "@type": "Person", name: p.author,
-      jobTitle: p.authorRole, worksFor: { "@type": "Organization", name: "Spartacus Martial Arts Academy" }, sameAs: ["https://www.instagram.com/kishorekumar.coach/"]
-    });
+  function injectSEO(d) {
+    document.title = d.title;
+    setMeta("description", d.description);
+    setMeta("keywords", d.keywords);
+    setLink("canonical", d.url);
+    setMeta("og:type", "article", true); setMeta("og:title", d.title, true);
+    setMeta("og:description", d.description, true); setMeta("og:image", d.image, true);
+    setMeta("og:url", d.url, true); setMeta("og:site_name", "Spartacus Martial Arts Academy", true);
+    setMeta("twitter:card", "summary_large_image"); setMeta("twitter:title", d.title);
+    setMeta("twitter:description", d.description); setMeta("twitter:image", d.image);
+    d.jsonld.forEach(addJsonLd);
   }
 
   function renderDetail(root) {
+    // Pre-rendered by the build: the article is already in the HTML (and no
+    // post data was loaded). Only the interactive parts need wiring.
+    // (No bindFaq here: app.js binds every .faq-q present at boot, and on a
+    // pre-rendered page the FAQ is already there — a second handler made each
+    // click open and then immediately close the answer.)
+    if (root.hasAttribute("data-prerendered")) return;
+
     var slug = getParam("slug");
     var p = POSTS.filter(function (x) { return x.slug === slug; })[0];
     if (!p) { root.innerHTML = '<div class="blog-wrap" style="padding:140px 0 80px;text-align:center"><h1 class="page-title">Article not found</h1><p class="page-sub">This blog post doesn\'t exist. <a href="blog.html" style="color:var(--gold-2)">Back to the blog</a>.</p></div>'; return; }
 
-    injectSEO(p);
-
-    // breadcrumb + head
-    root.querySelector("#postCrumbs").innerHTML =
-      '<a href="index.html">Home</a><span>/</span><a href="blog.html">Blog</a><span>/</span><a href="blog.html">' + esc(p.category) + "</a><span>/</span>" + esc(p.title);
-
-    root.querySelector("#postHead").innerHTML =
-      badges(p) +
-      "<h1>" + esc(p.title) + "</h1><p class=\"post-excerpt\">" + esc(p.excerpt) + "</p>" +
-      '<div class="post-byline"><span class="av">' + blogImage(p.authorImage, { rounded: false }) + "</span><span>By <b>" + esc(p.author) + "</b></span><i class=\"dot\"></i><span>" + when(p) + "</span><i class=\"dot\"></i><span>" + esc(p.readingTime || "") + "</span></div>";
-
-    // hero image
-    root.querySelector("#postHero").innerHTML = blogImage(p.heroImage || p.featuredImage, { eager: true, style: "aspect-ratio:16/9" });
-
-    // body content + inline images + TOC ids
-    var body = root.querySelector("#postBody");
-    body.innerHTML =
-      (p.quickAnswer ? '<div class="quick-answer"><h4>Quick Answer</h4><p>' + esc(p.quickAnswer) + "</p></div>" : "") +
-      p.content;
-    // insert inline images
-    (p.inlineImages || []).forEach(function (im) {
-      var fig = document.createElement("figure"); fig.className = "bimg-fig";
-      fig.innerHTML = blogImage(im, { style: "aspect-ratio:16/9" }) + (im.caption ? "<figcaption>" + esc(im.caption) + "</figcaption>" : "");
-      var ps = body.querySelectorAll("p"), h2s = body.querySelectorAll("h2");
-      if (im.placement === "after-introduction" && ps[0]) ps[0].after(fig);
-      else if (im.placement === "middle-section" && h2s.length) h2s[Math.floor(h2s.length / 2)].before(fig);
-      else body.appendChild(fig);
-    });
-    // TOC from h2
-    var h2s = body.querySelectorAll("h2"), tocHtml = "";
-    h2s.forEach(function (h) { var id = slugifyId(h.textContent); h.id = id; tocHtml += '<a href="#' + id + '">' + esc(h.textContent) + "</a>"; });
+    var d = R.buildDetail(p, POSTS, { site: SITE, mainSite: MAIN_SITE, wa: WA, fallback: FB });
+    setMeta("author", p.author);
+    injectSEO(d);
+    root.querySelector("#postCrumbs").innerHTML = d.crumbs;
+    root.querySelector("#postHead").innerHTML = d.head;
+    root.querySelector("#postHero").innerHTML = d.hero;
+    root.querySelector("#postBody").innerHTML = d.body;
     var toc = root.querySelector("#postToc");
-    if (h2s.length >= 2) { toc.innerHTML = "<h4>On this page</h4>" + tocHtml; } else { toc.style.display = "none"; }
-
-    // FAQ
-    if (p.faqs && p.faqs.length) {
-      root.querySelector("#postFaq").innerHTML = "<h2>Frequently Asked Questions</h2>" +
-        p.faqs.map(function (f) {
-          return '<div class="faq-item"><button class="faq-q">' + esc(f.question) + '<span class="pm"></span></button><div class="faq-a"><p>' + esc(f.answer) + "</p></div></div>";
-        }).join("");
-      bindFaq(root);
-    }
-
-    // author box
-    root.querySelector("#postAuthor").innerHTML =
-      '<span class="av">' + blogImage(p.authorImage, { rounded: false }) + "</span><div><b>" + esc(p.author) + "</b><span>" + esc(p.authorRole) + "</span><p style=\"color:var(--mist);font-size:.9rem;margin-top:8px\">Founder of Spartacus Martial Arts Academy, Chennai. Training kids, students, athletes and adults in Wushu, Kungfu, Karate, Boxing, Kickboxing, Judo, self-defence and athlete-mindset coaching.</p></div>";
-
-    // CTA + disclaimer
-    root.querySelector("#postCta").innerHTML =
-      "<h3>Join Martial Arts Training in Chennai</h3><p>Looking for martial arts classes in Chennai? Spartacus Martial Arts Academy helps students build discipline, confidence, fitness, focus, and self-defense skills through structured training. Book a free trial class or message Coach Kishore on WhatsApp.</p>" +
-      '<div class="hero-actions"><a class="btn btn-primary" href="' + esc(p.ctaLink) + '">' + esc(p.ctaText) + '</a>' +
-      '<a class="btn btn-wa" href="' + esc(WA) + '" target="_blank" rel="noopener">WhatsApp Spartacus Academy</a>' +
-      '<a class="btn btn-gold" href="tel:+919884599939">Talk to Coach Kishore</a></div>' +
-      '<p class="post-disclaimer">This article is for general education. Martial arts training should be practiced under qualified supervision.</p>';
-
-    // related
-    var rel = (p.relatedPosts || []).map(function (s) { return POSTS.filter(function (x) { return x.slug === s; })[0]; }).filter(Boolean);
-    if (rel.length) {
-      root.querySelector("#postRelated").innerHTML =
-        '<div class="blog-wrap"><div class="blog-section-head"><h2>Related Guides</h2></div><div class="blog-grid">' + rel.map(card).join("") + "</div></div>";
-    }
+    if (d.toc) toc.innerHTML = d.toc; else toc.style.display = "none";
+    if (d.faq) { root.querySelector("#postFaq").innerHTML = d.faq; bindFaq(root); }
+    root.querySelector("#postAuthor").innerHTML = d.author;
+    root.querySelector("#postCta").innerHTML = d.cta;
+    if (d.related) root.querySelector("#postRelated").innerHTML = d.related;
   }
 
   function bindFaq(root) {

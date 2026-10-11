@@ -175,6 +175,10 @@
       var slug = new URLSearchParams(location.search).get("slug");
       var all = window.BLOG_POSTS || [];
       var p = all.filter(function (x) { return x.slug === slug; })[0];
+      // Pre-rendered articles load no post data; the page carries what we need.
+      if (!p && post.hasAttribute("data-prerendered")) {
+        p = { slug: post.getAttribute("data-slug"), title: post.getAttribute("data-title"), category: post.getAttribute("data-category") };
+      }
       if (!p) return;                                  // 404 page — no form
 
       var ctx = { slug: p.slug, title: p.title, category: p.category };

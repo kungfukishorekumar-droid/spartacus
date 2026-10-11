@@ -12,6 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { prerenderPosts } from "./prerender-posts.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "dist-blog");
@@ -21,7 +22,7 @@ const MAIN = "https://spartacusmartialarts.com";
 const FILES = [
   "blog.html", "blog-post.html",
   "site-base.js", "app.js", "analytics.js", "track.js",
-  "blog.js", "blog-lead.js", "ux.js", "fx.js",
+  "blog-render.js", "blog.js", "blog-lead.js", "ux.js", "fx.js",
   "styles.css", "blog.css", "ux.css", "fx.css",
   "content.json", "llms.txt", "favicon.ico"
 ];
@@ -51,6 +52,7 @@ function loadPosts() {
       sandbox.window, sandbox.document, sandbox.encodeURIComponent
     );
   }
+  loadPosts.whatsapp = win.BLOG_WHATSAPP;   // the article CTA's WhatsApp link, as the browser uses it
   return win.BLOG_POSTS;
 }
 
@@ -110,7 +112,7 @@ for (const d of DIRS) {
    but browsers kept the cached copy for a week). Stamp each asset with a
    hash of its own bytes instead, so bumping is automatic and exact. */
 {
-  const assets = ["styles.css","blog.css","ux.css","fx.css","app.js","blog.js",
+  const assets = ["styles.css","blog.css","ux.css","fx.css","app.js","blog-render.js","blog.js",
                   "blog-lead.js","ux.js","fx.js","analytics.js","track.js","site-base.js"];
   const vers = {};
   for (const a of assets) {
@@ -133,6 +135,12 @@ for (const d of DIRS) {
 
 /* ---------- sitemap: every article, on the blog host ---------- */
 const posts = loadPosts();
+
+/* ---------- pre-render every article (see tools/prerender-posts.mjs) ---------- */
+{
+  const r = prerenderPosts({ root: ROOT, out: OUT, posts, site: BLOG, mainSite: MAIN, wa: loadPosts.whatsapp || "https://wa.me/919884599939" });
+  console.log(`  pre-rendered ${r.count} articles to posts/ (avg ${r.avgWords} words of body text each)`);
+}
 posts.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
 const newest = posts[0]?.publishedDate || new Date().toISOString().slice(0, 10);
 
@@ -196,6 +204,30 @@ DirectoryIndex blog.html
   Require all denied
 </FilesMatch>
 
+# ---- 0. FORCE HTTPS — first, so it always redirects the URL the visitor
+# asked for. (Placed after the article rewrite, it redirected http visitors
+# to the internal posts/<slug>.html path. Caught by a local Apache test.) ----
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ---- 0b. PRE-RENDERED ARTICLES ----
+# Every article exists as a complete static file, posts/<slug>.html, built by
+# tools/prerender-posts.mjs. The public URL stays blog-post.html?slug=<slug>:
+# this is an INTERNAL rewrite (no redirect), so canonicals, links, sitemap
+# and rankings are unchanged. An unknown slug finds no file and gets a real
+# 404 (served by ErrorDocument below).
+RewriteEngine On
+RewriteCond %{QUERY_STRING} (?:^|&)slug=([a-z0-9-]+)(?:&|$)
+RewriteRule ^blog-post\\.html$ posts/%1.html [L]
+# Someone asking for posts/<slug>.html directly gets the real URL instead,
+# so the files can never be indexed as duplicates. THE_REQUEST is the
+# browser's own request line, which the internal rewrite above never
+# changes - so this cannot loop.
+RewriteCond %{THE_REQUEST} \\s/posts/([a-z0-9-]+)\\.html[\\s?]
+RewriteRule ^posts/ /blog-post.html?slug=%1 [R=301,L]
+
 # ---- 1. BLOCK DOTFILES & SOURCE ----
 <FilesMatch "(^\\.env|\\.env$|\\.env\\.)">
   Require all denied
@@ -214,12 +246,6 @@ RewriteRule (^|/)node_modules/ - [F,L]
   Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
 </IfModule>
 
-# ---- 3. FORCE HTTPS ----
-<IfModule mod_rewrite.c>
-  RewriteCond %{HTTPS} off
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-</IfModule>
 
 # ---- 4. COMPRESSION ----
 <IfModule mod_deflate.c>
