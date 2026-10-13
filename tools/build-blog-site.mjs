@@ -142,12 +142,13 @@ const posts = loadPosts();
   console.log(`  pre-rendered ${r.count} articles to posts/ (avg ${r.avgWords} words of body text each)`);
 }
 posts.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
-const newest = posts[0]?.publishedDate || new Date().toISOString().slice(0, 10);
+const changed = p => p.updatedDate || p.publishedDate;
+const newest = posts.map(changed).sort().pop() || new Date().toISOString().slice(0, 10);
 
 const urls = [
   `  <url><loc>${BLOG}/</loc><lastmod>${newest}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
   ...posts.map(p =>
-    `  <url><loc>${BLOG}/blog-post.html?slug=${p.slug}</loc><lastmod>${p.publishedDate}</lastmod><priority>0.7</priority></url>`)
+    `  <url><loc>${BLOG}/blog-post.html?slug=${p.slug}</loc><lastmod>${changed(p)}</lastmod><priority>0.7</priority></url>`)
 ];
 fs.writeFileSync(path.join(OUT, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`);

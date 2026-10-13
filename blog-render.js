@@ -107,7 +107,7 @@
 
     var jsonld = [{
       "@context": "https://schema.org", "@type": "BlogPosting", headline: p.title, description: p.excerpt,
-      image: img, datePublished: p.publishedDate, dateModified: p.publishedDate, mainEntityOfPage: url,
+      image: img, datePublished: p.publishedDate, dateModified: p.updatedDate || p.publishedDate, mainEntityOfPage: url,
       articleSection: p.category, keywords: (p.seoKeywords || []).join(", "),
       author: { "@type": "Person", name: p.author, jobTitle: p.authorRole },
       publisher: { "@type": "Organization", name: "Spartacus Martial Arts Academy", logo: { "@type": "ImageObject", url: SITE + "/assets/logo.png" } }
@@ -135,7 +135,8 @@
       jsonld: jsonld,
       crumbs: '<a href="index.html">Home</a><span>/</span><a href="blog.html">Blog</a><span>/</span><a href="blog.html">' + esc(p.category) + "</a><span>/</span>" + esc(p.title),
       head: badges(p) + "<h1>" + esc(p.title) + "</h1><p class=\"post-excerpt\">" + esc(p.excerpt) + "</p>" +
-        '<div class="post-byline"><span class="av">' + blogImage(p.authorImage, { rounded: false }, fb) + "</span><span>By <b>" + esc(p.author) + "</b></span><i class=\"dot\"></i><span>" + when(p) + "</span><i class=\"dot\"></i><span>" + esc(p.readingTime || "") + "</span></div>",
+        '<div class="post-byline"><span class="av">' + blogImage(p.authorImage, { rounded: false }, fb) + "</span><span>By <b>" + esc(p.author) + "</b></span><i class=\"dot\"></i><span>" + when(p) + "</span>" +
+        (p.updatedDate && p.updatedDate !== p.publishedDate ? "<i class=\"dot\"></i><span>Updated " + esc(fmtDate(p.updatedDate)) + "</span>" : "") + "<i class=\"dot\"></i><span>" + esc(p.readingTime || "") + "</span></div>",
       hero: blogImage(p.heroImage || p.featuredImage, { eager: true, style: "aspect-ratio:16/9" }, fb),
       body: body,
       toc: toc.length >= 2 ? "<h4>On this page</h4>" + toc.join("") : "",

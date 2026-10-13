@@ -88,6 +88,15 @@ export function prerenderPosts({ root, out, posts, site, mainSite, wa }) {
     h = fill(h, "postCta", d.cta);
     if (d.related) h = fill(h, "postRelated", d.related);
 
+    // site-base.js does this at runtime for visitors; do it here for crawlers.
+    h = h.replace(/(<a\b[^>]*?\shref=")([^"]*)"/g, (m, pre, href) => {
+      if (!href || /^(https?:|\/|#|mailto:|tel:|javascript:|data:)/i.test(href)) return m;
+      const clean = href.replace(/^\.\//, "");
+      if (/^blog\.html(\?|#|$)/.test(clean)) return `${pre}/${clean.slice("blog.html".length)}"`;
+      if (/^blog-post\.html(\?|#|$)/.test(clean)) return m;
+      return `${pre}${mainSite}/${clean}"`;
+    });
+
     fs.writeFileSync(path.join(out, "posts", p.slug + ".html"), h);
     words += R.textOf(d.body).split(/\s+/).filter(Boolean).length;
     n++;
