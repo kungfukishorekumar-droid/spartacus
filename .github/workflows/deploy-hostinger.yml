@@ -16,10 +16,15 @@
 # ============================================================
 name: Deploy to Hostinger
 
+# TURNED OFF on 2026-10-13: it no longer runs on push. The FTP secrets were
+# never added, so every push produced a failed run (and a failure email).
+#   • main site  → deployed by hPanel Git (auto-deploy from main)
+#   • blog       → deployed through the Hostinger connector (tools/build-blog-site.mjs,
+#                  then upload dist-blog/ with .htaccess last)
+# To use this workflow again, add the three secrets below and run it by hand
+# from the Actions tab, or restore the `push:` trigger.
 on:
-  push:
-    branches: [main]
-  workflow_dispatch:      # lets you deploy manually from any branch
+  workflow_dispatch:      # manual only
 
 concurrency:
   group: hostinger-deploy
