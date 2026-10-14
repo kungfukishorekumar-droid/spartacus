@@ -35,6 +35,19 @@ function setOrAddMeta(html, attr, key, val) {
   return re.test(html) ? html.replace(re, tag) : html.replace("</head>", `${tag}\n</head>`);
 }
 
+/* Relative links to main-site pages (contact.html, programs.html ...) 404 on
+   the blog host. site-base.js rewrites them at runtime for visitors; this does
+   the same in the HTML for crawlers that do not run JavaScript. */
+export function absolutizeLinks(h, mainSite) {
+  return h.replace(/(<a\b[^>]*?\shref=")([^"]*)"/g, (m, pre, href) => {
+    if (!href || /^(https?:|\/|#|mailto:|tel:|javascript:|data:)/i.test(href)) return m;
+    const clean = href.replace(/^\.\//, "");
+    if (/^blog\.html(\?|#|$)/.test(clean)) return `${pre}/${clean.slice("blog.html".length)}"`;
+    if (/^blog-post\.html(\?|#|$)/.test(clean)) return m;
+    return `${pre}${mainSite}/${clean}"`;
+  });
+}
+
 export function prerenderPosts({ root, out, posts, site, mainSite, wa }) {
   const R = require(path.join(root, "blog-render.js"));
   const template = fs.readFileSync(path.join(out, "blog-post.html"), "utf8");
@@ -88,14 +101,7 @@ export function prerenderPosts({ root, out, posts, site, mainSite, wa }) {
     h = fill(h, "postCta", d.cta);
     if (d.related) h = fill(h, "postRelated", d.related);
 
-    // site-base.js does this at runtime for visitors; do it here for crawlers.
-    h = h.replace(/(<a\b[^>]*?\shref=")([^"]*)"/g, (m, pre, href) => {
-      if (!href || /^(https?:|\/|#|mailto:|tel:|javascript:|data:)/i.test(href)) return m;
-      const clean = href.replace(/^\.\//, "");
-      if (/^blog\.html(\?|#|$)/.test(clean)) return `${pre}/${clean.slice("blog.html".length)}"`;
-      if (/^blog-post\.html(\?|#|$)/.test(clean)) return m;
-      return `${pre}${mainSite}/${clean}"`;
-    });
+    h = absolutizeLinks(h, mainSite);
 
     fs.writeFileSync(path.join(out, "posts", p.slug + ".html"), h);
     words += R.textOf(d.body).split(/\s+/).filter(Boolean).length;

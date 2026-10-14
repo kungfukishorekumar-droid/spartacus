@@ -13,6 +13,7 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { prerenderPosts } from "./prerender-posts.mjs";
+import { prerenderListing } from "./prerender-listing.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "dist-blog");
@@ -52,6 +53,7 @@ function loadPosts() {
       sandbox.window, sandbox.document, sandbox.encodeURIComponent
     );
   }
+  loadPosts.categories = win.BLOG_CATEGORIES;
   loadPosts.whatsapp = win.BLOG_WHATSAPP;   // the article CTA's WhatsApp link, as the browser uses it
   return win.BLOG_POSTS;
 }
@@ -140,6 +142,10 @@ const posts = loadPosts();
 {
   const r = prerenderPosts({ root: ROOT, out: OUT, posts, site: BLOG, mainSite: MAIN, wa: loadPosts.whatsapp || "https://wa.me/919884599939" });
   console.log(`  pre-rendered ${r.count} articles to posts/ (avg ${r.avgWords} words of body text each)`);
+}
+{
+  const r = prerenderListing({ root: ROOT, out: OUT, posts, cats: loadPosts.categories || [], mainSite: MAIN });
+  console.log(`  pre-rendered the listing: ${r.links} article links on the blog's front page`);
 }
 posts.sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate));
 const changed = p => p.updatedDate || p.publishedDate;

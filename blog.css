@@ -441,3 +441,21 @@ figure.bimg-fig figcaption{color:var(--muted);font-size:.82rem;margin-top:8px;te
   .blog-hero-stats{font-size:.66rem;gap:6px 12px}
   .blog-search input{padding:13px 18px;font-size:.95rem}
 }
+
+/* ---- All guides archive (pre-rendered on the blog host: one crawlable link
+   per article; collapsed by default so it never crowds the page) ---- */
+.blog-archive{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02)}
+.blog-archive summary{cursor:pointer;list-style:none;padding:18px 22px;font-family:var(--font-head);letter-spacing:.04em;text-transform:uppercase;font-size:.9rem;color:var(--gold-2);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.blog-archive summary::-webkit-details-marker{display:none}
+.blog-archive summary::after{content:"+";font-size:1.3rem;line-height:1;color:var(--gold)}
+.blog-archive[open] summary::after{content:"–"}
+.blog-archive summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:16px}
+.arch-cols{columns:3 260px;column-gap:32px;padding:4px 22px 22px}
+.arch-group{break-inside:avoid;margin:0 0 22px}
+.arch-group h3{font-family:var(--font-head);font-size:.95rem;color:#fff;margin:0 0 8px;letter-spacing:.03em}
+.arch-group h3 span{color:var(--muted);font-weight:400;font-size:.8rem}
+.arch-group ul{list-style:none;margin:0;padding:0}
+.arch-group li{margin:0 0 7px;line-height:1.4}
+.arch-group a{color:var(--mist);font-size:.88rem;text-decoration:none}
+.arch-group a:hover{color:var(--gold-2);text-decoration:underline}
+@media (max-width:620px){.arch-cols{columns:1;padding:4px 16px 18px}.blog-archive summary{padding:16px}}

@@ -30,19 +30,13 @@
     var heroCount = root.querySelector("#blogHeroCount");
     if (heroCount) heroCount.textContent = POSTS.length;
 
-    var featured = POSTS[0];
-    var featSide = POSTS.slice(1, 4);
-    root.querySelector("#blogFeatured").innerHTML =
-      '<div class="feat-main"><a href="' + postUrl(featured.slug) + '">' + blogImage(featured.featuredImage, { eager: true }) + "</a>" +
-      '<div class="blog-card-body"><div class="blog-badges"><span class="badge badge-cat">Featured</span><span class="badge badge-sub">' + esc(featured.category) + "</span></div>" +
-      "<h3><a href=\"" + postUrl(featured.slug) + "\">" + esc(featured.title) + "</a></h3><p>" + esc(featured.excerpt) + "</p>" + metaLine(featured) +
-      '<a class="blog-readmore" href="' + postUrl(featured.slug) + '">Read Guide →</a></div></div>' +
-      '<div class="feat-side">' + featSide.map(featMini).join("") + "</div>";
+    // The build pre-renders this same markup (tools/prerender-listing.mjs);
+    // re-rendering it here is a no-op visually and wires up the interactivity.
+    root.querySelector("#blogFeatured").innerHTML = R.featuredBlock(POSTS, FB);
 
     // category chips
     var catBar = root.querySelector("#blogCats");
-    catBar.innerHTML = '<button class="blog-chip active" data-cat="all">All</button>' +
-      CATS.map(function (c) { return '<button class="blog-chip" data-cat="' + esc(c.name) + '">' + esc(c.name) + "</button>"; }).join("");
+    catBar.innerHTML = R.catChips(CATS);
 
     var subBar = root.querySelector("#blogSubs");
 
@@ -70,7 +64,7 @@
        of articles and a needlessly heavy DOM; showing a page at a time is
        both faster and far easier to scan. Filtering/searching resets to
        page one. */
-    var PAGE = 12;
+    var PAGE = R.LISTING_PAGE;
     function renderGrid(reset) {
       if (reset !== false) state.shown = PAGE;
       var list = filtered();
@@ -80,7 +74,7 @@
       grid.innerHTML = list.length
         ? slice.map(card).join("")
         : '<div class="blog-empty">No articles found. Try another search or category.</div>';
-      root.querySelector("#blogCount").textContent = list.length + " article" + (list.length === 1 ? "" : "s");
+      root.querySelector("#blogCount").textContent = R.countText(list.length);
 
       // "Load more" lives after the grid and is rebuilt on every render
       var more = root.querySelector("#blogMore");
@@ -90,13 +84,7 @@
         more.className = "blog-more";
         grid.parentNode.insertBefore(more, grid.nextSibling);
       }
-      var remaining = list.length - slice.length;
-      if (remaining > 0) {
-        more.innerHTML = '<div><button type="button" id="blogMoreBtn">Load more articles</button>' +
-          '<span class="more-left">' + remaining + " more</span></div>";
-      } else {
-        more.innerHTML = "";
-      }
+      more.innerHTML = R.moreBlock(list.length - slice.length);
     }
 
     // one delegated listener, so it survives every re-render
@@ -125,9 +113,11 @@
 
     // Parent Guide + Chennai Martial Arts feature rows (if the sections exist)
     var pgEl = root.querySelector("#parentGrid");
-    if (pgEl) pgEl.innerHTML = POSTS.filter(function (p) { return p.category === "Parent Guide"; }).slice(0, 3).map(card).join("");
+    if (pgEl) pgEl.innerHTML = R.categoryRow(POSTS, "Parent Guide", FB);
     var chEl = root.querySelector("#chennaiGrid");
-    if (chEl) chEl.innerHTML = POSTS.filter(function (p) { return p.category === "Chennai Martial Arts"; }).slice(0, 3).map(card).join("");
+    if (chEl) chEl.innerHTML = R.categoryRow(POSTS, "Chennai Martial Arts", FB);
+    var arEl = root.querySelector("#blogArchive");
+    if (arEl && !arEl.firstChild) arEl.innerHTML = R.archive(POSTS, CATS);
   }
 
   /* ======================= DETAIL PAGE ======================= */

@@ -67,6 +67,46 @@
       '<div class="fm-body"><span class="badge badge-cat" style="align-self:flex-start">' + esc(p.category) + "</span><h4>" + esc(p.title) + "</h4>" + metaLine(p) + "</div></a>";
   }
 
+  /* ---------- the listing page ----------
+     Everything blog.html shows on first paint, as strings, so the build can
+     pre-render it and the browser renders the identical markup. */
+  var LISTING_PAGE = 12;
+  function featuredBlock(posts, fb) {
+    var f = posts[0];
+    if (!f) return "";
+    return '<div class="feat-main"><a href="' + postUrl(f.slug) + '">' + blogImage(f.featuredImage, { eager: true }, fb) + "</a>" +
+      '<div class="blog-card-body"><div class="blog-badges"><span class="badge badge-cat">Featured</span><span class="badge badge-sub">' + esc(f.category) + "</span></div>" +
+      "<h3><a href=\"" + postUrl(f.slug) + "\">" + esc(f.title) + "</a></h3><p>" + esc(f.excerpt) + "</p>" + metaLine(f) +
+      '<a class="blog-readmore" href="' + postUrl(f.slug) + '">Read Guide →</a></div></div>' +
+      '<div class="feat-side">' + posts.slice(1, 4).map(function (p) { return featMini(p, fb); }).join("") + "</div>";
+  }
+  function catChips(cats) {
+    return '<button class="blog-chip active" data-cat="all">All</button>' +
+      cats.map(function (c) { return '<button class="blog-chip" data-cat="' + esc(c.name) + '">' + esc(c.name) + "</button>"; }).join("");
+  }
+  function countText(n) { return n + " article" + (n === 1 ? "" : "s"); }
+  function moreBlock(remaining) {
+    return remaining > 0
+      ? '<div><button type="button" id="blogMoreBtn">Load more articles</button><span class="more-left">' + remaining + " more</span></div>"
+      : "";
+  }
+  function categoryRow(posts, cat, fb) {
+    return posts.filter(function (p) { return p.category === cat; }).slice(0, 3).map(function (p) { return card(p, fb); }).join("");
+  }
+  /* Every guide, grouped by topic: one plain link each. The grid shows 12 at a
+     time (the rest sit behind "Load more"), so without this a crawler reaching
+     the blog's front page found only a handful of articles. */
+  function archive(posts, cats) {
+    var groups = cats.map(function (c) {
+      var list = posts.filter(function (p) { return p.category === c.name; });
+      if (!list.length) return "";
+      return '<div class="arch-group"><h3>' + esc(c.name) + ' <span>' + list.length + "</span></h3><ul>" +
+        list.map(function (p) { return '<li><a href="' + postUrl(p.slug) + '">' + esc(p.title) + "</a></li>"; }).join("") + "</ul></div>";
+    }).join("");
+    return '<details class="blog-archive"><summary>Browse all ' + posts.length + " guides by topic</summary>" +
+      '<div class="arch-cols">' + groups + "</div></details>";
+  }
+
   /* ---------- the article page ----------
      env: { site, mainSite, wa, fallback }  →  every piece of the page as HTML,
      plus the head data (title, meta, canonical, JSON-LD). */
@@ -155,5 +195,7 @@
 
   return { postStamp: postStamp, sortPosts: sortPosts, esc: esc, textOf: textOf, slugifyId: slugifyId, postUrl: postUrl,
            fmtDate: fmtDate, when: when, blogImage: blogImage, metaLine: metaLine, badges: badges, card: card, featMini: featMini,
-           buildDetail: buildDetail };
+           buildDetail: buildDetail,
+           LISTING_PAGE: LISTING_PAGE, featuredBlock: featuredBlock, catChips: catChips, countText: countText,
+           moreBlock: moreBlock, categoryRow: categoryRow, archive: archive };
 });
