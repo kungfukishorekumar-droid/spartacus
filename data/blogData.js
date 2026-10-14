@@ -978,7 +978,7 @@
       featuredImage: IMG.muaythai,
       inlineImages: [inl("fitness", "after-introduction"), inl("discipline", "middle-section")],
       seoTitle: "Muay Thai Training in Chennai — Beginner Guide | Spartacus",
-      seoDescription: "A beginner's guide to Muay Thai training in Chennai — techniques, benefits and how to start safely at Spartacus Martial Arts Academy.",
+      seoDescription: "A beginner's guide to Muay Thai in Chennai — techniques, benefits, and how to build the same striking skills through Kick Boxing and Boxing at Spartacus.",
       seoKeywords: ["muay thai training in Chennai","muay thai for beginners","martial arts classes in Chennai"],
       geoKeywords: ["Chennai","Perambur","Ayanavaram","Tamil Nadu"],
       imagePrompt: "An Indian Muay Thai practitioner in shorts and hand wraps throwing a knee strike into a pad, clinch position, intense conditioning session",
