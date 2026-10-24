@@ -293,7 +293,7 @@ function boot(){
       }
       track("lead_submit", { program: lead.program, goal: lead.goal, role: lead.role });
       if (typeof fbq === "function") fbq("track", "Lead", { content_name: lead.program });
-      const waMsg = `Hi Coach Kishore, my name is ${lead.name}. I am interested in ${lead.program} at ${CONFIG.academyName}.` +
+      const waMsg = `Hi Coach Kishore, my name is ${lead.name}. I am interested in ${lead.program || "a free trial class"} at ${CONFIG.academyName}.` +
         (lead.goal ? ` My goal is ${lead.goal}.` : "") + ` Please share fees, timings, and trial class details.\n\n` +
         `• Age: ${lead.age}\n• I am: ${lead.role || "-"}\n• Location: ${lead.location || "-"}\n• Preferred time: ${lead.time || "-"}\n` +
         (lead.message ? `• Message: ${lead.message}\n` : "") + `• Phone: ${lead.phone}`;

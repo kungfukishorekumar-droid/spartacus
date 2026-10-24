@@ -37,6 +37,22 @@
   // Never record the coach's own visits while editing the site.
   if (location.hash === "#admin" || /^(localhost|127\.|192\.168\.)/.test(location.hostname)) return;
 
+  // Keep the numbers human. Skipped, so they never reach the CRM:
+  //  • this browser, once it has opened any page with ?notrack=1
+  //    (undo with ?notrack=0) — for Kishore's own phone and laptop
+  //  • Hostinger's LiteSpeed cache warmer (?LSCWP_CTRL=…&nocache=…)
+  //  • test visits tagged utm_source=claude-verify
+  //  • crawlers and headless browsers that run JavaScript
+  var qs = location.search || "";
+  try {
+    if (/[?&]notrack=1\b/.test(qs)) localStorage.setItem("sp_notrack", "1");
+    if (/[?&]notrack=0\b/.test(qs)) localStorage.removeItem("sp_notrack");
+    if (localStorage.getItem("sp_notrack") === "1") return;
+  } catch (e) {}
+  if (/[?&](LSCWP_CTRL|nocache)=/i.test(qs)) return;
+  if (/[?&]utm_source=claude-verify\b/i.test(qs)) return;
+  if (navigator.webdriver || /bot|crawl|spider|slurp|lighthouse|headless|litespeed|preview/i.test(navigator.userAgent || "")) return;
+
   /* --- small helpers ------------------------------------------------------ */
   function uuid() {
     if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
